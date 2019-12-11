@@ -2,7 +2,7 @@
     "name": "lmrtfy",
     "title": "Let Me Roll That For You!",
     "description": "Ask your players to roll something for you.",
-    "version": "0.2",
+    "version": "0.3",
     "minimumCoreVersion": "0.4.0",
     "author": "KaKaRoTo & iotech",
     "scripts": ["./lmrtfy.js"],
