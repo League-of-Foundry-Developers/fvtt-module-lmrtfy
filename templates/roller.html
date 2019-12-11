@@ -1,7 +1,7 @@
-<div>
+<div class="lmrtfy-background">
     <span> Your GM has requested rolls from your character : {{actor.name}} </span>
-    <div>
-            <img width="64" height="64" src="{{actor.img}}"></img>
+    <div class="lmrtfy-center">
+            <img width="64" height="64" src="{{actor.img}}"/>
     </div>
     
     {{#each abilities as |name ability|}}
@@ -16,7 +16,7 @@
     {{/each}}
     {{#each skills as |name skill|}}
     <div>
-        <button type="button" class="lmrtfy-skill-check" data-skill="{{skill}}">Skill check: {{name}}</button>
+        <button type="button" class="lmrtfy-skill-check" data-skill="{{skill}}">Skill Check: {{name}}</button>
     </div>
     {{/each}}
     <div>{{note}}</div>
