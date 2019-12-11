@@ -11,8 +11,9 @@ class LMRTFYRequestor extends FormApplication {
         options.template = "modules/lmrtfy/templates/request-rolls.html";
         options.closeOnSubmit = false;
         options.popOut = true;
-        options.width = 800;
+        options.width = "auto";
         options.height = "auto";
+        options.classes = ["lmrtfy", "lmrtfy-roller"]
         return options;
     }
 
@@ -79,8 +80,9 @@ class LMRTFYRoller extends Application {
         options.title = "Let Me Roll That For You!";
         options.template = "modules/lmrtfy/templates/roller.html";
         options.popOut = true;
-        options.width = 800;
+        options.width = "auto";
         options.height = "auto";
+        options.classes = ["lmrtfy", "lmrtfy-roller"]
         return options;
     }
 

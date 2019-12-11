@@ -1,15 +1,19 @@
 
 /* Override css from parent */
-.window-content {
+.lmrtfy-roller {
 	padding:0px !important;
 	}
-.window-app {
+.lmrtfy {
 	width: auto !important; 
 	max-width: 35% !important;
 	padding:5px !important;
 	height: auto !important;
+    border: 0px;
 	}
 	
+.lmrtfy > section {
+    padding: 0px !important;
+}
 /* Utility css */
 .lmrtfy-background {
 	background: url(../images/parchment2.jpg) !important;
@@ -23,7 +27,7 @@
 
 }
 
-ul {
+.lmrtfy-ul {
   columns: 3;
   -webkit-columns: 3;
   -moz-columns: 3;
@@ -102,7 +106,7 @@ ul {
 	
 
 
-input[type=checkbox] {
+input[type=checkbox].lmrtfy-checkbox {
     display:none;
 }
 
