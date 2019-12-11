@@ -4,6 +4,8 @@ LMRTFY is a module to let Game Masters request rolls from their players. This ca
 
 Writing this module was the idea of iotech, based on the Fantasy Grounds "[Roll For Initiative](https://www.fantasygrounds.com/forums/showthread.php?45234)" extension. Iotech also designed and wrote the UI for it.
 
+![screenshot](images/screenshot.png)
+
 # Installation
 
 You can now install this module automatically by specifying the following public module URL : `https://raw.githubusercontent.com/kakaroto/fvtt-module-lmrtfy/master/module.json`
