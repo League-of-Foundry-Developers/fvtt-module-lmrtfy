@@ -1,4 +1,3 @@
-<div class="lmrtfy-background" >
 
 <form autocomplete="off" onsubmit="event.preventDefault();">
     <fieldset>
@@ -10,10 +9,10 @@
         </div>
         <div class="form-group">
             {{#each actors}}
-            <div class="images45">
+            <div class="lmrtfy-actor-avatars">
 
                 <input type="checkbox" class="lmrtfy-actor-select lmrtfy-checkbox" name="actor-{{this.id}}" id="actor-{{this.id}}" data-dtype="Boolean" checked />
-                <label for="actor-{{this.id}}"><img width="42" height="42" src="{{this.img}}" data-toggle="tooltip" data-placement="top" title="{{this.name}}" /></label>
+                <label for="actor-{{this.id}}"><img src="{{this.img}}" data-toggle="tooltip" data-placement="top" title="{{this.name}}" /></label>
 
             </div>
             {{/each}}
@@ -25,28 +24,41 @@
     <div class="form-group">
         <label>Modifiers:</label>
         
-        <select name="modifiers" data-dtype="Number">
+        <select name="advantage" data-dtype="Number">
             <option value="0">Normal Roll</option>
             <option value="1">Advantage</option>
             <option value="-1">Disadvantage</option>
         </select>
+
+        <select name="mode" data-dtype="String">
+            {{#each rollModes as |name mode|}}
+            <option value="{{mode}}">{{localize name}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Title :</label>
+        <input type="text" name="title" value="Get Rolling!" data-dtype="String"/>
+    </div>
+    <div class="form-group">
+        <label>Message :</label>
+        <input type="text" name="message" value="" placeholder="Roll to see if you find any traps.. " data-dtype="String"/>
     </div>
     </fieldset>
  
     <fieldset>
-    <div class="form-group w100">
+    <div class="form-group">
         <label>Ability Checks:</label>
         
-        {{#each abilities as |name key|}}
-        <div class="w10">
-        	<!--<span>{{name}}</span>-->
-            <span>
-            	<input type="checkbox" class="lmrtfy-ability-select lmrtfy-checkbox" name="check-{{key}}" id="check-{{key}}" data-dtype="Boolean" />
-            	<label for="check-{{key}}">{{name}}</label>
-            </span>
-            
+        <div class="lmrtfy-ability-checks">
+            {{#each abilities as |name key|}}
+            <div class="lmrtfy-ability">
+                <input type="checkbox" name="check-{{key}}" id="check-{{key}}" data-dtype="Boolean" />
+                <label for="check-{{key}}">{{name}}</label>
+                
+            </div>
+            {{/each}}
         </div>
-        {{/each}}
     </div>
     </fieldset>
      
@@ -54,35 +66,32 @@
     <div class="form-group">
         <label>Saving Throws:</label>
         
-        {{#each abilities as |name key|}}
-        <div class="w10">
-      		<!--<span>{{name}}</span>-->
-            <span>
-            	<input type="checkbox" class="lmrtfy-save-select lmrtfy-checkbox" name="save-{{key}}" id="save-{{key}}" data-dtype="Boolean" />
-                <label for="save-{{key}}">{{name}}</label>
-             </span>
-            
+        <div class="lmrtfy-saving-throws">
+            {{#each abilities as |name key|}}
+            <div class="lmrtfy-ability">
+                <input type="checkbox" name="save-{{key}}" id="save-{{key}}" data-dtype="Boolean" />
+                <label for="save-{{key}}">{{name}}</label>            
+            </div>
+            {{/each}}
         </div>
-        {{/each}}
     </div>
     </fieldset>
    
     <fieldset>
         <div class="form-group">
             <label>Skill Checks: </label>
-            <ul class="lmrtfy-ul">
-            {{#each skills as |name key|}}
-                <li>
-                    <input type="checkbox" class="lmrtfy-skill-select lmrtfy-checkbox" name="skill-{{key}}" id="skill-{{key}}" data-dtype="Boolean" />
+            <div class="lmrtfy-skill-checks">
+                {{#each skills as |name key|}}
+                <div class="lmrtfy-skill">
+                    <input type="checkbox" name="skill-{{key}}" id="skill-{{key}}" data-dtype="Boolean" />
                     <label for="skill-{{key}}">{{name}}</label>
-                </li>
-            {{/each}}
-            </ul>
+                </div>
+                {{/each}}
+            </div>
         </div>
     </fieldset>
-<div class="lmrtfy-center">
-    <button type="submit" class="lmrtfy-request-roll" name="submit" value="1"><i class="fas fa-dice"></i> Request roll!</button>
+
+    <div class="lmrtfy-submit">
+        <button type="submit" class="lmrtfy-request-roll" name="submit" value="1"><i class="fas fa-dice"></i> Request roll!</button>
     </div>
 </form>
-
-</div>

@@ -4,7 +4,7 @@
     "description": "Ask your players to roll something for you.",
     "version": "0.2",
     "minimumCoreVersion": "0.4.0",
-    "author": "KaKaRoTo",
+    "author": "KaKaRoTo & iotech",
     "scripts": ["./lmrtfy.js"],
     "styles": ["/css/lmrtfy.css"],
     "packs": [],

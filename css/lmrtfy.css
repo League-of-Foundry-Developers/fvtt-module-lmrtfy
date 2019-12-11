@@ -1,136 +1,92 @@
-
-/* Override css from parent */
-.lmrtfy-roller {
-	padding:0px !important;
-	}
-.lmrtfy {
-	width: auto !important; 
-	max-width: 35% !important;
-	padding:5px !important;
-	height: auto !important;
-    border: 0px;
-	}
-	
-.lmrtfy > section {
-    padding: 0px !important;
-}
-/* Utility css */
-.lmrtfy-background {
-	background: url(../images/parchment2.jpg) !important;
-	padding: 5px !important;
-	width: 100%;
-	height: 200px !important;
+.lmrtfy .window-content {
+	background: url(../images/parchment2.jpg);
+	padding: 5px;
 }
 
-.lmrtfy-center{
-    text-align: center;
-
+/* request-rolls.html */
+.lmrtfy input[type=checkbox] {
+    display:none;
 }
 
-.lmrtfy-ul {
-  columns: 3;
-  -webkit-columns: 3;
-  -moz-columns: 3;
+.lmrtfy input[type=checkbox] + label {
+	margin: 3px;
+	flex: 1;
 }
+.lmrtfy input[type=checkbox]:checked + label {
+	margin: 2px;
+	color: red;
+	font-weight: bold;
+} 
 
-.images45 {
+.lmrtfy-actor-avatars img {
     width: 45px;
+	height: 45px;
+	transition-duration: 0.2s;
+	transform-origin: 50% 50%;
+}
+.lmrtfy-actor-avatars input:checked + label img {
+	transform: scale(0.9);
+	box-shadow: 0 0 5px #ff0000;
+	z-index: -1;
 }
 
-.w100 {
-    width: 100% !important
+.lmrtfy-ability-checks,
+.lmrtfy-saving-throws {
+	display: flex;
+    flex-direction: row;
+	flex-wrap: nowrap;
 }
 
-.w10 {
-    flex: 0;
-    padding: 5px;
+.lmrtfy-skill-checks {
+	display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-evenly;
+    max-height: 200px;
+    flex: 8;
+}
+
+.lmrtfy-ability-checks > div,
+.lmrtfy-saving-throws > div,
+.lmrtfy-skill-checks > div {
+    flex: 3;
+	padding: 5px;
+	display: flex;
+}
+
+.lmrtfy-submit {
+    text-align: center;
+}
+
+.select-all,
+.deselect-all,
+.lmrtfy-request-roll {
+	background: url(../images/buttonhover.png) ; 
+	background-repeat: no-repeat ;  
+	background-size: 100%;
+	color: black ;
+	height: 40px;
+	text-align: center ;
+	width: 200px;
 }
 
 
 /* Roller.html */
-.lmrtfy-ability-check{
-	background: url(../images/buttonhover.png) !important; 
-	background-repeat: no-repeat !important;  
-	background-size: 100% !important;
-	color: black !important;
-	height: 78px !important;
-	text-align: center !important;
-	}
-.lmrtfy-ability-save{
-	background: url(../images/buttonhover.png) !important; 
-	background-repeat: no-repeat !important;  
-	background-size: 100% !important;
-	color: black !important;
-	height: 78px !important;
-	text-align: center !important;
-	}
-.lmrtfy-skill-check{
-	background: url(../images/buttonhover.png) !important; 
-	background-repeat: no-repeat !important;  
-	background-size: 100% !important;
-	color: black !important;
-	height: 78px !important;
-	text-align: center !important;
-	}
-
-/* request-rolls.html */
-.select-all {
-	background: url(../images/buttonhover.png) !important; 
-	background-repeat: no-repeat !important;  
-	background-size: 90% 35px !important;
-	color: black !important;
-	height: 40px !important;
-	text-align: center !important;
-	}
-
-.deselect-all {
-	background: url(../images/buttonhover.png) !important; 
-	background-repeat: no-repeat !important;  
-	background-size: 90% 35px !important;
-	color: black !important;
-	height: 40px !important;
-	text-align: center !important;
-	width: 120px;
-	}
-
-.lmrtfy-request-roll{
-	background: url(../images/buttonhover.png) !important; 
-	background-repeat: no-repeat !important;  
-	background-size: 90% 35px !important;
-	color: black !important;
-	height: 40px !important;
-	text-align: center !important;
-	width: 135px;
-	}
-
-	
-
-
-input[type=checkbox].lmrtfy-checkbox {
-    display:none;
+.lmrtfy-avatar {
+    text-align: center;
+}
+.lmrtfy-avatar img {
+	width: 64px;
+	height: 64px;
 }
 
-label img {
-  height: 42px;
-  width: 42px;
-  transition-duration: 0.2s;
-  transform-origin: 50% 50%;
-}
-
-:checked + label {
-  border-color: #ddd;
-  color: red;
-}
-
-:checked + label:before {
-  content: "";
-  background-color: grey;
-  transform: scale(1);
-  color: red;
-}
-
-:checked + label img {
-  transform: scale(0.9);
-  box-shadow: 0 0 5px #ff0000;
-  z-index: -1;
+.lmrtfy-ability-check,
+.lmrtfy-ability-save,
+.lmrtfy-skill-check {
+	background: url(../images/buttonhover.png) ; 
+	background-repeat: no-repeat ;  
+	background-size: 100% ;
+	color: black ;
+	height: 78px ;
+	text-align: center ;
 }

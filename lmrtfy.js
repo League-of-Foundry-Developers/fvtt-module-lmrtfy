@@ -11,21 +11,23 @@ class LMRTFYRequestor extends FormApplication {
         options.template = "modules/lmrtfy/templates/request-rolls.html";
         options.closeOnSubmit = false;
         options.popOut = true;
-        options.width = "auto";
+        options.width = 600;
         options.height = "auto";
-        options.classes = ["lmrtfy", "lmrtfy-roller"]
+        options.classes = ["lmrtfy", "lmrtfy-requestor"]
         return options;
     }
 
     async getData() {
         // Return data to the template
         const actors = game.users.entities.map(u => u.character).filter(a => a);
+        //const actors = game.actors.entities;
         const abilities = CONFIG.DND5E.abilities;
         const skills = CONFIG.DND5E.skills;
         return {
             actors,
             abilities,
-            skills
+            skills,
+            rollModes: CONFIG.rollModes
         };
     }
 
@@ -49,12 +51,16 @@ class LMRTFYRequestor extends FormApplication {
         const skills = keys.filter(k => k.startsWith("skill-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
         if (actors.length === 0 || (abilities.length === 0 && saves.length === 0 && skills.length === 0))
             return;
+        const { advantage, mode, title, message } = formData;
         const socketData = {
             actors,
             abilities,
             saves,
             skills,
-            modifiers: formData.modifiers
+            advantage,
+            mode,
+            title,
+            message
         }
         console.log("LMRTFY socket send : ", socketData)
         game.socket.emit('module.lmrtfy', socketData);
@@ -66,13 +72,17 @@ class LMRTFYRequestor extends FormApplication {
 
 class LMRTFYRoller extends Application {
 
-    constructor(actor, abilities, saves, skills, modifiers) {
+    constructor(actor, data) {
         super()
         this.actor = actor
-        this.abilities = abilities
-        this.saves = saves
-        this.skills = skills
-        this.modifiers = modifiers
+        this.abilities = data.abilities
+        this.saves = data.saves
+        this.skills = data.skills
+        this.advantage = data.advantage
+        this.mode = data.mode
+        this.message = data.message
+        if (data.title)
+            this.options.title = data.title;
     }
 
     static get defaultOptions() {
@@ -88,10 +98,10 @@ class LMRTFYRoller extends Application {
 
     async getData() {
         let note = ""
-        if (this.modifiers == 1)
-            note = "These rolls will be with advantage"
-        else if (this.modifiers == -1)
-            note = "These rolls will be with disadvantage"
+        if (this.advantage == 1)
+            note = "These rolls will be made with advantage"
+        else if (this.advantage == -1)
+            note = "These rolls will be made with disadvantage"
         
         let abilities = {}
         let saves = {}
@@ -104,7 +114,8 @@ class LMRTFYRoller extends Application {
             abilities: abilities,
             saves: saves,
             skills: skills,
-            note: note
+            note: note,
+            message: this.message
         };
     }
 
@@ -115,41 +126,44 @@ class LMRTFYRoller extends Application {
         this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
     }
 
-    _modifyEvent(event) {
-        if (this.modifiers === 0) {
+    _makeRoll(rollMethod, ...args) {
+        event = {}
+        if (this.advantage === 0) {
             event.shiftKey = true;
             event.altKey = false;
             event.ctrlKey = false;
-        } else if (this.modifiers === 1) {
+        } else if (this.advantage === 1) {
             event.shiftKey = false;
             event.altKey = true;
             event.ctrlKey = false;
-        } else if (this.modifiers === -1) {
+        } else if (this.advantage === -1) {
             event.shiftKey = false;
             event.altKey = false;
             event.ctrlKey = true;
         }
+        const rollMode = game.settings.get("core", "rollMode");
+        game.settings.set("core", "rollMode", this.mode);
+        rollMethod.call(this.actor, ...args, { event });
+        game.settings.set("core", "rollMode", rollMode);
     }
+
 
     _onAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        this._modifyEvent(event);
-        this.actor.rollAbilityTest(ability, { event })
+        this._makeRoll(this.actor.rollAbilityTest, ability);
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        this._modifyEvent(event);
-        this.actor.rollAbilitySave(ability, { event })
+        this._makeRoll(this.actor.rollAbilitySave, ability);
     }
 
     _onSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
-        this._modifyEvent(event);
-        this.actor.rollSkill(skill, { event })
+        this._makeRoll(this.actor.rollSkill, skill);
     }
 
 }
@@ -167,7 +181,7 @@ class LMRTFY {
             return;
         if (!data.actors.includes(game.user.character.id))
             return;
-        new LMRTFYRoller(game.user.character, data.abilities, data.saves, data.skills, data.modifiers).render(true);
+        new LMRTFYRoller(game.user.character, data).render(true);
     }
 	static requestRoll() {
 		if (LMRTFY.requestor === undefined)
