@@ -1,0 +1,57 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+    <div class="form-group">
+        <label>Select Players to request a roll from</label>
+        
+        <button type="button" class="select-all"><i class="fas fa-check-square"></i>Select All</button>
+        <button type="button"class="deselect-all"><i class="fas fa-square"></i>Deselect All</button>
+        {{#each actors}}
+        <div>
+            <img width="42" height="42" src="{{this.img}}"></img>
+            <input type="checkbox" class="lmrtfy-actor-select" name="actor-{{this.id}}" data-dtype="Boolean" checked />
+            <span>{{this.name}}</span>
+        </div>
+        {{/each}}
+    </div>
+    <div class="form-group">
+        <label>Modifiers</label>
+        
+        <select name="modifiers" data-dtype="Number">
+            <option value="0">Normal Roll</option>
+            <option value="1">Advantage</option>
+            <option value="-1">Disadvantage</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Select Abilities to request</label>
+        
+        {{#each abilities as |name key|}}
+        <div>
+            <input type="checkbox" class="lmrtfy-ability-select" name="check-{{key}}" data-dtype="Boolean" />
+            <span>{{name}} Check</span>
+        </div>
+        {{/each}}
+    </div>
+    <div class="form-group">
+        <label>Select Saving Throws to request</label>
+        
+        {{#each abilities as |name key|}}
+        <div>
+            <input type="checkbox" class="lmrtfy-save-select" name="save-{{key}}" data-dtype="Boolean" />
+            <span>{{name}} Save</span>
+        </div>
+        {{/each}}
+    </div>
+    <div class="form-group">
+        <label>Select Skills to request</label>
+        
+        {{#each skills as |name key|}}
+        <div>
+            <input type="checkbox" class="lmrtfy-skill-select" name="skill-{{key}}" data-dtype="Boolean" />
+            <span>{{name}} Check</span>
+        </div>
+        {{/each}}
+    </div>
+
+    <button type="submit" name="submit" value="1"><i class="fas fa-dice"></i>Request roll!</button>
+</form>
+

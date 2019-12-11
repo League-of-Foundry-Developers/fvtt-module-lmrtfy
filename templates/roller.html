@@ -1,0 +1,23 @@
+<div>
+    <span> Your GM has requested rolls from your character : {{actor.name}} </span>
+    <div>
+            <img width="64" height="64" src="{{actor.img}}"></img>
+    </div>
+    
+    {{#each abilities as |name ability|}}
+    <div>
+        <button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>Ability check: {{name}}</button>
+    </div>
+    {{/each}}
+    {{#each saves as |name ability|}}
+    <div>
+        <button type="button" class="lmrtfy-ability-save" data-ability="{{ability}}">Saving Throw: {{name}}</button>
+    </div>
+    {{/each}}
+    {{#each skills as |name skill|}}
+    <div>
+        <button type="button" class="lmrtfy-skill-check" data-skill="{{skill}}">Skill check: {{name}}</button>
+    </div>
+    {{/each}}
+    <div>{{note}}</div>
+</div>
