@@ -77,6 +77,9 @@ class LMRTFYRoller extends Application {
             actor[rollMethod].call(actor, ...args, { event: fakeEvent });
         }
         game.settings.set("core", "rollMode", rollMode);
+        event.currentTarget.disabled = true;
+        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
+            this.close();
     }
 
 

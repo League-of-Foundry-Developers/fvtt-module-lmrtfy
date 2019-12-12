@@ -117,3 +117,7 @@
 	height: 78px;
 	text-align: center;
 }
+
+.lmrtfy-roller button:disabled {
+    opacity: 0.5;
+}
