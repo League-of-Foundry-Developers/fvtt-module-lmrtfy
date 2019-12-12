@@ -2,21 +2,27 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
     <fieldset>
         <div class="form-group">
-            <label>Characters:</label>
+            <label>Select User:</label>
 
+            <select name="user" data-dtype="String">
+                <option value="">Controlled characters</option>
+                {{#each users}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Select characters:</label>
             <button type="button" class="select-all"><i class="fas fa-check-square"></i> All</button>
             <button type="button" class="deselect-all"><i class="fas fa-square"></i> None</button>
         </div>
-        <div class="form-group">
-            {{#each actors}}
-            <div class="lmrtfy-actor-avatars">
-
-                <input type="checkbox" class="lmrtfy-actor-select lmrtfy-checkbox" name="actor-{{this.id}}" id="actor-{{this.id}}" data-dtype="Boolean" checked />
+        <div class="form-group lmrtfy-actor-avatars">
+        {{#each actors}}
+            <div class="lmrtfy-actor" data-id="{{this.id}}">
+                <input type="checkbox" name="actor-{{this.id}}" id="actor-{{this.id}}" data-dtype="Boolean" checked />
                 <label for="actor-{{this.id}}"><img src="{{this.img}}" data-toggle="tooltip" data-placement="top" title="{{this.name}}" /></label>
-
             </div>
-            {{/each}}
-
+        {{/each}}
         </div>
     </fieldset>
    

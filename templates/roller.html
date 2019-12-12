@@ -1,9 +1,14 @@
 <div class="lmrtfy-dialog">
     <div class="lmrtfy-roller-intro">
-        <span> Your GM has requested rolls from your character : <strong><em>{{actor.name}}</em></strong> </span>
+        <span> Your GM has requested rolls from your character(s) : </span>
     </div>
-    <div class="lmrtfy-avatar">
-            <img src="{{actor.img}}"/>
+    <div class="lmrtfy-actor-list">
+        {{#each actors}}
+            <div class="lmrtfy-avatar">
+                <img src="{{this.img}}"/>
+                <strong><em>{{this.name}}</em></strong>
+            </div>
+        {{/each}}
     </div>
     {{#if message}}
     <div class="lmrtfy-reason">

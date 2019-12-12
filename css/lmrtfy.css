@@ -7,6 +7,10 @@
 .lmrtfy input[type=checkbox] {
     display:none;
 }
+.lmrtfy select,
+.lmrtfy input[type=text] {
+    background-color: rgba(220, 200, 160, 0.5);
+}
 
 .lmrtfy input[type=checkbox] + label {
 	margin: 3px;
@@ -18,6 +22,12 @@
 	font-weight: bold;
 } 
 
+.lmrtfy-actor-avatars {
+	justify-content: center;
+}
+.lmrtfy-actor-avatars > div {
+	flex: 0;
+}
 .lmrtfy-actor-avatars img {
     width: 45px;
 	height: 45px;
@@ -57,35 +67,53 @@
     text-align: center;
 }
 
-.select-all,
-.deselect-all,
 .lmrtfy-request-roll {
-	background: url(../images/buttonhover.png) ; 
+	background: url(../images/button.png); 
 	background-repeat: no-repeat ;  
-	background-size: 100%;
-	color: black ;
+	background-size: 100% 100%;
+	color: black;
 	height: 40px;
 	text-align: center ;
 	width: 200px;
+}
+.select-all,
+.deselect-all {
+	background-color: rgba(220, 200, 160, 0.75);
+	border-radius: 10px;
+	flex: 1;
 }
 
 
 /* Roller.html */
 .lmrtfy-avatar {
-    text-align: center;
+	text-align: center;
+	margin: 2px;
 }
 .lmrtfy-avatar img {
 	width: 64px;
 	height: 64px;
 }
 
+.lmrtfy-actor-list {
+	justify-content: center;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	max-width: 400px;
+}
+.lmrtfy-actor-list > div {
+	flex: 1 0 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .lmrtfy-ability-check,
 .lmrtfy-ability-save,
 .lmrtfy-skill-check {
-	background: url(../images/buttonhover.png) ; 
+	background: url(../images/button.png) ; 
 	background-repeat: no-repeat ;  
-	background-size: 100% ;
-	color: black ;
-	height: 78px ;
-	text-align: center ;
+	background-size: 100% 100%;
+	color: black;
+	height: 78px;
+	text-align: center;
 }

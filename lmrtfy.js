@@ -19,12 +19,13 @@ class LMRTFYRequestor extends FormApplication {
 
     async getData() {
         // Return data to the template
-        const actors = game.users.entities.map(u => u.character).filter(a => a);
-        //const actors = game.actors.entities;
+        const actors = game.actors.entities;
+        const users = game.users.entities;
         const abilities = CONFIG.DND5E.abilities;
         const skills = CONFIG.DND5E.skills;
         return {
             actors,
+            users,
             abilities,
             skills,
             rollModes: CONFIG.rollModes
@@ -35,17 +36,36 @@ class LMRTFYRequestor extends FormApplication {
         super.activateListeners(html);
         this.element.find(".select-all").click((event) => this.setActorSelection(event, true));
         this.element.find(".deselect-all").click((event) => this.setActorSelection(event, false));
+        this.element.find("select[name=user]").change(this._onUserChange.bind(this));
+        this._onUserChange();
     }
 
     setActorSelection(event, enabled) {
         event.preventDefault();
-        this.element.find(".lmrtfy-actor-select").prop("checked", enabled)
+        this.element.find(".lmrtfy-actor input").prop("checked", enabled)
+    }
+
+    _onUserChange() {
+        const userId = this.element.find("select[name=user]").val();
+        let actors = [];
+        if (userId === "") {
+            actors = game.users.entities.map(u => u.character).filter(a => a)
+        } else {
+            const user = game.users.get(userId);
+            if (user)
+                actors = game.actors.entities.filter(a => a.hasPerm(user, "OWNER"))
+        }
+        actors = actors.map(a => a.id);
+        this.element.find(".lmrtfy-actor").hide().filter((i, e) => actors.includes(e.dataset.id)).show();
+
     }
 
     _updateObject(event, formData) {
         console.log("LMRTFY submit: ", formData)
         const keys = Object.keys(formData)
-        const actors = keys.filter(k => k.startsWith("actor-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
+        const user = game.users.get(formData.user) || null;
+        const user_actors = (user ? game.actors.entities.filter(a => a.hasPerm(user, "OWNER")) : game.users.entities.map(u => u.character).filter(a => a)).map(a => `actor-${a.id}`);
+        const actors = keys.filter(k => k.startsWith("actor-")).reduce((acc, k) => { if (formData[k] && user_actors.includes(k)) acc.push(k.slice(6)); return acc;}, [])
         const abilities = keys.filter(k => k.startsWith("check-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
         const saves = keys.filter(k => k.startsWith("save-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(5)); return acc;}, [])
         const skills = keys.filter(k => k.startsWith("skill-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
@@ -53,6 +73,7 @@ class LMRTFYRequestor extends FormApplication {
             return;
         const { advantage, mode, title, message } = formData;
         const socketData = {
+            user: formData.user || null,
             actors,
             abilities,
             saves,
@@ -65,16 +86,15 @@ class LMRTFYRequestor extends FormApplication {
         console.log("LMRTFY socket send : ", socketData)
         game.socket.emit('module.lmrtfy', socketData);
         // Send to ourselves
-        if (game.user.character && actors.includes(game.user.character.id))
-            LMRTFY.onMessage(socketData);
+        LMRTFY.onMessage(socketData);
     }
 }
 
 class LMRTFYRoller extends Application {
 
-    constructor(actor, data) {
+    constructor(actors, data) {
         super()
-        this.actor = actor
+        this.actors = actors
         this.abilities = data.abilities
         this.saves = data.saves
         this.skills = data.skills
@@ -110,7 +130,7 @@ class LMRTFYRoller extends Application {
         this.saves.forEach(a => saves[a] = CONFIG.DND5E.abilities[a])
         this.skills.forEach(s => skills[s] = CONFIG.DND5E.skills[s])
         return {
-            actor: this.actor,
+            actors: this.actors,
             abilities: abilities,
             saves: saves,
             skills: skills,
@@ -143,7 +163,9 @@ class LMRTFYRoller extends Application {
         }
         const rollMode = game.settings.get("core", "rollMode");
         game.settings.set("core", "rollMode", this.mode);
-        rollMethod.call(this.actor, ...args, { event });
+        for (let actor of this.actors) {
+            actor[rollMethod].call(actor, ...args, { event });
+        }
         game.settings.set("core", "rollMode", rollMode);
     }
 
@@ -151,19 +173,19 @@ class LMRTFYRoller extends Application {
     _onAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        this._makeRoll(this.actor.rollAbilityTest, ability);
+        this._makeRoll('rollAbilityTest', ability);
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        this._makeRoll(this.actor.rollAbilitySave, ability);
+        this._makeRoll('rollAbilitySave', ability);
     }
 
     _onSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
-        this._makeRoll(this.actor.rollSkill, skill);
+        this._makeRoll('rollSkill', skill);
     }
 
 }
@@ -177,11 +199,13 @@ class LMRTFY {
 
     static onMessage(data) {
         console.log("LMRTF got message: ", data)
-        if (!game.user.character)
+        if (data.user === null &&
+            (!game.user.character || !data.actors.includes(game.user.character.id)))
             return;
-        if (!data.actors.includes(game.user.character.id))
+        else if (data.user !== null && data.user !== game.user.id)
             return;
-        new LMRTFYRoller(game.user.character, data).render(true);
+        const actors = data.user === null ? [game.user.character] : data.actors.map(id => game.actors.get(id)).filter(a => a);
+        new LMRTFYRoller(actors, data).render(true);
     }
 	static requestRoll() {
 		if (LMRTFY.requestor === undefined)
