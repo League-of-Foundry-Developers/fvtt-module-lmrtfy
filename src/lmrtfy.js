@@ -5,7 +5,7 @@ class LMRTFY {
     }
 
     static onMessage(data) {
-        console.log("LMRTF got message: ", data)
+        //console.log("LMRTF got message: ", data)
         if (data.user === null &&
             (!game.user.character || !data.actors.includes(game.user.character.id)))
             return;
@@ -26,7 +26,7 @@ class LMRTFY {
 		if (tokenButton) {
 			tokenButton.tools.push({
 				name: "request-roll",
-				title: "Request Roll",
+				title: game.i18n.localize('LMRTFY.ControlTitle'),
 				icon: "fas fa-dice-d20",
 				visible: game.user.isGM,
 				onClick: () => LMRTFY.requestRoll()

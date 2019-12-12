@@ -6,7 +6,7 @@ class LMRTFYRequestor extends FormApplication {
 
     static get defaultOptions() {
         const options = super.defaultOptions;
-        options.title = "Let Me Roll That For You!";
+        options.title = game.i18n.localize("LMRTFY.Title");
         options.id = "lmrtfy";
         options.template = "modules/lmrtfy/templates/request-rolls.html";
         options.closeOnSubmit = false;
@@ -61,7 +61,7 @@ class LMRTFYRequestor extends FormApplication {
     }
 
     _updateObject(event, formData) {
-        console.log("LMRTFY submit: ", formData)
+        //console.log("LMRTFY submit: ", formData)
         const keys = Object.keys(formData)
         const user = game.users.get(formData.user) || null;
         const user_actors = (user ? game.actors.entities.filter(a => a.hasPerm(user, "OWNER")) : game.users.entities.map(u => u.character).filter(a => a)).map(a => `actor-${a.id}`);
@@ -83,7 +83,7 @@ class LMRTFYRequestor extends FormApplication {
             title,
             message
         }
-        console.log("LMRTFY socket send : ", socketData)
+        //console.log("LMRTFY socket send : ", socketData)
         game.socket.emit('module.lmrtfy', socketData);
         // Send to ourselves
         LMRTFY.onMessage(socketData);

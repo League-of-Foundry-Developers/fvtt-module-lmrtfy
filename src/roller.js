@@ -17,10 +17,10 @@ class LMRTFYRoller extends Application {
 
     static get defaultOptions() {
         const options = super.defaultOptions;
-        options.title = "Let Me Roll That For You!";
+        options.title = game.i18n.localize("LMRTFY.Title");
         options.template = "modules/lmrtfy/templates/roller.html";
         options.popOut = true;
-        options.width = "auto";
+        options.width = 400;
         options.height = "auto";
         options.classes = ["lmrtfy", "lmrtfy-roller"]
         return options;
@@ -29,9 +29,9 @@ class LMRTFYRoller extends Application {
     async getData() {
         let note = ""
         if (this.advantage == 1)
-            note = "These rolls will be made with advantage"
+            note = game.i18n.localize("LMRTFY.AdvantageNote");
         else if (this.advantage == -1)
-            note = "These rolls will be made with disadvantage"
+            note = game.i18n.localize("LMRTFY.DisadvantageNote");
         
         let abilities = {}
         let saves = {}

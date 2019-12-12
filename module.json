@@ -9,6 +9,13 @@
     "styles": ["/css/lmrtfy.css"],
     "packs": [],
     "systems": ["dnd5e", "dnd5eJP"],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		}
+    ],
     "socket": true,
     "url": "https://github.com/kakaroto/fvtt-module-lmrtfy",
     "manifest": "https://raw.githubusercontent.com/kakaroto/fvtt-module-lmrtfy/master/module.json",

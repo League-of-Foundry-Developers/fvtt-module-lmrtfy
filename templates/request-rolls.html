@@ -2,19 +2,19 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
     <fieldset>
         <div class="form-group">
-            <label>Select User:</label>
+            <label>{{localize "LMRTFY.SelectUser"}}</label>
 
             <select name="user" data-dtype="String">
-                <option value="">Controlled characters</option>
+                <option value="">{{localize "LMRTFY.ControlledCharacters"}}</option>
                 {{#each users}}
                     <option value="{{this.id}}">{{this.name}}</option>
                 {{/each}}
             </select>
         </div>
         <div class="form-group">
-            <label>Select characters:</label>
-            <button type="button" class="select-all"><i class="fas fa-check-square"></i> All</button>
-            <button type="button" class="deselect-all"><i class="fas fa-square"></i> None</button>
+            <label>{{localize "LMRTFY.SelectCharacters"}}</label>
+            <button type="button" class="select-all"><i class="fas fa-check-square"></i>{{localize "LMRTFY.SelectAll"}}</button>
+            <button type="button" class="deselect-all"><i class="fas fa-square"></i>{{localize "LMRTFY.SelectNone"}}</button>
         </div>
         <div class="form-group lmrtfy-actor-avatars">
         {{#each actors}}
@@ -28,12 +28,12 @@
    
     <fieldset>
     <div class="form-group">
-        <label>Modifiers:</label>
+        <label>{{localize "LMRTFY.Modifiers"}}</label>
         
         <select name="advantage" data-dtype="Number">
-            <option value="0">Normal Roll</option>
-            <option value="1">Advantage</option>
-            <option value="-1">Disadvantage</option>
+            <option value="0">{{localize "LMRTFY.NormalRoll"}}</option>
+            <option value="1">{{localize "LMRTFY.AdvantageRoll"}}</option>
+            <option value="-1">{{localize "LMRTFY.DisadvantageRoll"}}</option>
         </select>
 
         <select name="mode" data-dtype="String">
@@ -43,18 +43,18 @@
         </select>
     </div>
     <div class="form-group">
-        <label>Title :</label>
-        <input type="text" name="title" value="Get Rolling!" data-dtype="String"/>
+        <label>{{localize "LMRTFY.WindowTitle"}}</label>
+        <input type="text" name="title" value='{{localize "LMRTFY.WindowTitleValue"}}' placeholder='{{localize "LMRTFY.WindowTitlePlaceholder"}}' data-dtype="String"/>
     </div>
     <div class="form-group">
-        <label>Message :</label>
-        <input type="text" name="message" value="" placeholder="Roll to see if you find any traps.. " data-dtype="String"/>
+        <label>{{localize "LMRTFY.Message"}}</label>
+        <input type="text" name="message" value='' placeholder='{{localize "LMRTFY.MessagePlaceholder"}}' data-dtype="String"/>
     </div>
     </fieldset>
  
     <fieldset>
     <div class="form-group">
-        <label>Ability Checks:</label>
+        <label>{{localize "LMRTFY.AbilityChecks"}}</label>
         
         <div class="lmrtfy-ability-checks">
             {{#each abilities as |name key|}}
@@ -70,7 +70,7 @@
      
     <fieldset>
     <div class="form-group">
-        <label>Saving Throws:</label>
+        <label>{{localize "LMRTFY.SavingThrows"}}</label>
         
         <div class="lmrtfy-saving-throws">
             {{#each abilities as |name key|}}
@@ -85,7 +85,7 @@
    
     <fieldset>
         <div class="form-group">
-            <label>Skill Checks: </label>
+            <label>{{localize "LMRTFY.SkillChecks"}}</label>
             <div class="lmrtfy-skill-checks">
                 {{#each skills as |name key|}}
                 <div class="lmrtfy-skill">
@@ -98,6 +98,6 @@
     </fieldset>
 
     <div class="lmrtfy-submit">
-        <button type="submit" class="lmrtfy-request-roll" name="submit" value="1"><i class="fas fa-dice"></i> Request roll!</button>
+        <button type="submit" class="lmrtfy-request-roll" name="submit" value="1"><i class="fas fa-dice"></i>{{localize "LMRTFY.RequestRolls"}}</button>
     </div>
 </form>
