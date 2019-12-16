@@ -59,7 +59,7 @@
 .lmrtfy-saving-throws > div,
 .lmrtfy-skill-checks > div {
     flex: 3;
-	padding: 5px;
+	padding: 4px;
 	display: flex;
 }
 

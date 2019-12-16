@@ -14,6 +14,11 @@
 			"lang": "en",
 			"name": "English",
 			"path": "lang/en.json"
+		},
+		{
+			"lang": "ja",
+			"name": "日本語 (Japanese)",
+			"path": "lang/ja.json"
 		}
     ],
     "socket": true,
