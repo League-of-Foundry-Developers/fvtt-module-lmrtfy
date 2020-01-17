@@ -38,4 +38,14 @@
         <button type="button" class="lmrtfy-custom-formula" data-formula="{{customFormula}}">{{localize "LMRTFY.CustomFormula"}} {{customFormula}}</button>
     </div>
     {{/if}}
+    {{#if initiative}}
+    <div>
+        <button type="button" class="lmrtfy-initiative">{{localize "LMRTFY.Initiative"}}</button>
+    </div>
+    {{/if}}
+    {{#if deathsave}}
+    <div>
+        <button type="button" class="lmrtfy-death-save">{{localize "LMRTFY.DeathSave"}}</button>
+    </div>
+    {{/if}}
 </div>

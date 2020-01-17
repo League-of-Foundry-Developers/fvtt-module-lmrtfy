@@ -28,5 +28,7 @@
     "LMRTFY.Reason": "Reason : ",
     "LMRTFY.CustomFormula": "Custom Formula : ",
     "LMRTFY.CustomFormulaPlaceholder": "1d20 + @abilities.str.mod + 1",
-    "LMRTFY.": ""
+    "LMRTFY.Initiative": "Initiative",
+    "LMRTFY.DeathSave": "Death Save",
+    "LMRTFY.Extras": "Extras"
 }

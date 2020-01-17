@@ -5,13 +5,13 @@ class LMRTFYRoller extends Application {
     constructor(actors, data) {
         super()
         this.actors = actors
+        this.data = data
         this.abilities = data.abilities
         this.saves = data.saves
         this.skills = data.skills
         this.advantage = data.advantage
         this.mode = data.mode
         this.message = data.message
-        this.formula = data.formula
         if (data.title)
             this.options.title = data.title;
     }
@@ -47,7 +47,9 @@ class LMRTFYRoller extends Application {
             skills: skills,
             note: note,
             message: this.message,
-            customFormula: this.formula || false
+            customFormula: this.data.formula || false,
+            deathsave: this.data.deathsave,
+            initiative: this.data.initiative,
         };
     }
 
@@ -57,6 +59,8 @@ class LMRTFYRoller extends Application {
         this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this))
         this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
         this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this))
+        this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
+        this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this))
     }
 
     _makeRoll(event, rollMethod, ...args) {
@@ -146,7 +150,15 @@ class LMRTFYRoller extends Application {
     }
     _onCustomFormula(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, this.formula);
+        this._makeDiceRoll(event, this.data.formula);
+    }
+    _onInitiative(event) {
+        event.preventDefault();
+        this._makeDiceRoll(event, game.system.data.initiative);
+    }
+    _onDeathSave(event) {
+        event.preventDefault();
+        this._makeDiceRoll(event, "1d20");
     }
 
 }

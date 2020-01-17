@@ -39,8 +39,9 @@
 	box-shadow: 0 0 5px #ff0000;
 }
 
-.lmrtfy-ability-checks,
-.lmrtfy-saving-throws {
+form .form-group .lmrtfy-ability-checks,
+form .form-group .lmrtfy-saving-throws,
+form .form-group .lmrtfy-extras {
 	display: flex;
     flex-direction: row;
 	flex-wrap: nowrap;
@@ -57,7 +58,8 @@ form .form-group .lmrtfy-skill-checks {
 
 .lmrtfy-ability-checks > div,
 .lmrtfy-saving-throws > div,
-.lmrtfy-skill-checks > div {
+.lmrtfy-skill-checks > div ,
+.lmrtfy-extras > div {
     flex: 3;
 	padding: 4px;
 	display: flex;
@@ -109,7 +111,9 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-ability-check,
 .lmrtfy-ability-save,
 .lmrtfy-skill-check,
-.lmrtfy-custom-formula {
+.lmrtfy-custom-formula,
+.lmrtfy-initiative,
+.lmrtfy-death-save {
 	background: url(../images/button.png) ; 
 	background-repeat: no-repeat ;  
 	background-size: 100% 100%;

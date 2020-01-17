@@ -50,10 +50,29 @@
         <label>{{localize "LMRTFY.Message"}}</label>
         <input type="text" name="message" value='' placeholder='{{localize "LMRTFY.MessagePlaceholder"}}' data-dtype="String"/>
     </div>
-    <div class="form-group">
-        <label>{{localize "LMRTFY.CustomFormula"}}</label>
-        <input type="text" name="formula" value='' placeholder='{{localize "LMRTFY.CustomFormulaPlaceholder"}}' data-dtype="String"/>
-    </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.Extras"}}</label>
+                
+            <div class="lmrtfy-extras">
+                <div class="lmrtfy-extra-initiative">
+                    <input type="checkbox" name="extra-initiative" id="lmrtf-extra-initiative" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-initiative">{{localize "LMRTFY.Initiative"}}</label>
+                    
+                </div>
+                <div class="lmrtfy-extra-death-save">
+                    <input type="checkbox" name="extra-death-save" id="lmrtf-extra-death-save" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-death-save">{{localize "LMRTFY.DeathSave"}}</label>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.CustomFormula"}}</label>
+            <input type="text" name="formula" value='' placeholder='{{localize "LMRTFY.CustomFormulaPlaceholder"}}' data-dtype="String"/>
+        </div>
     </fieldset>
  
     <fieldset>
