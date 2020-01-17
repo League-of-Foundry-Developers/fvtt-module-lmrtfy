@@ -46,7 +46,7 @@
 	flex-wrap: nowrap;
 }
 
-.lmrtfy-skill-checks {
+form .form-group .lmrtfy-skill-checks {
 	display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -108,7 +108,8 @@
 }
 .lmrtfy-ability-check,
 .lmrtfy-ability-save,
-.lmrtfy-skill-check {
+.lmrtfy-skill-check,
+.lmrtfy-custom-formula {
 	background: url(../images/button.png) ; 
 	background-repeat: no-repeat ;  
 	background-size: 100% 100%;

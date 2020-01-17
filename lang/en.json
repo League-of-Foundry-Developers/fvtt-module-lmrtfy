@@ -26,5 +26,7 @@
     "LMRTFY.RequestRolls": "Request Rolls!",
     "LMRTFY.RollerIntro": " Your GM has requested rolls from your character(s) : ",
     "LMRTFY.Reason": "Reason : ",
+    "LMRTFY.CustomFormula": "Custom Formula : ",
+    "LMRTFY.CustomFormulaPlaceholder": "1d20 + @abilities.str.mod + 1",
     "LMRTFY.": ""
 }

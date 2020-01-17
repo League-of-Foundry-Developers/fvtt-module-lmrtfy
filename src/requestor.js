@@ -69,7 +69,8 @@ class LMRTFYRequestor extends FormApplication {
         const abilities = keys.filter(k => k.startsWith("check-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
         const saves = keys.filter(k => k.startsWith("save-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(5)); return acc;}, [])
         const skills = keys.filter(k => k.startsWith("skill-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
-        if (actors.length === 0 || (abilities.length === 0 && saves.length === 0 && skills.length === 0))
+        const formula = formData.formula.trim();
+        if (actors.length === 0 || (abilities.length === 0 && saves.length === 0 && skills.length === 0 && formula.length === 0))
             return;
         const { advantage, mode, title, message } = formData;
         const socketData = {
@@ -81,7 +82,8 @@ class LMRTFYRequestor extends FormApplication {
             advantage,
             mode,
             title,
-            message
+            message,
+            formula
         }
         //console.log("LMRTFY socket send : ", socketData)
         game.socket.emit('module.lmrtfy', socketData);

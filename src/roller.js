@@ -11,6 +11,7 @@ class LMRTFYRoller extends Application {
         this.advantage = data.advantage
         this.mode = data.mode
         this.message = data.message
+        this.formula = data.formula
         if (data.title)
             this.options.title = data.title;
     }
@@ -45,7 +46,8 @@ class LMRTFYRoller extends Application {
             saves: saves,
             skills: skills,
             note: note,
-            message: this.message
+            message: this.message,
+            customFormula: this.formula || false
         };
     }
 
@@ -54,6 +56,7 @@ class LMRTFYRoller extends Application {
         this.element.find(".lmrtfy-ability-check").click(this._onAbilityCheck.bind(this))
         this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this))
         this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
+        this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this))
     }
 
     _makeRoll(event, rollMethod, ...args) {
@@ -82,6 +85,47 @@ class LMRTFYRoller extends Application {
             this.close();
     }
 
+    _makeDiceRoll(event, formula) {
+        if (formula.startsWith("1d20")) {
+            if (this.advantage === 1)
+                formula = formula.replace("1d20", "2d20kh1")
+            else if (this.advantage === -1)
+                formula = formula.replace("1d20", "2d20kl1")
+        }
+        let chatMessages = []
+        for (let actor of this.actors) {
+            let chatData = {
+              user: game.user._id,
+              speaker: ChatMessage.getSpeaker({actor}),
+              content: formula,
+              flavor: this.message || null,
+              type: CONST.CHAT_MESSAGE_TYPES.ROLL
+            };
+            try {
+                let data = duplicate(actor.data.data);
+                data["name"] = actor.name;
+                let roll = new Roll(formula, data).roll();
+                chatData.roll = JSON.stringify(roll);
+                chatData.sound = CONFIG.sounds.dice;
+            } catch(err) {
+                chatData.content = `Error parsing the roll formula: ${formula}`
+                chatData.roll = null;
+                chatData.type = CONST.CHAT_MESSAGE_TYPES.OOC;
+            }
+        
+            // Record additional roll data
+            if ( ["gmroll", "blindroll"].includes(this.mode) ) chatData.whisper = ChatMessage.getWhisperIDs("GM");
+            if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
+            if ( this.mode === "blindroll" ) chatData.blind = true;
+            chatMessages.push(chatData);
+        }
+        ChatMessage.createMany(chatMessages, {});
+
+        event.currentTarget.disabled = true;
+        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
+            this.close();
+    }
+
 
     _onAbilityCheck(event) {
         event.preventDefault();
@@ -99,6 +143,10 @@ class LMRTFYRoller extends Application {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
         this._makeRoll(event, 'rollSkill', skill);
+    }
+    _onCustomFormula(event) {
+        event.preventDefault();
+        this._makeDiceRoll(event, this.formula);
     }
 
 }

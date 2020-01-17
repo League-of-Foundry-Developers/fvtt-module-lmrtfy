@@ -33,4 +33,9 @@
         <button type="button" class="lmrtfy-skill-check" data-skill="{{skill}}">{{localize "LMRTFY.SkillCheck"}} {{name}}</button>
     </div>
     {{/each}}
+    {{#if customFormula}}
+    <div>
+        <button type="button" class="lmrtfy-custom-formula" data-formula="{{customFormula}}">{{localize "LMRTFY.CustomFormula"}} {{customFormula}}</button>
+    </div>
+    {{/if}}
 </div>
