@@ -123,7 +123,7 @@ class LMRTFYRoller extends Application {
             if ( this.mode === "blindroll" ) chatData.blind = true;
             chatMessages.push(chatData);
         }
-        ChatMessage.createMany(chatMessages, {});
+        ChatMessage.create(chatMessages, {});
 
         event.currentTarget.disabled = true;
         if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
