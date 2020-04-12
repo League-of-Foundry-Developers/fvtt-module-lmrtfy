@@ -27,6 +27,40 @@ class LMRTFYRoller extends Application {
         return options;
     }
 
+    static requestAbilityChecks(actor, abilities, options={}) {
+        if (!actor || !abilities) return;
+        if (typeof(abilities) === "string") abilities = [abilities];
+        const data = mergeObject(options, {
+            abilities: [],
+            saves: [],
+            skills: []
+        }, {inplace: false});
+        data.abilities = abilities;
+        new LMRTFYRoller([actor], data).render(true);
+    }
+    static requestSkillChecks(actor, skills, options={}) {
+        if (!actor || !skills) return;
+        if (typeof(skills) === "string") skills = [skills];
+        const data = mergeObject(options, {
+            abilities: [],
+            saves: [],
+            skills: []
+        }, {inplace: false});
+        data.skills = skills;
+        new LMRTFYRoller([actor], data).render(true);
+    }
+    static requestSavingThrows(actor, saves, options={}) {
+        if (!actor || !saves) return;
+        if (typeof(saves) === "string") saves = [saves];
+        const data = mergeObject(options, {
+            abilities: [],
+            saves: [],
+            skills: []
+        }, {inplace: false});
+        data.saves = saves;
+        new LMRTFYRoller([actor], data).render(true);
+    }
+
     async getData() {
         let note = ""
         if (this.advantage == 1)
@@ -79,7 +113,7 @@ class LMRTFYRoller extends Application {
             fakeEvent.ctrlKey = true;
         }
         const rollMode = game.settings.get("core", "rollMode");
-        game.settings.set("core", "rollMode", this.mode);
+        game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
         for (let actor of this.actors) {
             actor[rollMethod].call(actor, ...args, { event: fakeEvent });
         }
