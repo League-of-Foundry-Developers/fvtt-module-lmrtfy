@@ -26,7 +26,7 @@
 	justify-content: center;
 }
 .lmrtfy-actor-avatars > div {
-	flex: 0;
+	flex: 0 0 45px;
 }
 .lmrtfy-actor-avatars img {
     width: 45px;
@@ -103,7 +103,7 @@ form .form-group .lmrtfy-skill-checks {
 	flex-wrap: wrap;
 }
 .lmrtfy-actor-list > div {
-	flex: 1 0 0px;
+	flex: 0 0 64px;
     display: flex;
     flex-direction: column;
     align-items: center;
