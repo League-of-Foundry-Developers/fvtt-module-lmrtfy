@@ -28,7 +28,7 @@ class LMRTFYRequestor extends FormApplication {
             users,
             abilities,
             skills,
-            rollModes: CONFIG.rollModes
+            rollModes: CONFIG.Dice.rollModes
         };
     }
 
