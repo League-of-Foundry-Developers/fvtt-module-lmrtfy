@@ -69,7 +69,8 @@ form .form-group .lmrtfy-skill-checks {
     text-align: center;
 }
 
-.lmrtfy-request-roll {
+.lmrtfy-request-roll,
+.lmrtfy-save-roll {
 	background: url(../images/button.png); 
 	background-repeat: no-repeat ;  
 	background-size: 100% 100%;

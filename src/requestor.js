@@ -37,6 +37,7 @@ class LMRTFYRequestor extends FormApplication {
         this.element.find(".select-all").click((event) => this.setActorSelection(event, true));
         this.element.find(".deselect-all").click((event) => this.setActorSelection(event, false));
         this.element.find("select[name=user]").change(this._onUserChange.bind(this));
+        this.element.find(".lmrtfy-save-roll").click(this._onSubmit.bind(this));
         this._onUserChange();
     }
 
@@ -60,8 +61,9 @@ class LMRTFYRequestor extends FormApplication {
 
     }
 
-    _updateObject(event, formData) {
+    async _updateObject(event, formData) {
         //console.log("LMRTFY submit: ", formData)
+        const saveAsMacro = $(event.currentTarget).hasClass("lmrtfy-save-roll")
         const keys = Object.keys(formData)
         const user = game.users.get(formData.user) || null;
         const user_actors = (user ? game.actors.entities.filter(a => a.hasPerm(user, "OWNER")) : game.users.entities.map(u => u.character).filter(a => a)).map(a => `actor-${a.id}`);
@@ -90,8 +92,28 @@ class LMRTFYRequestor extends FormApplication {
             initiative: formData['extra-initiative'],
         }
         //console.log("LMRTFY socket send : ", socketData)
-        game.socket.emit('module.lmrtfy', socketData);
-        // Send to ourselves
-        LMRTFY.onMessage(socketData);
+        if (saveAsMacro) {
+            const actorTargets = actors.map(a => game.actors.get(a)).filter(a => a).map(a => a.name).join(", ");
+            const target = formData.user ? formData.user.name : actorTargets;
+            const scriptContent = `// ${title} ${message ? " -- " + message : ""}\n` +
+                `// Request rolls from ${target}\n` +
+                `// Abilities: ${abilities.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
+                `// Saves: ${saves.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
+                `// Skills: ${skills.map(s => CONFIG.DND5E.skills[s]).filter(s => s).join(", ")}\n` +
+                `const data = ${JSON.stringify(socketData, null, 2)};\n\n` +
+                `game.socket.emit('module.lmrtfy', data);\n`;
+            const macro = await Macro.create({
+                name: "LMRTFY: " + (message || title),
+                type: "script",
+                scope: "global",
+                command: scriptContent,
+                img: "icons/svg/d20-highlight.svg"
+            });
+            macro.sheet.render(true);
+        } else {
+            game.socket.emit('module.lmrtfy', socketData);
+            // Send to ourselves
+            LMRTFY.onMessage(socketData);
+        }
     }
 }
