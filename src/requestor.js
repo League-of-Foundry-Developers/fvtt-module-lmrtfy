@@ -32,6 +32,15 @@ class LMRTFYRequestor extends FormApplication {
         };
     }
 
+    render(force, context={}) {
+        // Only re-render if needed
+        const {action, data} = context;
+        if (action && !["create", "update", "delete"].includes(action)) return;
+        if (action === "update" && !data.some(d => "character" in d)) return;
+        if (force !== true && !action) return;
+        return super.render(force, context);
+      }
+    
     activateListeners(html) {
         super.activateListeners(html);
         this.element.find(".select-all").click((event) => this.setActorSelection(event, true));
