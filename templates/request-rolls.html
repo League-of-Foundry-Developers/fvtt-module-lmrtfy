@@ -5,7 +5,8 @@
             <label>{{localize "LMRTFY.SelectUser"}}</label>
 
             <select name="user" data-dtype="String">
-                <option value="">{{localize "LMRTFY.AssignedCharacters"}}</option>
+                <option value="tokens" selected>{{localize "LMRTFY.ControlledTokens"}}</option>
+                <option value="character">{{localize "LMRTFY.AssignedCharacters"}}</option>
                 {{#each users}}
                     <option value="{{this.id}}">{{this.name}}</option>
                 {{/each}}

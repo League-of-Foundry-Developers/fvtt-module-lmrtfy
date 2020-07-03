@@ -71,7 +71,7 @@ class LMRTFYRequestor extends FormApplication {
             const actorId = div.dataset.id;
             const actor = game.actors.get(actorId);
             if (!actor) return;
-            const user = userId === "" ? game.users.entities.find(u => u.character && u.character._id === actor._id) : null;
+            const user = userId === "character" ? game.users.entities.find(u => u.character && u.character._id === actor._id) : null;
             const tooltip = document.createElement("SPAN");
             tooltip.classList.add("tooltip");
             tooltip.textContent = `${actor.name}${user ? ` (${user.name})` : ''}`;
@@ -79,17 +79,22 @@ class LMRTFYRequestor extends FormApplication {
         }
     }
 
-    _onUserChange() {
-        const userId = this.element.find("select[name=user]").val();
+    _getUserActorIds(userId) {
         let actors = [];
-        if (userId === "") {
-            actors = game.users.entities.map(u => u.character).filter(a => a)
+        if (userId === "character") {
+            actors = game.users.entities.map(u => u.character && u.character.id).filter(a => a)
+        } else if (userId === "tokens") {
+            actors = Array.from(new Set(canvas.tokens.placeables.map(t => t.data.actorId))).filter(a => a);
         } else {
             const user = game.users.get(userId);
             if (user)
-                actors = game.actors.entities.filter(a => a.hasPerm(user, "OWNER"))
+                actors = game.actors.entities.filter(a => a.hasPerm(user, "OWNER")).map(a => a.id)
         }
-        actors = actors.map(a => a.id);
+        return actors;
+    }
+    _onUserChange() {
+        const userId = this.element.find("select[name=user]").val();
+        const actors = this._getUserActorIds(userId)
         this.element.find(".lmrtfy-actor").hide().filter((i, e) => actors.includes(e.dataset.id)).show();
 
     }
@@ -98,12 +103,27 @@ class LMRTFYRequestor extends FormApplication {
         //console.log("LMRTFY submit: ", formData)
         const saveAsMacro = $(event.currentTarget).hasClass("lmrtfy-save-roll")
         const keys = Object.keys(formData)
-        const user = game.users.get(formData.user) || null;
-        const user_actors = (user ? game.actors.entities.filter(a => a.hasPerm(user, "OWNER")) : game.users.entities.map(u => u.character).filter(a => a)).map(a => `actor-${a.id}`);
-        const actors = keys.filter(k => k.startsWith("actor-")).reduce((acc, k) => { if (formData[k] && user_actors.includes(k)) acc.push(k.slice(6)); return acc;}, [])
-        const abilities = keys.filter(k => k.startsWith("check-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
-        const saves = keys.filter(k => k.startsWith("save-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(5)); return acc;}, [])
-        const skills = keys.filter(k => k.startsWith("skill-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
+        const user_actors = this._getUserActorIds(formData.user).map(id => `actor-${id}`);
+        const actors = keys.filter(k => k.startsWith("actor-")).reduce((acc, k) => {
+            if (formData[k] && user_actors.includes(k)) 
+                acc.push(k.slice(6));
+            return acc;
+        }, []);
+        const abilities = keys.filter(k => k.startsWith("check-")).reduce((acc, k) => {
+            if (formData[k])
+                acc.push(k.slice(6));
+            return acc;
+        }, []);
+        const saves = keys.filter(k => k.startsWith("save-")).reduce((acc, k) => {
+            if (formData[k])
+                acc.push(k.slice(5));
+            return acc;
+        }, []);
+        const skills = keys.filter(k => k.startsWith("skill-")).reduce((acc, k) => {
+            if (formData[k])
+                acc.push(k.slice(6));
+            return acc;
+        }, []);
         const formula = formData.formula.trim();
         const { advantage, mode, title, message } = formData;
         if (actors.length === 0 ||
@@ -113,7 +133,7 @@ class LMRTFYRequestor extends FormApplication {
             return;
         }
         const socketData = {
-            user: formData.user || null,
+            user: formData.user,
             actors,
             abilities,
             saves,
@@ -129,7 +149,8 @@ class LMRTFYRequestor extends FormApplication {
         //console.log("LMRTFY socket send : ", socketData)
         if (saveAsMacro) {
             const actorTargets = actors.map(a => game.actors.get(a)).filter(a => a).map(a => a.name).join(", ");
-            const target = formData.user ? formData.user.name : actorTargets;
+            const user = game.users.get(formData.user) || null;
+            const target = user ? user.name : actorTargets;
             const scriptContent = `// ${title} ${message ? " -- " + message : ""}\n` +
                 `// Request rolls from ${target}\n` +
                 `// Abilities: ${abilities.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +

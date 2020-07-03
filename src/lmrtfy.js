@@ -6,12 +6,20 @@ class LMRTFY {
 
     static onMessage(data) {
         //console.log("LMRTF got message: ", data)
-        if (data.user === null &&
+        if (data.user === "character" &&
             (!game.user.character || !data.actors.includes(game.user.character.id)))
             return;
-        else if (data.user !== null && data.user !== game.user.id)
+        else if (!["character", "tokens"].includes(data.user) && data.user !== game.user.id)
             return;
-        const actors = data.user === null ? [game.user.character] : data.actors.map(id => game.actors.get(id)).filter(a => a);
+        let actors = [];
+        if (data.user === "character")
+            actors = [game.user.character];
+        else if (data.user === "tokens")
+            actors = canvas.tokens.controlled.map(t => t.actor);
+        else
+            actors = data.actors.map(id => game.actors.get(id));
+        actors = actors.filter(a => a);
+        if (actors.length === 0) return;
         new LMRTFYRoller(actors, data).render(true);
     }
 	static requestRoll() {
@@ -29,7 +37,8 @@ class LMRTFY {
 				title: game.i18n.localize('LMRTFY.ControlTitle'),
 				icon: "fas fa-dice-d20",
 				visible: game.user.isGM,
-				onClick: () => LMRTFY.requestRoll()
+				onClick: () => LMRTFY.requestRoll(),
+                button: true
 			});
 		}
 	}
