@@ -26,6 +26,7 @@
 	justify-content: center;
 }
 .lmrtfy-actor-avatars > div {
+    position: relative;
 	flex: 0 0 45px;
 }
 .lmrtfy-actor-avatars img {
@@ -125,4 +126,22 @@ form .form-group .lmrtfy-skill-checks {
 
 .lmrtfy-roller button:disabled {
     opacity: 0.5;
+}
+
+.lmrtfy-actor .tooltip {
+    display: block;
+    min-width: 148px;
+    height: 26px;
+    padding: 2px 4px;
+    position: absolute;
+    top: -32px;
+    left: -50px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #191813;
+    border-radius: 3px;
+    color: #f0f0e0;
+    line-height: 22px;
+    text-align: center;
+    white-space: nowrap;
+    word-break: break-all;
 }

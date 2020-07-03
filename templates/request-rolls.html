@@ -5,7 +5,7 @@
             <label>{{localize "LMRTFY.SelectUser"}}</label>
 
             <select name="user" data-dtype="String">
-                <option value="">{{localize "LMRTFY.ControlledCharacters"}}</option>
+                <option value="">{{localize "LMRTFY.AssignedCharacters"}}</option>
                 {{#each users}}
                     <option value="{{this.id}}">{{this.name}}</option>
                 {{/each}}
@@ -20,7 +20,7 @@
         {{#each actors}}
             <div class="lmrtfy-actor" data-id="{{this.id}}">
                 <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" checked />
-                <label for="lmrtf-actor-{{this.id}}"><img src="{{this.img}}" data-toggle="tooltip" data-placement="top" title="{{this.name}}" /></label>
+                <label for="lmrtf-actor-{{this.id}}"><img src="{{this.img}}" /></label>
             </div>
         {{/each}}
         </div>

@@ -47,12 +47,36 @@ class LMRTFYRequestor extends FormApplication {
         this.element.find(".deselect-all").click((event) => this.setActorSelection(event, false));
         this.element.find("select[name=user]").change(this._onUserChange.bind(this));
         this.element.find(".lmrtfy-save-roll").click(this._onSubmit.bind(this));
+        this.element.find(".lmrtfy-actor").hover(this._onHoverActor.bind(this));
         this._onUserChange();
     }
 
     setActorSelection(event, enabled) {
         event.preventDefault();
         this.element.find(".lmrtfy-actor input").prop("checked", enabled)
+    }
+
+    // From _onHoverMacro
+    _onHoverActor(event) {
+        event.preventDefault();
+        const div = event.currentTarget;
+
+        // Remove any existing tooltip
+        const tooltip = div.querySelector(".tooltip");
+        if (tooltip) div.removeChild(tooltip);
+
+        // Handle hover-in
+        if (event.type === "mouseenter") {
+            const userId = this.element.find("select[name=user]").val();
+            const actorId = div.dataset.id;
+            const actor = game.actors.get(actorId);
+            if (!actor) return;
+            const user = userId === "" ? game.users.entities.find(u => u.character && u.character._id === actor._id) : null;
+            const tooltip = document.createElement("SPAN");
+            tooltip.classList.add("tooltip");
+            tooltip.textContent = `${actor.name}${user ? ` (${user.name})` : ''}`;
+            div.appendChild(tooltip);
+        }
     }
 
     _onUserChange() {
