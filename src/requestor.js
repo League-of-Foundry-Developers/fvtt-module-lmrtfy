@@ -81,11 +81,13 @@ class LMRTFYRequestor extends FormApplication {
         const saves = keys.filter(k => k.startsWith("save-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(5)); return acc;}, [])
         const skills = keys.filter(k => k.startsWith("skill-")).reduce((acc, k) => { if (formData[k]) acc.push(k.slice(6)); return acc;}, [])
         const formula = formData.formula.trim();
-        if (actors.length === 0 ||
-             (abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
-                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative']))
-            return;
         const { advantage, mode, title, message } = formData;
+        if (actors.length === 0 ||
+             (!message && abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
+                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'])) {
+            ui.notifications.warn("LMRTFY: Nothing to request");
+            return;
+        }
         const socketData = {
             user: formData.user || null,
             actors,
