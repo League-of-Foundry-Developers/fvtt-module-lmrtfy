@@ -163,7 +163,6 @@ class LMRTFYRoller extends Application {
             setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
             chatMessages.push(chatData);
         }
-
         ChatMessage.create(chatMessages, {});
 
         event.currentTarget.disabled = true;
