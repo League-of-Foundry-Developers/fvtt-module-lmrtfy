@@ -115,12 +115,17 @@ class LMRTFYRoller extends Application {
         const rollMode = game.settings.get("core", "rollMode");
         game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
         for (let actor of this.actors) {
+            Hooks.once("preCreateChatMessage", this._tagMessage.bind(this));
             actor[rollMethod].call(actor, ...args, { event: fakeEvent });
         }
         game.settings.set("core", "rollMode", rollMode);
         event.currentTarget.disabled = true;
         if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
             this.close();
+    }
+
+    _tagMessage(data, options) {
+      setProperty(data, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
     }
 
     _makeDiceRoll(event, formula) {
@@ -155,8 +160,10 @@ class LMRTFYRoller extends Application {
             if ( ["gmroll", "blindroll"].includes(this.mode) ) chatData.whisper = ChatMessage.getWhisperIDs("GM");
             if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
             if ( this.mode === "blindroll" ) chatData.blind = true;
+            setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
             chatMessages.push(chatData);
         }
+
         ChatMessage.create(chatMessages, {});
 
         event.currentTarget.disabled = true;
