@@ -97,7 +97,7 @@
         <label>{{localize "LMRTFY.SavingThrows"}}</label>
         
         <div class="lmrtfy-saving-throws">
-            {{#each abilities as |name key|}}
+            {{#each saves as |name key|}}
             <div class="lmrtfy-ability">
                 <input type="checkbox" name="save-{{key}}" id="lmrtf-save-{{key}}" data-dtype="Boolean" />
                 <label for="lmrtf-save-{{key}}">{{name}}</label>            

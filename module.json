@@ -7,7 +7,7 @@
     "scripts": ["./src/lmrtfy.js", "./src/requestor.js", "./src/roller.js"],
     "styles": ["/css/lmrtfy.css"],
     "packs": [],
-    "systems": ["dnd5e", "dnd5eJP"],
+    "systems": ["dnd5e", "dnd5eJP", "pf2e"],
 	"languages": [
 		{
 			"lang": "en",

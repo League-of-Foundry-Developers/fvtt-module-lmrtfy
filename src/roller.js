@@ -41,6 +41,7 @@ class LMRTFYRoller extends Application {
     static requestSkillChecks(actor, skills, options={}) {
         if (!actor || !skills) return;
         if (typeof(skills) === "string") skills = [skills];
+        console.log(skills)
         const data = mergeObject(options, {
             abilities: [],
             saves: [],
@@ -71,9 +72,9 @@ class LMRTFYRoller extends Application {
         let abilities = {}
         let saves = {}
         let skills = {}
-        this.abilities.forEach(a => abilities[a] = CONFIG.DND5E.abilities[a])
-        this.saves.forEach(a => saves[a] = CONFIG.DND5E.abilities[a])
-        this.skills.forEach(s => skills[s] = CONFIG.DND5E.skills[s])
+        this.abilities.forEach(a => abilities[a] = (game.system.id == "pf2e" ? CONFIG.PF2E.abilities[a] : CONFIG.DND5E.abilities[a]))
+        this.saves.forEach(a => saves[a] = (game.system.id == "pf2e" ? CONFIG.PF2E.saves[a] :CONFIG.DND5E.abilities[a]))
+        this.skills.forEach(s => skills[s] = (game.system.id == "pf2e" ? CONFIG.PF2E.skills[s] :CONFIG.DND5E.skills[s]))
         return {
             actors: this.actors,
             abilities: abilities,
@@ -116,7 +117,12 @@ class LMRTFYRoller extends Application {
         game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
         for (let actor of this.actors) {
             Hooks.once("preCreateChatMessage", this._tagMessage.bind(this));
-            actor[rollMethod].call(actor, ...args, { event: fakeEvent });
+            if(game.system.id=="pf2e") {
+                actor[rollMethod].call(actor, fakeEvent, ...args);                        
+            } else {
+                actor[rollMethod].call(actor, ...args, { event: fakeEvent });                        
+            }
+
         }
         game.settings.set("core", "rollMode", rollMode);
         event.currentTarget.disabled = true;
@@ -174,13 +180,24 @@ class LMRTFYRoller extends Application {
     _onAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        this._makeRoll(event, 'rollAbilityTest', ability);
+        
+        if(game.system.id=="pf2e")  {
+            this._makeRoll(event, 'rollAbility', ability);
+        } else {
+            this._makeRoll(event, 'rollAbilityTest', ability);
+        }
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
-        const ability = event.currentTarget.dataset.ability;
-        this._makeRoll(event, 'rollAbilitySave', ability);
+        const saves = event.currentTarget.dataset.ability;
+
+        if(game.system.id=="pf2e")  {
+            this._makeRoll(event, 'rollSave', saves);
+        } else {
+            this._makeRoll(event, 'rollAbilitySave', saves);
+        }
+
     }
 
     _onSkillCheck(event) {

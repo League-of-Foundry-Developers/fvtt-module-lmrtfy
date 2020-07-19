@@ -21,12 +21,16 @@ class LMRTFYRequestor extends FormApplication {
         // Return data to the template
         const actors = game.actors.entities;
         const users = game.users.entities;
-        const abilities = CONFIG.DND5E.abilities;
-        const skills = CONFIG.DND5E.skills;
+        // Note: Maybe these work better at a global level, but keeping things simple
+        const abilities = (game.system.id == 'pf2e' ? CONFIG.PF2E.abilities : CONFIG.DND5E.abilities );
+        const saves = (game.system.id == 'pf2e' ? CONFIG.PF2E.saves: CONFIG.DND5E.abilities );
+        const skills = (game.system.id == 'pf2e' ? CONFIG.PF2E.skills: CONFIG.DND5E.skills );
+        
         return {
             actors,
             users,
             abilities,
+            saves,
             skills,
             rollModes: CONFIG.Dice.rollModes
         };
@@ -120,8 +124,12 @@ class LMRTFYRequestor extends FormApplication {
             return acc;
         }, []);
         const skills = keys.filter(k => k.startsWith("skill-")).reduce((acc, k) => {
+            if(game.system.id = "pf2e") { // Map the skills with the internal names
+                console.log("Here");
+            }
             if (formData[k])
                 acc.push(k.slice(6));
+                console.log(acc.toString());
             return acc;
         }, []);
         const formula = formData.formula.trim();
@@ -148,14 +156,21 @@ class LMRTFYRequestor extends FormApplication {
         }
         //console.log("LMRTFY socket send : ", socketData)
         if (saveAsMacro) {
+
             const actorTargets = actors.map(a => game.actors.get(a)).filter(a => a).map(a => a.name).join(", ");
             const user = game.users.get(formData.user) || null;
             const target = user ? user.name : actorTargets;
             const scriptContent = `// ${title} ${message ? " -- " + message : ""}\n` +
                 `// Request rolls from ${target}\n` +
-                `// Abilities: ${abilities.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
-                `// Saves: ${saves.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
-                `// Skills: ${skills.map(s => CONFIG.DND5E.skills[s]).filter(s => s).join(", ")}\n` +
+                (game.system.id = "pf2e" ?
+                    `// Abilities: ${abilities.map(a => CONFIG.PF2E.abilities[a]).filter(s => s).join(", ")}\n` +
+                    `// Saves: ${saves.map(a => CONFIG.PF2E.saves[a]).filter(s => s).join(", ")}\n` +
+                    `// Skills: ${skills.map(s => CONFIG.PF2E.skills[s]).filter(s => s).join(", ")}\n` 
+                    :
+                    `// Abilities: ${abilities.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
+                    `// Saves: ${saves.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
+                    `// Skills: ${skills.map(s => CONFIG.DND5E.skills[s]).filter(s => s).join(", ")}\n` 
+                ) + 
                 `const data = ${JSON.stringify(socketData, null, 2)};\n\n` +
                 `game.socket.emit('module.lmrtfy', data);\n`;
             const macro = await Macro.create({
