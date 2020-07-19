@@ -25,7 +25,7 @@ class LMRTFYRequestor extends FormApplication {
         const abilities = (game.system.id == 'pf2e' ? CONFIG.PF2E.abilities : CONFIG.DND5E.abilities );
         const saves = (game.system.id == 'pf2e' ? CONFIG.PF2E.saves: CONFIG.DND5E.abilities );
         const skills = (game.system.id == 'pf2e' ? CONFIG.PF2E.skills: CONFIG.DND5E.skills );
-        
+
         return {
             actors,
             users,
@@ -124,12 +124,8 @@ class LMRTFYRequestor extends FormApplication {
             return acc;
         }, []);
         const skills = keys.filter(k => k.startsWith("skill-")).reduce((acc, k) => {
-            if(game.system.id = "pf2e") { // Map the skills with the internal names
-                console.log("Here");
-            }
             if (formData[k])
                 acc.push(k.slice(6));
-                console.log(acc.toString());
             return acc;
         }, []);
         const formula = formData.formula.trim();

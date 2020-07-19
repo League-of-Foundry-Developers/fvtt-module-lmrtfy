@@ -41,7 +41,6 @@ class LMRTFYRoller extends Application {
     static requestSkillChecks(actor, skills, options={}) {
         if (!actor || !skills) return;
         if (typeof(skills) === "string") skills = [skills];
-        console.log(skills)
         const data = mergeObject(options, {
             abilities: [],
             saves: [],
