@@ -99,8 +99,9 @@ class LMRTFYRoller extends Application {
 
     _makeRoll(event, rollMethod, ...args) {
         let fakeEvent = {}
+        let shiftedRoll = game.settings.get("lmrtfy", "useShiftedRolls");
         if (this.advantage === 0) {
-            fakeEvent.shiftKey = true;
+            fakeEvent.shiftKey = shiftedRoll;
             fakeEvent.altKey = false;
             fakeEvent.ctrlKey = false;
         } else if (this.advantage === 1) {

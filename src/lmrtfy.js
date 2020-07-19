@@ -46,3 +46,13 @@ class LMRTFY {
 
 Hooks.on('ready', LMRTFY.ready)
 Hooks.on('getSceneControlButtons', LMRTFY.getSceneControlButtons)
+Hooks.once("ready", () => {
+    game.settings.register("lmrtfy", "useShiftedRolls", {
+        name: "SHIFTed Rolls",
+        hint: "The default for LMRTFY is to attempt the roll from the user as if they were holding [SHIFT] which prompts for mods, advantage, disadvantage. Deselecting this will send a Normal roll through directly, which may keep consistency in some systems.",
+        scope: "world",
+        config: true,
+        default: true,
+        type: Boolean
+      });
+})
