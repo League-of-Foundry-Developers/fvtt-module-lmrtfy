@@ -71,9 +71,9 @@ class LMRTFYRoller extends Application {
         let abilities = {}
         let saves = {}
         let skills = {}
-        this.abilities.forEach(a => abilities[a] = (game.system.id == "pf2e" ? CONFIG.PF2E.abilities[a] : CONFIG.DND5E.abilities[a]))
-        this.saves.forEach(a => saves[a] = (game.system.id == "pf2e" ? CONFIG.PF2E.saves[a] :CONFIG.DND5E.abilities[a]))
-        this.skills.forEach(s => skills[s] = (game.system.id == "pf2e" ? CONFIG.PF2E.skills[s] :CONFIG.DND5E.skills[s]))
+        this.abilities.forEach(a => abilities[a] = LMRTFY.abilities[a])
+        this.saves.forEach(a => saves[a] = LMRTFY.saves[a])
+        this.skills.forEach(s => skills[s] = LMRTFY.skills[s])
         return {
             actors: this.actors,
             abilities: abilities,
