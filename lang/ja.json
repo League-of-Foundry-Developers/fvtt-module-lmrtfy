@@ -12,6 +12,7 @@
     "LMRTFY.NormalRoll": "通常ロール",
     "LMRTFY.AdvantageRoll": "有利",
     "LMRTFY.DisadvantageRoll": "不利",
+    "LMRTFY.QueryRoll": "クエリプレーヤー",
     "LMRTFY.WindowTitle": "タイトル :",
     "LMRTFY.WindowTitleValue": "ダイスを振ろう！",
     "LMRTFY.WindowTitlePlaceholder": "タイトルを入力",

@@ -22,9 +22,9 @@ class LMRTFYRequestor extends FormApplication {
         const actors = game.actors.entities;
         const users = game.users.entities;
         // Note: Maybe these work better at a global level, but keeping things simple
-        const abilities = (game.system.id == 'pf2e' ? CONFIG.PF2E.abilities : CONFIG.DND5E.abilities );
-        const saves = (game.system.id == 'pf2e' ? CONFIG.PF2E.saves: CONFIG.DND5E.abilities );
-        const skills = (game.system.id == 'pf2e' ? CONFIG.PF2E.skills: CONFIG.DND5E.skills );
+        const abilities = LMRTFY.abilities;
+        const saves = LMRTFY.saves;
+        const skills = LMRTFY.skills;
 
         return {
             actors,
@@ -158,15 +158,9 @@ class LMRTFYRequestor extends FormApplication {
             const target = user ? user.name : actorTargets;
             const scriptContent = `// ${title} ${message ? " -- " + message : ""}\n` +
                 `// Request rolls from ${target}\n` +
-                (game.system.id = "pf2e" ?
-                    `// Abilities: ${abilities.map(a => CONFIG.PF2E.abilities[a]).filter(s => s).join(", ")}\n` +
-                    `// Saves: ${saves.map(a => CONFIG.PF2E.saves[a]).filter(s => s).join(", ")}\n` +
-                    `// Skills: ${skills.map(s => CONFIG.PF2E.skills[s]).filter(s => s).join(", ")}\n` 
-                    :
-                    `// Abilities: ${abilities.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
-                    `// Saves: ${saves.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
-                    `// Skills: ${skills.map(s => CONFIG.DND5E.skills[s]).filter(s => s).join(", ")}\n` 
-                ) + 
+                `// Abilities: ${abilities.map(a => LMRTFY.abilities[a]).filter(s => s).join(", ")}\n` +
+                `// Saves: ${saves.map(a => LMRTFY.saves[a]).filter(s => s).join(", ")}\n` +
+                `// Skills: ${skills.map(s => LMRTFY.skills[s]).filter(s => s).join(", ")}\n` +
                 `const data = ${JSON.stringify(socketData, null, 2)};\n\n` +
                 `game.socket.emit('module.lmrtfy', data);\n`;
             const macro = await Macro.create({

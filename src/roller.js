@@ -99,9 +99,8 @@ class LMRTFYRoller extends Application {
 
     _makeRoll(event, rollMethod, ...args) {
         let fakeEvent = {}
-        let shiftedRoll = game.settings.get("lmrtfy", "useShiftedRolls");
         if (this.advantage === 0) {
-            fakeEvent.shiftKey = shiftedRoll;
+            fakeEvent.shiftKey = !LMRTFY.defaultQuery;
             fakeEvent.altKey = false;
             fakeEvent.ctrlKey = false;
         } else if (this.advantage === 1) {
@@ -112,6 +111,10 @@ class LMRTFYRoller extends Application {
             fakeEvent.shiftKey = false;
             fakeEvent.altKey = false;
             fakeEvent.ctrlKey = true;
+        } else if (this.advantage === 2) {
+            fakeEvent.shiftKey = LMRTFY.defaultQuery;
+            fakeEvent.altKey = false;
+            fakeEvent.ctrlKey = false;
         }
         const rollMode = game.settings.get("core", "rollMode");
         game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
@@ -180,30 +183,19 @@ class LMRTFYRoller extends Application {
     _onAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        
-        if(game.system.id=="pf2e")  {
-            this._makeRoll(event, 'rollAbility', ability);
-        } else {
-            this._makeRoll(event, 'rollAbilityTest', ability);
-        }
+        this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
         const saves = event.currentTarget.dataset.ability;
-
-        if(game.system.id=="pf2e")  {
-            this._makeRoll(event, 'rollSave', saves);
-        } else {
-            this._makeRoll(event, 'rollAbilitySave', saves);
-        }
-
+        this._makeRoll(event, LMRTFY.saveRollMethod, saves);
     }
 
     _onSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
-        this._makeRoll(event, 'rollSkill', skill);
+        this._makeRoll(event, LMRTFY.skillRollMethod, skill);
     }
     _onCustomFormula(event) {
         event.preventDefault();
