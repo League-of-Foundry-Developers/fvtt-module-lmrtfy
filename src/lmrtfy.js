@@ -1,6 +1,26 @@
 class LMRTFY {
     static ready() {
         game.socket.on('module.lmrtfy', LMRTFY.onMessage);
+        if(game.system.id == "pf2e") {
+            LMRTFY.saveRollMethod = 'rollSave';
+            LMRTFY.abilityRollMethod = 'rollAbility';
+            LMRTFY.skillRollMethod = 'rollSkill';
+            LMRTFY.abilities = CONFIG.PF2E.abilities;
+            LMRTFY.skills = CONFIG.PF2E.skills;
+            LMRTFY.saves = CONFIG.PF2E.saves;
+            // This specifies whether the default game behavior is to send
+            // a player roll query when SHIFT is sent. Pathfinder 2E acts 
+            // the opposite of the 5E game system in this manner.
+            LMRTFY.defaultQuery = true;  
+        } else {
+            LMRTFY.saveRollMethod = 'rollAbilitySave';
+            LMRTFY.abilityRollMethod = 'rollAbilityTest';
+            LMRTFY.skillRollMethod = 'rollSkill';
+            LMRTFY.abilities = CONFIG.DND5E.abilities;
+            LMRTFY.skills = CONFIG.DND5E.skills;
+            LMRTFY.saves = CONFIG.DND5E.abilities;
+            LMRTFY.defaultQuery = false;
+        }
     }
 
     static onMessage(data) {
@@ -43,27 +63,5 @@ class LMRTFY {
 	}
 }
 
-Hooks.on('ready', () => {
-    LMRTFY.ready;
-    if(game.system.id == "pf2e") {
-        LMRTFY.saveRollMethod = 'rollSave';
-        LMRTFY.abilityRollMethod = 'rollAbility';
-        LMRTFY.skillRollMethod = 'rollSkill';
-        LMRTFY.abilities = CONFIG.PF2E.abilities;
-        LMRTFY.skills = CONFIG.PF2E.skills;
-        LMRTFY.saves = CONFIG.PF2E.saves;
-        // This specifies whether the default game behavior is to send
-        // a player roll query when SHIFT is sent. Pathfinder 2E acts 
-        // the opposite of the 5E game system in this manner.
-        LMRTFY.defaultQuery = true;  
-    } else {
-        LMRTFY.saveRollMethod = 'rollAbilitySave';
-        LMRTFY.abilityRollMethod = 'rollAbilityTest';
-        LMRTFY.skillRollMethod = 'rollSkill';
-        LMRTFY.abilities = CONFIG.DND5E.abilities;
-        LMRTFY.skills = CONFIG.DND5E.skills;
-        LMRTFY.saves = CONFIG.DND5E.abilities;
-        LMRTFY.defaultQuery = false;
-    }
-});
+Hooks.on('ready',LMRTFY.ready);
 Hooks.on('getSceneControlButtons', LMRTFY.getSceneControlButtons)
