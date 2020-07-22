@@ -34,5 +34,6 @@
     "LMRTFY.CustomFormulaPlaceholder": "1d20 + @abilities.str.mod + 1",
     "LMRTFY.Initiative": "Initiative",
     "LMRTFY.DeathSave": "Death Save",
+    "LMRTFY.Perception": "Perception",
     "LMRTFY.Extras": "Extras"
 }

@@ -59,16 +59,25 @@
             <label>{{localize "LMRTFY.Extras"}}</label>
                 
             <div class="lmrtfy-extras">
+                {{#if initiative}}
                 <div class="lmrtfy-extra-initiative">
                     <input type="checkbox" name="extra-initiative" id="lmrtf-extra-initiative" data-dtype="Boolean" />
                     <label for="lmrtf-extra-initiative">{{localize "LMRTFY.Initiative"}}</label>
                     
                 </div>
+                {{/if}}
+                {{#if deathsave}}
                 <div class="lmrtfy-extra-death-save">
                     <input type="checkbox" name="extra-death-save" id="lmrtf-extra-death-save" data-dtype="Boolean" />
                     <label for="lmrtf-extra-death-save">{{localize "LMRTFY.DeathSave"}}</label>
-                    
                 </div>
+                {{/if}}
+                {{#if perception}}
+                <div class="lmrtfy-extra-perception">
+                    <input type="checkbox" name="extra-perception" id="lmrtf-extra-perception" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-perception">{{localize "LMRTFY.Perception"}}</label>
+                </div>
+                {{/if}}
             </div>
         </div>
         <div class="form-group">

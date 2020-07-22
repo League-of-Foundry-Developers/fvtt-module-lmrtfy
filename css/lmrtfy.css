@@ -115,7 +115,8 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-skill-check,
 .lmrtfy-custom-formula,
 .lmrtfy-initiative,
-.lmrtfy-death-save {
+.lmrtfy-death-save,
+.lmrtfy-perception {
 	background: url(../images/button.png) ; 
 	background-repeat: no-repeat ;  
 	background-size: 100% 100%;

@@ -84,6 +84,7 @@ class LMRTFYRoller extends Application {
             customFormula: this.data.formula || false,
             deathsave: this.data.deathsave,
             initiative: this.data.initiative,
+            perception: this.data.perception
         };
     }
 
@@ -93,28 +94,31 @@ class LMRTFYRoller extends Application {
         this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this))
         this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
         this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this))
-        this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
-        this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this))
+        if(LMRTFY.specialRolls.includes('initiative')) {
+            this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
+        }
+        if(LMRTFY.specialRolls.includes('deathsave')) {
+            this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this))
+        }
+        if(LMRTFY.specialRolls.includes('perception')) {
+            this.element.find(".lmrtfy-perception").click(this._onPerception.bind(this))
+        }
     }
 
     _makeRoll(event, rollMethod, ...args) {
         let fakeEvent = {}
-        if (this.advantage === 0) {
-            fakeEvent.shiftKey = !LMRTFY.defaultQuery;
-            fakeEvent.altKey = false;
-            fakeEvent.ctrlKey = false;
-        } else if (this.advantage === 1) {
-            fakeEvent.shiftKey = false;
-            fakeEvent.altKey = true;
-            fakeEvent.ctrlKey = false;
-        } else if (this.advantage === -1) {
-            fakeEvent.shiftKey = false;
-            fakeEvent.altKey = false;
-            fakeEvent.ctrlKey = true;
-        } else if (this.advantage === 2) {
-            fakeEvent.shiftKey = LMRTFY.defaultQuery;
-            fakeEvent.altKey = false;
-            fakeEvent.ctrlKey = false;
+        switch(this.advantage) {
+            case -1: 
+                fakeEvent = LMRTFY.disadvantageRollEvent;
+                break;
+            case 1:
+                fakeEvent = LMRTFY.advantageRollEvent;
+                break;
+            case 2: 
+                fakeEvent = LMRTFY.modifiedRollEvent;
+                break;
+            default:
+                fakeEvent = LMRTFY.defaultRollEvent;
         }
         const rollMode = game.settings.get("core", "rollMode");
         game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
@@ -146,6 +150,14 @@ class LMRTFYRoller extends Application {
         }
         let chatMessages = []
         for (let actor of this.actors) {
+            if(this.message=="Perception Check") {
+                try {
+                    formula =  `${formula}+${actor.data.data.attributes.perception.totalModifier}`
+                }
+                catch(err) {
+                    console.log("LMRTFY | Failed to get Perception modifier from Actor") 
+                }
+            }
             let chatData = {
               user: game.user._id,
               speaker: ChatMessage.getSpeaker({actor}),
@@ -203,10 +215,18 @@ class LMRTFYRoller extends Application {
     }
     _onInitiative(event) {
         event.preventDefault();
+        this.message = "Rolling for Initiative"
         this._makeDiceRoll(event, game.system.data.initiative);
     }
     _onDeathSave(event) {
         event.preventDefault();
+        this.message = "Death Save"
+        this._makeDiceRoll(event, "1d20");
+    }
+
+    _onPerception(event) {
+        event.preventDefault();
+        this.message = "Perception Check"
         this._makeDiceRoll(event, "1d20");
     }
 

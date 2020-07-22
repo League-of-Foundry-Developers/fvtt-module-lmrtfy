@@ -25,6 +25,9 @@ class LMRTFYRequestor extends FormApplication {
         const abilities = LMRTFY.abilities;
         const saves = LMRTFY.saves;
         const skills = LMRTFY.skills;
+        const deathsave = LMRTFY.specialRolls.includes("deathsave")
+        const initiative = LMRTFY.specialRolls.includes("initiative")
+        const perception = LMRTFY.specialRolls.includes("perception")
 
         return {
             actors,
@@ -32,7 +35,10 @@ class LMRTFYRequestor extends FormApplication {
             abilities,
             saves,
             skills,
-            rollModes: CONFIG.Dice.rollModes
+            deathsave,
+            initiative,
+            perception,
+            rollModes: CONFIG.Dice.rollModes,
         };
     }
 
@@ -132,7 +138,7 @@ class LMRTFYRequestor extends FormApplication {
         const { advantage, mode, title, message } = formData;
         if (actors.length === 0 ||
              (!message && abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
-                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'])) {
+                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'] && !formData['extra-perception'])) {
             ui.notifications.warn("LMRTFY: Nothing to request");
             return;
         }
@@ -149,6 +155,7 @@ class LMRTFYRequestor extends FormApplication {
             formula,
             deathsave: formData['extra-death-save'],
             initiative: formData['extra-initiative'],
+            perception: formData['extra-perception']
         }
         //console.log("LMRTFY socket send : ", socketData)
         if (saveAsMacro) {

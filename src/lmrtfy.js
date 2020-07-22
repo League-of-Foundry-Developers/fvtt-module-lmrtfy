@@ -8,10 +8,12 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.PF2E.abilities;
             LMRTFY.skills = CONFIG.PF2E.skills;
             LMRTFY.saves = CONFIG.PF2E.saves;
-            // This specifies whether the default game behavior is to send
-            // a player roll query when SHIFT is sent. Pathfinder 2E acts 
-            // the opposite of the 5E game system in this manner.
-            LMRTFY.defaultQuery = true;  
+
+            LMRTFY.defaultRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.modifiedRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.specialRolls = [ 'initiative', 'deathsave', 'perception' ];
         } else {
             LMRTFY.saveRollMethod = 'rollAbilitySave';
             LMRTFY.abilityRollMethod = 'rollAbilityTest';
@@ -19,7 +21,13 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.DND5E.abilities;
             LMRTFY.skills = CONFIG.DND5E.skills;
             LMRTFY.saves = CONFIG.DND5E.abilities;
-            LMRTFY.defaultQuery = false;
+
+            LMRTFY.defaultRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.modifiedRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.specialRolls = [ 'initiative', 'deathsave' ];
+
         }
     }
 

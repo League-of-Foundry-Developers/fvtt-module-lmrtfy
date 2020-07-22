@@ -33,5 +33,6 @@
     "LMRTFY.CustomFormulaPlaceholder": "1d20 + @abilities.str.mod + 1",
     "LMRTFY.Initiative": "Initiative",
     "LMRTFY.DeathSave": "Todesrettungswurf",
+    "LMRTFY.Perception": "Wahrnehmung",
     "LMRTFY.Extras": "Extras"
 }
