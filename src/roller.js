@@ -208,18 +208,15 @@ class LMRTFYRoller extends Application {
     }
     _onInitiative(event) {
         event.preventDefault();
-        this.message = "Rolling for Initiative"
         this._makeDiceRoll(event, game.system.data.initiative);
     }
     _onDeathSave(event) {
         event.preventDefault();
-        this.message = "Death Save"
         this._makeDiceRoll(event, "1d20");
     }
 
     _onPerception(event) {
         event.preventDefault();
-        this.message = "Perception Check"
         this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`);
     }
 
