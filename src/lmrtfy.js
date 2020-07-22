@@ -8,10 +8,10 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.PF2E.abilities;
             LMRTFY.skills = CONFIG.PF2E.skills;
             LMRTFY.saves = CONFIG.PF2E.saves;
-            LMRTFY.defaultRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
-            LMRTFY.modifiedRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
         } else {
             LMRTFY.saveRollMethod = 'rollAbilitySave';
@@ -20,10 +20,10 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.DND5E.abilities;
             LMRTFY.skills = CONFIG.DND5E.skills;
             LMRTFY.saves = CONFIG.DND5E.abilities;
-            LMRTFY.defaultRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.normalRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false };
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
-            LMRTFY.modifiedRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
         }
     }
