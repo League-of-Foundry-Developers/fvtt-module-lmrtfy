@@ -151,14 +151,6 @@ class LMRTFYRoller extends Application {
         }
         let chatMessages = []
         for (let actor of this.actors) {
-            if(this.message=="Perception Check") {
-                try {
-                    formula =  `${formula}+${actor.data.data.attributes.perception.totalModifier}`
-                }
-                catch(err) {
-                    console.log("LMRTFY | Failed to get Perception modifier from Actor") 
-                }
-            }
             let chatData = {
               user: game.user._id,
               speaker: ChatMessage.getSpeaker({actor}),
@@ -228,7 +220,7 @@ class LMRTFYRoller extends Application {
     _onPerception(event) {
         event.preventDefault();
         this.message = "Perception Check"
-        this._makeDiceRoll(event, "1d20");
+        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`);
     }
 
 }
