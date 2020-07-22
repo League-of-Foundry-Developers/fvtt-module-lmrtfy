@@ -94,13 +94,13 @@ class LMRTFYRoller extends Application {
         this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this))
         this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
         this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this))
-        if(LMRTFY.specialRolls.includes('initiative')) {
+        if(LMRTFY.specialRolls['initiative']) {
             this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
         }
-        if(LMRTFY.specialRolls.includes('deathsave')) {
+        if(LMRTFY.specialRolls['deathsave']) {
             this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this))
         }
-        if(LMRTFY.specialRolls.includes('perception')) {
+        if(LMRTFY.specialRolls['perception']) {
             this.element.find(".lmrtfy-perception").click(this._onPerception.bind(this))
         }
     }

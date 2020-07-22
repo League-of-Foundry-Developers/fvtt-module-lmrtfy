@@ -25,9 +25,6 @@ class LMRTFYRequestor extends FormApplication {
         const abilities = LMRTFY.abilities;
         const saves = LMRTFY.saves;
         const skills = LMRTFY.skills;
-        const deathsave = LMRTFY.specialRolls.includes("deathsave")
-        const initiative = LMRTFY.specialRolls.includes("initiative")
-        const perception = LMRTFY.specialRolls.includes("perception")
 
         return {
             actors,
@@ -35,9 +32,7 @@ class LMRTFYRequestor extends FormApplication {
             abilities,
             saves,
             skills,
-            deathsave,
-            initiative,
-            perception,
+            specialRolls: LMRTFY.specialRolls,
             rollModes: CONFIG.Dice.rollModes,
         };
     }

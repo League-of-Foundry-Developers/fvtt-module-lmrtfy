@@ -12,7 +12,7 @@ class LMRTFY {
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
             LMRTFY.modifiedRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
-            LMRTFY.specialRolls = [ 'initiative', 'deathsave', 'perception' ];
+            LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
         } else {
             LMRTFY.saveRollMethod = 'rollAbilitySave';
             LMRTFY.abilityRollMethod = 'rollAbilityTest';
@@ -24,7 +24,7 @@ class LMRTFY {
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
             LMRTFY.modifiedRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-            LMRTFY.specialRolls = [ 'initiative', 'deathsave' ];
+            LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
         }
     }
 
