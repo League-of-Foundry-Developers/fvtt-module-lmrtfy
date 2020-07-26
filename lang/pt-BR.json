@@ -35,5 +35,8 @@
     "LMRTFY.Initiative": "Iniciativa",
     "LMRTFY.DeathSave": "Salvaguarda de Morte",
     "LMRTFY.Perception": "Percepção",
+    "LMRTFY.InitiativeRollMessage": "Rolar por Iniciativa!",
+    "LMRTFY.DeathSaveRollMessage": "Testes de Resistência Contra a Morte",
+    "LMRTFY.PerceptionRollMessage": "Testes de Percepção",
     "LMRTFY.Extras": "Extras"
 }
