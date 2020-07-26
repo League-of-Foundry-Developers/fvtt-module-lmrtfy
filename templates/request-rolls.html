@@ -35,6 +35,7 @@
             <option value="0">{{localize "LMRTFY.NormalRoll"}}</option>
             <option value="1">{{localize "LMRTFY.AdvantageRoll"}}</option>
             <option value="-1">{{localize "LMRTFY.DisadvantageRoll"}}</option>
+            <option value="2">{{localize "LMRTFY.QueryRoll"}}</option>
         </select>
 
         <select name="mode" data-dtype="String">
@@ -58,16 +59,25 @@
             <label>{{localize "LMRTFY.Extras"}}</label>
                 
             <div class="lmrtfy-extras">
+                {{#if specialRolls.initiative}}
                 <div class="lmrtfy-extra-initiative">
                     <input type="checkbox" name="extra-initiative" id="lmrtf-extra-initiative" data-dtype="Boolean" />
                     <label for="lmrtf-extra-initiative">{{localize "LMRTFY.Initiative"}}</label>
                     
                 </div>
+                {{/if}}
+                {{#if specialRolls.deathsave}}
                 <div class="lmrtfy-extra-death-save">
                     <input type="checkbox" name="extra-death-save" id="lmrtf-extra-death-save" data-dtype="Boolean" />
                     <label for="lmrtf-extra-death-save">{{localize "LMRTFY.DeathSave"}}</label>
-                    
                 </div>
+                {{/if}}
+                {{#if specialRolls.perception}}
+                <div class="lmrtfy-extra-perception">
+                    <input type="checkbox" name="extra-perception" id="lmrtf-extra-perception" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-perception">{{localize "LMRTFY.Perception"}}</label>
+                </div>
+                {{/if}}
             </div>
         </div>
         <div class="form-group">
@@ -97,7 +107,7 @@
         <label>{{localize "LMRTFY.SavingThrows"}}</label>
         
         <div class="lmrtfy-saving-throws">
-            {{#each abilities as |name key|}}
+            {{#each saves as |name key|}}
             <div class="lmrtfy-ability">
                 <input type="checkbox" name="save-{{key}}" id="lmrtf-save-{{key}}" data-dtype="Boolean" />
                 <label for="lmrtf-save-{{key}}">{{name}}</label>            

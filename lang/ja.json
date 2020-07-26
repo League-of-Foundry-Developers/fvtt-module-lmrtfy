@@ -12,6 +12,7 @@
     "LMRTFY.NormalRoll": "通常ロール",
     "LMRTFY.AdvantageRoll": "有利",
     "LMRTFY.DisadvantageRoll": "不利",
+    "LMRTFY.QueryRoll": "クエリプレーヤー",
     "LMRTFY.WindowTitle": "タイトル :",
     "LMRTFY.WindowTitleValue": "ダイスを振ろう！",
     "LMRTFY.WindowTitlePlaceholder": "タイトルを入力",
@@ -25,6 +26,7 @@
     "LMRTFY.SkillCheck": "技能判定 : ",
     "LMRTFY.RequestRolls": "ダイスロール！",
     "LMRTFY.RollerIntro": " 君のGMがダイスロールを求めてきました : ",
+    "LMRTFY.Perception": "感知",
     "LMRTFY.Reason": "状況 : ",
     "LMRTFY.": ""
 }

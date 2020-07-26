@@ -14,6 +14,7 @@
     "LMRTFY.NormalRoll": "Normal Roll",
     "LMRTFY.AdvantageRoll": "Advantage",
     "LMRTFY.DisadvantageRoll": "Disadvantage",
+    "LMRTFY.QueryRoll": "Query Player",
     "LMRTFY.WindowTitle": "Window Title :",
     "LMRTFY.WindowTitleValue": "Get Rolling!",
     "LMRTFY.WindowTitlePlaceholder": "They see me Rollin', they hating'",
@@ -33,5 +34,6 @@
     "LMRTFY.CustomFormulaPlaceholder": "1d20 + @abilities.str.mod + 1",
     "LMRTFY.Initiative": "Initiative",
     "LMRTFY.DeathSave": "Death Save",
+    "LMRTFY.Perception": "Perception",
     "LMRTFY.Extras": "Extras"
 }

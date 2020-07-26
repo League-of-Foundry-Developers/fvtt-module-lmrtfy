@@ -21,14 +21,19 @@ class LMRTFYRequestor extends FormApplication {
         // Return data to the template
         const actors = game.actors.entities;
         const users = game.users.entities;
-        const abilities = CONFIG.DND5E.abilities;
-        const skills = CONFIG.DND5E.skills;
+        // Note: Maybe these work better at a global level, but keeping things simple
+        const abilities = LMRTFY.abilities;
+        const saves = LMRTFY.saves;
+        const skills = LMRTFY.skills;
+
         return {
             actors,
             users,
             abilities,
+            saves,
             skills,
-            rollModes: CONFIG.Dice.rollModes
+            specialRolls: LMRTFY.specialRolls,
+            rollModes: CONFIG.Dice.rollModes,
         };
     }
 
@@ -128,7 +133,7 @@ class LMRTFYRequestor extends FormApplication {
         const { advantage, mode, title, message } = formData;
         if (actors.length === 0 ||
              (!message && abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
-                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'])) {
+                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'] && !formData['extra-perception'])) {
             ui.notifications.warn("LMRTFY: Nothing to request");
             return;
         }
@@ -145,17 +150,19 @@ class LMRTFYRequestor extends FormApplication {
             formula,
             deathsave: formData['extra-death-save'],
             initiative: formData['extra-initiative'],
+            perception: formData['extra-perception']
         }
         //console.log("LMRTFY socket send : ", socketData)
         if (saveAsMacro) {
+
             const actorTargets = actors.map(a => game.actors.get(a)).filter(a => a).map(a => a.name).join(", ");
             const user = game.users.get(formData.user) || null;
             const target = user ? user.name : actorTargets;
             const scriptContent = `// ${title} ${message ? " -- " + message : ""}\n` +
                 `// Request rolls from ${target}\n` +
-                `// Abilities: ${abilities.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
-                `// Saves: ${saves.map(a => CONFIG.DND5E.abilities[a]).filter(s => s).join(", ")}\n` +
-                `// Skills: ${skills.map(s => CONFIG.DND5E.skills[s]).filter(s => s).join(", ")}\n` +
+                `// Abilities: ${abilities.map(a => LMRTFY.abilities[a]).filter(s => s).join(", ")}\n` +
+                `// Saves: ${saves.map(a => LMRTFY.saves[a]).filter(s => s).join(", ")}\n` +
+                `// Skills: ${skills.map(s => LMRTFY.skills[s]).filter(s => s).join(", ")}\n` +
                 `const data = ${JSON.stringify(socketData, null, 2)};\n\n` +
                 `game.socket.emit('module.lmrtfy', data);\n`;
             const macro = await Macro.create({

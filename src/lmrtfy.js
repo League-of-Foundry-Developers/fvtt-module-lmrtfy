@@ -1,7 +1,31 @@
 class LMRTFY {
-
     static ready() {
         game.socket.on('module.lmrtfy', LMRTFY.onMessage);
+        if(game.system.id == "pf2e") {
+            LMRTFY.saveRollMethod = 'rollSave';
+            LMRTFY.abilityRollMethod = 'rollAbility';
+            LMRTFY.skillRollMethod = 'rollSkill';
+            LMRTFY.abilities = CONFIG.PF2E.abilities;
+            LMRTFY.skills = CONFIG.PF2E.skills;
+            LMRTFY.saves = CONFIG.PF2E.saves;
+            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
+        } else {
+            LMRTFY.saveRollMethod = 'rollAbilitySave';
+            LMRTFY.abilityRollMethod = 'rollAbilityTest';
+            LMRTFY.skillRollMethod = 'rollSkill';
+            LMRTFY.abilities = CONFIG.DND5E.abilities;
+            LMRTFY.skills = CONFIG.DND5E.skills;
+            LMRTFY.saves = CONFIG.DND5E.abilities;
+            LMRTFY.normalRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
+        }
     }
 
     static onMessage(data) {
@@ -44,5 +68,5 @@ class LMRTFY {
 	}
 }
 
-Hooks.on('ready', LMRTFY.ready)
+Hooks.on('ready',LMRTFY.ready);
 Hooks.on('getSceneControlButtons', LMRTFY.getSceneControlButtons)

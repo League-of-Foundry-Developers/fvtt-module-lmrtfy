@@ -71,9 +71,9 @@ class LMRTFYRoller extends Application {
         let abilities = {}
         let saves = {}
         let skills = {}
-        this.abilities.forEach(a => abilities[a] = CONFIG.DND5E.abilities[a])
-        this.saves.forEach(a => saves[a] = CONFIG.DND5E.abilities[a])
-        this.skills.forEach(s => skills[s] = CONFIG.DND5E.skills[s])
+        this.abilities.forEach(a => abilities[a] = LMRTFY.abilities[a])
+        this.saves.forEach(a => saves[a] = LMRTFY.saves[a])
+        this.skills.forEach(s => skills[s] = LMRTFY.skills[s])
         return {
             actors: this.actors,
             abilities: abilities,
@@ -84,6 +84,7 @@ class LMRTFYRoller extends Application {
             customFormula: this.data.formula || false,
             deathsave: this.data.deathsave,
             initiative: this.data.initiative,
+            perception: this.data.perception
         };
     }
 
@@ -93,30 +94,43 @@ class LMRTFYRoller extends Application {
         this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this))
         this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
         this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this))
-        this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
-        this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this))
+        if(LMRTFY.specialRolls['initiative']) {
+            this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
+        }
+        if(LMRTFY.specialRolls['deathsave']) {
+            this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this))
+        }
+        if(LMRTFY.specialRolls['perception']) {
+            this.element.find(".lmrtfy-perception").click(this._onPerception.bind(this))
+        }
     }
 
     _makeRoll(event, rollMethod, ...args) {
         let fakeEvent = {}
-        if (this.advantage === 0) {
-            fakeEvent.shiftKey = true;
-            fakeEvent.altKey = false;
-            fakeEvent.ctrlKey = false;
-        } else if (this.advantage === 1) {
-            fakeEvent.shiftKey = false;
-            fakeEvent.altKey = true;
-            fakeEvent.ctrlKey = false;
-        } else if (this.advantage === -1) {
-            fakeEvent.shiftKey = false;
-            fakeEvent.altKey = false;
-            fakeEvent.ctrlKey = true;
+        switch(this.advantage) {
+            case -1: 
+                fakeEvent = LMRTFY.disadvantageRollEvent;
+                break;
+            case 0:
+                fakeEvent = LMRTFY.normalRollEvent;
+                break;
+            case 1:
+                fakeEvent = LMRTFY.advantageRollEvent;
+                break;
+            case 2: 
+                fakeEvent = LMRTFY.queryRollEvent;
+                break;
         }
         const rollMode = game.settings.get("core", "rollMode");
         game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
         for (let actor of this.actors) {
             Hooks.once("preCreateChatMessage", this._tagMessage.bind(this));
-            actor[rollMethod].call(actor, ...args, { event: fakeEvent });
+            if(game.system.id=="pf2e") {
+                actor[rollMethod].call(actor, fakeEvent, ...args);                        
+            } else {
+                actor[rollMethod].call(actor, ...args, { event: fakeEvent });                        
+            }
+
         }
         game.settings.set("core", "rollMode", rollMode);
         event.currentTarget.disabled = true;
@@ -174,19 +188,19 @@ class LMRTFYRoller extends Application {
     _onAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        this._makeRoll(event, 'rollAbilityTest', ability);
+        this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
-        const ability = event.currentTarget.dataset.ability;
-        this._makeRoll(event, 'rollAbilitySave', ability);
+        const saves = event.currentTarget.dataset.ability;
+        this._makeRoll(event, LMRTFY.saveRollMethod, saves);
     }
 
     _onSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
-        this._makeRoll(event, 'rollSkill', skill);
+        this._makeRoll(event, LMRTFY.skillRollMethod, skill);
     }
     _onCustomFormula(event) {
         event.preventDefault();
@@ -199,6 +213,11 @@ class LMRTFYRoller extends Application {
     _onDeathSave(event) {
         event.preventDefault();
         this._makeDiceRoll(event, "1d20");
+    }
+
+    _onPerception(event) {
+        event.preventDefault();
+        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`);
     }
 
 }
