@@ -142,7 +142,7 @@ class LMRTFYRoller extends Application {
       setProperty(data, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
     }
 
-    _makeDiceRoll(event, formula) {
+    _makeDiceRoll(event, formula, defaultMessage = null) {
         if (formula.startsWith("1d20")) {
             if (this.advantage === 1)
                 formula = formula.replace("1d20", "2d20kh1")
@@ -155,7 +155,7 @@ class LMRTFYRoller extends Application {
               user: game.user._id,
               speaker: ChatMessage.getSpeaker({actor}),
               content: formula,
-              flavor: this.message || null,
+              flavor: this.message || defaultMessage,
               type: CONST.CHAT_MESSAGE_TYPES.ROLL
             };
             try {
@@ -208,16 +208,16 @@ class LMRTFYRoller extends Application {
     }
     _onInitiative(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, game.system.data.initiative);
+        this._makeDiceRoll(event, game.system.data.initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
     }
     _onDeathSave(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, "1d20");
+        this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
     }
 
     _onPerception(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`);
+        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
     }
 
 }
