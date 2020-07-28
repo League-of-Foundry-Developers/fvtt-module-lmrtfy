@@ -35,5 +35,8 @@
     "LMRTFY.Initiative": "Initiative",
     "LMRTFY.DeathSave": "Death Save",
     "LMRTFY.Perception": "Perception",
+    "LMRTFY.InitiativeRollMessage": "Roll for Initiative!",
+    "LMRTFY.DeathSaveRollMessage": "Death Savings Throw",
+    "LMRTFY.PerceptionRollMessage": "Perception Check",
     "LMRTFY.Extras": "Extras"
 }

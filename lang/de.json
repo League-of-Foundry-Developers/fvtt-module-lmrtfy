@@ -34,5 +34,8 @@
     "LMRTFY.Initiative": "Initiative",
     "LMRTFY.DeathSave": "Todesrettungswurf",
     "LMRTFY.Perception": "Wahrnehmung",
+    "LMRTFY.InitiativeRollMessage": "Rolle für Initiative!",
+    "LMRTFY.DeathSaveRollMessage": "Rettungswürfe gegen tod",
+    "LMRTFY.PerceptionRollMessage": "Wahrnehmungprobe",
     "LMRTFY.Extras": "Extras"
 }
