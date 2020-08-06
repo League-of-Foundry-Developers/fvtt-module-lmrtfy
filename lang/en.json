@@ -39,5 +39,6 @@
     "LMRTFY.DeathSaveRollMessage": "Death Savings Throw",
     "LMRTFY.PerceptionRollMessage": "Perception Check",
     "LMRTFY.Extras": "Extras",
-    "LMRTFY.EnableParchmentTheme": "Enable parchment theme"
+    "LMRTFY.EnableParchmentTheme": "Enable parchment theme",
+    "LMRTFY.EnableParchmentThemeHint": "Enables the use of the stylized UI with a parchment look"
 }

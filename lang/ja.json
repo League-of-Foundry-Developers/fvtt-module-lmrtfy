@@ -1,5 +1,5 @@
 {
-    "LMRTFY.Title" : "Let Me Roll That For You!",
+    "LMRTFY.Title" : "ダイスロール！（おまえらさっさとダイスふれや）",
     "LMRTFY.ControlTitle": "ダイスロール！",
     "LMRTFY.AdvantageNote": "これらのロールは有利になります",
     "LMRTFY.DisadvantageNote": "これらのロールは不利になります",
@@ -28,5 +28,17 @@
     "LMRTFY.RollerIntro": " 君のGMがダイスロールを求めてきました : ",
     "LMRTFY.Perception": "感知",
     "LMRTFY.Reason": "状況 : ",
-    "LMRTFY.": ""
+	"LMRTFY.ControlledTokens": "操作されているコマ",
+    "LMRTFY.AssignedCharacters": "連結されているコマ",
+    "LMRTFY.SaveRequest": "このロールリクエストをマクロとして保存する",
+    "LMRTFY.CustomFormula": "カスタム式 ：",
+    "LMRTFY.CustomFormulaPlaceholder": "1d20 + @abilities.str.mod + 1",
+    "LMRTFY.Initiative": "イニシアチブ",
+    "LMRTFY.DeathSave": "死亡セーヴ",
+    "LMRTFY.InitiativeRollMessage": "ROLL FOR INITIATIVE",
+    "LMRTFY.DeathSaveRollMessage": "死亡セーヴィング・スロー",
+    "LMRTFY.PerceptionRollMessage": "知覚判定",
+    "LMRTFY.Extras": "その他",
+    "LMRTFY.EnableParchmentTheme": "巻物風の背景を使用する",
+    "LMRTFY.EnableParchmentThemeHint": "巻物風のスタイルが適用されたUI使用します"
 }

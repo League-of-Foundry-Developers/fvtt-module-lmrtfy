@@ -2,7 +2,7 @@ class LMRTFY {
     static async init() {
       game.settings.register('lmrtfy', 'enableParchmentTheme', {
         name: game.i18n.localize('LMRTFY.EnableParchmentTheme'),
-        hint: "Enables the use of the stylized UI with a parchment look",
+        hint: game.i18n.localize('LMRTFY.EnableParchmentThemeHint'),
         scope: 'client',
         config: true,
         type: Boolean,
