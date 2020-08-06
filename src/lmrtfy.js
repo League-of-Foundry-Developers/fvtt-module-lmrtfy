@@ -1,4 +1,15 @@
 class LMRTFY {
+    static async init() {
+      game.settings.register('lmrtfy', 'enableParchmentTheme', {
+        name: game.i18n.localize('LMRTFY.EnableParchmentTheme'),
+        scope: 'client',
+        config: true,
+        type: Boolean,
+        default: true,
+        onChange: (value) => window.location.reload()
+      });
+    }
+
     static ready() {
         game.socket.on('module.lmrtfy', LMRTFY.onMessage);
         if(game.system.id == "pf2e") {
@@ -68,5 +79,6 @@ class LMRTFY {
 	}
 }
 
-Hooks.on('ready',LMRTFY.ready);
+Hooks.once('init', LMRTFY.init);
+Hooks.on('ready', LMRTFY.ready);
 Hooks.on('getSceneControlButtons', LMRTFY.getSceneControlButtons)

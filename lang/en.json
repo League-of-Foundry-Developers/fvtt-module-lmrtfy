@@ -38,5 +38,6 @@
     "LMRTFY.InitiativeRollMessage": "Roll for Initiative!",
     "LMRTFY.DeathSaveRollMessage": "Death Savings Throw",
     "LMRTFY.PerceptionRollMessage": "Perception Check",
-    "LMRTFY.Extras": "Extras"
+    "LMRTFY.Extras": "Extras",
+    "LMRTFY.EnableParchmentTheme": "Enable parchment theme"
 }

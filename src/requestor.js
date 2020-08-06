@@ -13,7 +13,10 @@ class LMRTFYRequestor extends FormApplication {
         options.popOut = true;
         options.width = 600;
         options.height = "auto";
-        options.classes = ["lmrtfy", "lmrtfy-requestor"]
+        options.classes = ["lmrtfy", "lmrtfy-requestor"];
+        if (game.settings.get('lmrtfy', 'enableParchmentTheme')) {
+          options.classes.push('lmrtfy-parchment');
+        }
         return options;
     }
 

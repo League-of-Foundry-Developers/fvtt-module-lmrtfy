@@ -1,36 +1,41 @@
-.lmrtfy .window-content {
+.lmrtfy.lmrtfy-parchment .window-content {
 	background: url(../images/parchment.jpg);
 	padding: 5px;
 }
 
 /* request-rolls.html */
-.lmrtfy input[type=checkbox] {
-    display:none;
+.lmrtfy .lmrtfy-actor-avatars input[type=checkbox] {
+	display:none;
 }
-.lmrtfy select,
-.lmrtfy input[type=text] {
-    background-color: rgba(220, 200, 160, 0.5);
+.lmrtfy.lmrtfy-parchment input[type=checkbox] {
+	display:none;
+}
+.lmrtfy.lmrtfy-parchment select,
+.lmrtfy.lmrtfy-parchment input[type=text] {
+	background-color: rgba(220, 200, 160, 0.5);
 }
 
 .lmrtfy input[type=checkbox] + label {
-	margin: 3px;
 	flex: 1;
 }
-.lmrtfy input[type=checkbox]:checked + label {
+.lmrtfy.lmrtfy-parchment input[type=checkbox] + label {
+	margin: 3px;
+}
+.lmrtfy.lmrtfy-parchment input[type=checkbox]:checked + label {
 	margin: 2px;
 	color: red;
 	font-weight: bold;
-} 
+}
 
 .lmrtfy-actor-avatars {
 	justify-content: center;
 }
 .lmrtfy-actor-avatars > div {
-    position: relative;
+	position: relative;
 	flex: 0 0 45px;
 }
 .lmrtfy-actor-avatars img {
-    width: 45px;
+	width: 45px;
 	height: 45px;
 	transition-duration: 0.2s;
 	transform-origin: 50% 50%;
@@ -44,47 +49,61 @@ form .form-group .lmrtfy-ability-checks,
 form .form-group .lmrtfy-saving-throws,
 form .form-group .lmrtfy-extras {
 	display: flex;
-    flex-direction: row;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.lmrtfy-parchment form .form-group .lmrtfy-ability-checks,
+.lmrtfy-parchment form .form-group .lmrtfy-saving-throws,
+.lmrtfy-parchment form .form-group .lmrtfy-extras {
 	flex-wrap: nowrap;
 }
 
 form .form-group .lmrtfy-skill-checks {
 	display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: space-evenly;
-    max-height: 200px;
-    flex: 8;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: space-evenly;
+	max-height: 220px;
+	flex: 8;
+}
+.lmrtfy-parchment form .form-group .lmrtfy-skill-checks {
+	max-height: 200px;
 }
 
 .lmrtfy-ability-checks > div,
 .lmrtfy-saving-throws > div,
 .lmrtfy-skill-checks > div ,
 .lmrtfy-extras > div {
-    flex: 3;
+	flex: 3;
 	padding: 4px;
 	display: flex;
 }
 
 .lmrtfy-submit {
-    text-align: center;
+		text-align: center;
 }
-
 .lmrtfy-request-roll,
 .lmrtfy-save-roll {
-	background: url(../images/button.png); 
-	background-repeat: no-repeat ;  
+	text-align: center;
+}
+
+.lmrtfy-parchment .lmrtfy-request-roll,
+.lmrtfy-parchment .lmrtfy-save-roll {
+	background: url(../images/button.png);
+	background-repeat: no-repeat ;
 	background-size: 100% 100%;
 	color: black;
 	height: 40px;
-	text-align: center ;
 	width: 200px;
 }
 .select-all,
 .deselect-all {
+	flex: 1;
+}
+.lmrtfy-parchment .select-all,
+.lmrtfy-parchment .deselect-all {
 	background-color: rgba(220, 200, 160, 0.75);
 	border-radius: 10px;
-	flex: 1;
 }
 
 
@@ -106,10 +125,11 @@ form .form-group .lmrtfy-skill-checks {
 }
 .lmrtfy-actor-list > div {
 	flex: 0 0 64px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
+
 .lmrtfy-ability-check,
 .lmrtfy-ability-save,
 .lmrtfy-skill-check,
@@ -117,32 +137,42 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-initiative,
 .lmrtfy-death-save,
 .lmrtfy-perception {
-	background: url(../images/button.png) ; 
-	background-repeat: no-repeat ;  
+	height: 48px;
+	text-align: center;
+	margin-top: 4px;
+}
+.lmrtfy-parchment .lmrtfy-ability-check,
+.lmrtfy-parchment .lmrtfy-ability-save,
+.lmrtfy-parchment .lmrtfy-skill-check,
+.lmrtfy-parchment .lmrtfy-custom-formula,
+.lmrtfy-parchment .lmrtfy-initiative,
+.lmrtfy-parchment .lmrtfy-death-save,
+.lmrtfy-parchment .lmrtfy-perception {
+	background: url(../images/button.png);
+	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	color: black;
 	height: 78px;
-	text-align: center;
 }
 
 .lmrtfy-roller button:disabled {
-    opacity: 0.5;
+	opacity: 0.5;
 }
 
 .lmrtfy-actor .tooltip {
-    display: block;
-    min-width: 148px;
-    height: 26px;
-    padding: 2px 4px;
-    position: absolute;
-    top: -32px;
-    left: -50px;
-    background: rgba(0, 0, 0, 0.9);
-    border: 1px solid #191813;
-    border-radius: 3px;
-    color: #f0f0e0;
-    line-height: 22px;
-    text-align: center;
-    white-space: nowrap;
-    word-break: break-all;
+	display: block;
+	min-width: 148px;
+	height: 26px;
+	padding: 2px 4px;
+	position: absolute;
+	top: -32px;
+	left: -50px;
+	background: rgba(0, 0, 0, 0.9);
+	border: 1px solid #191813;
+	border-radius: 3px;
+	color: #f0f0e0;
+	line-height: 22px;
+	text-align: center;
+	white-space: nowrap;
+	word-break: break-all;
 }
