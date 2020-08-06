@@ -2,11 +2,12 @@ class LMRTFY {
     static async init() {
       game.settings.register('lmrtfy', 'enableParchmentTheme', {
         name: game.i18n.localize('LMRTFY.EnableParchmentTheme'),
+        hint: "Enables the use of the stylized UI with a parchment look",
         scope: 'client',
         config: true,
         type: Boolean,
         default: true,
-        onChange: (value) => window.location.reload()
+        onChange: (value) => LMRTFY.onThemeChange(value)
       });
     }
 
@@ -61,7 +62,19 @@ class LMRTFY {
 		if (LMRTFY.requestor === undefined)
 			LMRTFY.requestor = new LMRTFYRequestor();
 		LMRTFY.requestor.render(true);
-	}
+    }
+    
+    static onThemeChange(enabled) {
+        $(".lmrtfy.lmrtfy-requestor,.lmrtfy.lmrtfy-roller").toggleClass("lmrtfy-parchment", enabled)
+        if (!LMRTFY.requestor) return;
+        if (enabled)
+            LMRTFY.requestor.options.classes.push("lmrtfy-parchment")
+        else
+            LMRTFY.requestor.options.classes = LMRTFY.requestor.options.classes.filter(c => c !== "lmrtfy-parchment")
+        // Resize to fit the new theme
+        if (LMRTFY.requestor.element.length)
+            LMRTFY.requestor.setPosition({width: "auto", height: "auto"})
+    }
 
 	static getSceneControlButtons(buttons) {
 		let tokenButton = buttons.find(b => b.name == "token")
