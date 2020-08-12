@@ -21,8 +21,8 @@ class LMRTFY {
             LMRTFY.skills = CONFIG.PF2E.skills;
             LMRTFY.saves = CONFIG.PF2E.saves;
             LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
-            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
         } else {
