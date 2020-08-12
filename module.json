@@ -2,7 +2,7 @@
     "name": "lmrtfy",
     "title": "Let Me Roll That For You!",
     "description": "Ask your players to make rolls for you.",
-    "version": "1.2",
+    "version": "1.2.2",
     "author": ["KaKaRoTo", "iotech", "Limping Ninja"],
     "scripts": ["./src/lmrtfy.js", "./src/requestor.js", "./src/roller.js"],
     "styles": ["/css/lmrtfy.css"],
@@ -33,7 +33,7 @@
     "socket": true,
     "url": "https://github.com/kakaroto/fvtt-module-lmrtfy",
     "manifest": "https://raw.githubusercontent.com/kakaroto/fvtt-module-lmrtfy/master/module.json",
-    "download": "https://github.com/kakaroto/fvtt-module-lmrtfy/archive/v1.2.zip",
+    "download": "https://github.com/kakaroto/fvtt-module-lmrtfy/archive/v1.2.2.zip",
     "minimumCoreVersion": "0.6.0",
-    "compatibleCoreVersion": "0.7.0"
+    "compatibleCoreVersion": "0.8.0"
 }
