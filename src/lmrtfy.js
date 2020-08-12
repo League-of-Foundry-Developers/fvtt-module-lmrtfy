@@ -33,8 +33,8 @@ class LMRTFY {
             LMRTFY.skills = CONFIG.DND5E.skills;
             LMRTFY.saves = CONFIG.DND5E.abilities;
             LMRTFY.normalRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false };
-            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
         }
