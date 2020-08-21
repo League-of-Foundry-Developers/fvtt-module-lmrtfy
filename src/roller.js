@@ -211,7 +211,8 @@ class LMRTFYRoller extends Application {
     }
     _onInitiative(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, game.system.data.initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
+        const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
+        this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
     }
     _onDeathSave(event) {
         event.preventDefault();
