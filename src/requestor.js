@@ -137,7 +137,7 @@ class LMRTFYRequestor extends FormApplication {
         if (actors.length === 0 ||
              (!message && abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
                 formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'] && !formData['extra-perception'])) {
-            ui.notifications.warn("LMRTFY: Nothing to request");
+            ui.notifications.warn(game.i18n.localize("LMRTFY.NothingNotification"));
             return;
         }
         const socketData = {
@@ -180,6 +180,7 @@ class LMRTFYRequestor extends FormApplication {
             game.socket.emit('module.lmrtfy', socketData);
             // Send to ourselves
             LMRTFY.onMessage(socketData);
+            ui.notifications.info(game.i18n.localize("LMRTFY.SentNotification"))
         }
     }
 }
