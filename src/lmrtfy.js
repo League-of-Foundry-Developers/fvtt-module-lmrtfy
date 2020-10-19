@@ -51,7 +51,7 @@ class LMRTFY {
         if (data.user === "character")
             actors = [game.user.character];
         else if (data.user === "tokens")
-            actors = canvas.tokens.controlled.map(t => t.actor);
+            actors = canvas.tokens.controlled.map(t => t.actor).filter(a => data.actors.includes(a.id));
         else
             actors = data.actors.map(id => game.actors.get(id));
         actors = actors.filter(a => a);
