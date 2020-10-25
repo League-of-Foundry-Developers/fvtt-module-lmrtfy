@@ -38,5 +38,9 @@
     "LMRTFY.InitiativeRollMessage": "Rolar por Iniciativa!",
     "LMRTFY.DeathSaveRollMessage": "Testes de Resistência Contra a Morte",
     "LMRTFY.PerceptionRollMessage": "Testes de Percepção",
-    "LMRTFY.Extras": "Extras"
+    "LMRTFY.Extras": "Extras",
+    "LMRTFY.EnableParchmentTheme": "Habilitar tema de pergaminho",
+    "LMRTFY.EnableParchmentThemeHint": "Permite o uso da UI estilizada com aparência de pergaminho",
+    "LMRTFY.SentNotification": "LMRTFY: Solicitação de rolagem enviada para jogadores conectados",
+    "LMRTFY.NothingNotification": "LMRTFY: Nada para requisitar"
 }
