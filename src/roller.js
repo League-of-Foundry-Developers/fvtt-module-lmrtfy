@@ -174,7 +174,8 @@ class LMRTFYRoller extends Application {
             }
         
             // Record additional roll data
-            if ( ["gmroll", "blindroll"].includes(this.mode) ) chatData.whisper = ChatMessage.getWhisperIDs("GM");
+            if ( ["gmroll", "blindroll"].includes(this.mode) )
+                chatData.whisper = ChatMessage.getWhisperRecipients("GM");
             if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
             if ( this.mode === "blindroll" ) chatData.blind = true;
             setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
