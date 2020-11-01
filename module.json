@@ -8,26 +8,31 @@
     "styles": ["/css/lmrtfy.css"],
     "packs": [],
     "systems": ["dnd5e", "dnd5eJP", "pf2e"],
-	"languages": [
-		{
-			"lang": "en",
-			"name": "English",
-			"path": "lang/en.json"
-		},
-		{
-			"lang": "ja",
-			"name": "日本語 (Japanese)",
-			"path": "lang/ja.json"
-		},
+    "languages": [
         {
-            "lang" : "de",
-            "name" : "German",
-            "path" : "lang/de.json"
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "ja",
+            "name": "日本語 (Japanese)",
+            "path": "lang/ja.json"
+        },
+        {
+            "lang": "de",
+            "name": "German",
+            "path": "lang/de.json"
         },
         {
             "lang": "pt-BR",
             "name": "Português (Brasil)",
             "path": "lang/pt-BR.json"
+        },
+        {
+            "lang": "cn",
+            "name": "中文",
+            "path": "lang/cn.json"
         }
     ],
     "socket": true,
