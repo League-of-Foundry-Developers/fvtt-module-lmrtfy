@@ -25,6 +25,18 @@ class LMRTFY {
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
+        } else if(game.system.id == "D35E") {
+            LMRTFY.saveRollMethod = 'rollSave';
+            LMRTFY.abilityRollMethod = 'rollAbility';
+            LMRTFY.skillRollMethod = 'rollSkill';
+            LMRTFY.abilities = CONFIG.D35E.abilities;
+            LMRTFY.skills = CONFIG.D35E.skills;
+            LMRTFY.saves = CONFIG.D35E.savingThrows;
+            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
+            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': true };
         } else {
             LMRTFY.saveRollMethod = 'rollAbilitySave';
             LMRTFY.abilityRollMethod = 'rollAbilityTest';
