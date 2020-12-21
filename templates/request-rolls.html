@@ -121,11 +121,13 @@
         <div class="form-group">
             <label>{{localize "LMRTFY.SkillChecks"}}</label>
             <div class="lmrtfy-skill-checks">
-                {{#each skills as |name key|}}
-                <div class="lmrtfy-skill">
-                    <input type="checkbox" name="skill-{{key}}" id="lmrtf-skill-{{key}}" data-dtype="Boolean" />
-                    <label for="lmrtf-skill-{{key}}">{{name}}</label>
-                </div>
+                {{#each skills as |skill|}}
+                    {{#each skill as |name skillKey|}}
+                    <div class="lmrtfy-skill">
+                        <input type="checkbox" name="skill-{{skillKey}}" id="lmrtf-skill-{{skillKey}}" data-dtype="Boolean" />
+                        <label for="lmrtf-skill-{{skillKey}}">{{name}}</label>
+                    </div>
+                    {{/each}}
                 {{/each}}
             </div>
         </div>

@@ -165,7 +165,7 @@ class LMRTFYRequestor extends FormApplication {
                 `// Request rolls from ${target}\n` +
                 `// Abilities: ${abilities.map(a => LMRTFY.abilities[a]).filter(s => s).join(", ")}\n` +
                 `// Saves: ${saves.map(a => LMRTFY.saves[a]).filter(s => s).join(", ")}\n` +
-                `// Skills: ${skills.map(s => LMRTFY.skills[s]).filter(s => s).join(", ")}\n` +
+                `// Skills: ${skills.map(s => LMRTFY.skills.find(sk=> Object.keys(sk)[0] === s)[s]).filter(s => s).join(", ")}\n` +
                 `const data = ${JSON.stringify(socketData, null, 2)};\n\n` +
                 `game.socket.emit('module.lmrtfy', data);\n`;
             const macro = await Macro.create({

@@ -76,7 +76,7 @@ class LMRTFYRoller extends Application {
         let skills = {}
         this.abilities.forEach(a => abilities[a] = LMRTFY.abilities[a])
         this.saves.forEach(a => saves[a] = LMRTFY.saves[a])
-        this.skills.forEach(s => skills[s] = LMRTFY.skills[s])
+        this.skills.forEach(s => skills[s] = LMRTFY.skills.find(sk=> Object.keys(sk)[0] === s)[s])
         return {
             actors: this.actors,
             abilities: abilities,

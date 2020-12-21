@@ -50,6 +50,17 @@ class LMRTFY {
             LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
         }
+        function compare( a, b ) {           
+            if ( a[Object.keys(a)[0]] < b[Object.keys(b)[0]] ){
+              return -1;
+            }
+            if ( a[Object.keys(a)[0]] > b[Object.keys(b)[0]] ){
+              return 1;
+            }
+            return 0;
+          }
+
+        LMRTFY.skills = Object.entries(LMRTFY.skills).map((e) => ( { [e[0]]: e[1] } )).sort(compare);
     }
 
     static onMessage(data) {
