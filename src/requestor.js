@@ -28,6 +28,12 @@ class LMRTFYRequestor extends FormApplication {
         const abilities = LMRTFY.abilities;
         const saves = LMRTFY.saves;
         const skills = LMRTFY.skills;
+        
+        let tables = null;
+        if (game.tables) {
+            tables = [];
+            game.tables.forEach(t => tables.push(t.data.name));
+        }
 
         return {
             actors,
@@ -35,6 +41,7 @@ class LMRTFYRequestor extends FormApplication {
             abilities,
             saves,
             skills,
+            tables,
             specialRolls: LMRTFY.specialRolls,
             rollModes: CONFIG.Dice.rollModes,
         };
@@ -132,11 +139,13 @@ class LMRTFYRequestor extends FormApplication {
                 acc.push(k.slice(6));
             return acc;
         }, []);
+        const tables = formData.table;
         const formula = formData.formula.trim();
         const { advantage, mode, title, message } = formData;
         if (actors.length === 0 ||
              (!message && abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
-                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'] && !formData['extra-perception'])) {
+                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'] && !formData['extra-perception'] &&
+                    tables.length === 0)) {
             ui.notifications.warn(game.i18n.localize("LMRTFY.NothingNotification"));
             return;
         }
@@ -153,7 +162,8 @@ class LMRTFYRequestor extends FormApplication {
             formula,
             deathsave: formData['extra-death-save'],
             initiative: formData['extra-initiative'],
-            perception: formData['extra-perception']
+            perception: formData['extra-perception'],
+            tables: tables,
         }
         //console.log("LMRTFY socket send : ", socketData)
         if (saveAsMacro) {

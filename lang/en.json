@@ -42,5 +42,6 @@
     "LMRTFY.EnableParchmentTheme": "Enable parchment theme",
     "LMRTFY.EnableParchmentThemeHint": "Enables the use of the stylized UI with a parchment look",
     "LMRTFY.SentNotification": "LMRTFY: Roll request sent to connected players",
-    "LMRTFY.NothingNotification": "LMRTFY: Nothing to request"
+    "LMRTFY.NothingNotification": "LMRTFY: Nothing to request",
+    "LMRTFY.RollTables": "Rollable Table :"
 }
