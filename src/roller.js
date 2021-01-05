@@ -206,11 +206,15 @@ class LMRTFYRoller extends Application {
                     const rollResult = res.results;
     
                     const nr = rollResult.length > 1 ? `${rollResult.length} results` : "a result";
+                    let content = "";
+                    for (const result of rollResult) {
+                        content += `<p>${result.text}</p>`
+                    }
                     let chatData = {
                         user: game.user._id,
                         speaker: ChatMessage.getSpeaker({actor}),                
                         flavor: `Draws ${nr} from the ${table} table.`,
-                        content: rollResult[0].text,
+                        content: content,
                         type: CONST.CHAT_MESSAGE_TYPES.OTHER,
                     };
 
