@@ -195,12 +195,45 @@ class LMRTFYRoller extends Application {
     }
 
     _drawTable(event, table) {
-        game.tables.getName(table).draw({ roll: null, results: [], displayChat: true, rollMode: this.mode });
-        
-        event.currentTarget.disabled = true;
-        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0) {
-            this.close();
-        }            
+        let chatMessages = [];
+        let count = 0;
+        const rollTable = game.tables.getName(table);
+
+        if (rollTable) {
+            for (let actor of this.actors) {
+                rollTable.draw({ displayChat: false }).then((res) => {
+                    count++;
+                    const rollResult = res.results;
+    
+                    const nr = rollResult.length > 1 ? `${rollResult.length} results` : "a result";
+                    let chatData = {
+                        user: game.user._id,
+                        speaker: ChatMessage.getSpeaker({actor}),                
+                        flavor: `Draws ${nr} from the ${table} table.`,
+                        content: rollResult[0].text,
+                        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+                    };
+
+                    if ( ["gmroll", "blindroll"].includes(this.mode) ) {
+                        chatData.whisper = ChatMessage.getWhisperRecipients("GM");
+                    }              
+                    if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
+                    if ( this.mode === "blindroll" ) chatData.blind = true;
+
+                    setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
+                    chatMessages.push(chatData);
+    
+                    if (count === this.actors.length) {
+                        ChatMessage.create(chatMessages, {});
+    
+                        event.currentTarget.disabled = true;
+                        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0) {
+                            this.close();
+                        }
+                    }
+                });                                 
+            }
+        }        
     }
 
     _onAbilityCheck(event) {
