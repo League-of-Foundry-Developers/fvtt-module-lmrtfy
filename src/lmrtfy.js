@@ -9,6 +9,15 @@ class LMRTFY {
         default: true,
         onChange: (value) => LMRTFY.onThemeChange(value)
       });
+      
+      Handlebars.registerHelper('controlledToken', function (actor) {
+        const activeToken = actor.getActiveTokens()[0];
+        if (activeToken) {
+            return activeToken._controlled;
+        } else {
+            return false;
+        }
+      });
     }
 
     static ready() {

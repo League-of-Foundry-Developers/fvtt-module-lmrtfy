@@ -20,7 +20,7 @@
         <div class="form-group lmrtfy-actor-avatars">
         {{#each actors}}
             <div class="lmrtfy-actor" data-id="{{this.id}}">
-                <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" checked />
+                <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" {{#if (controlledToken this)}}checked{{/if}} />
                 <label for="lmrtf-actor-{{this.id}}"><img src="{{this.img}}" /></label>
             </div>
         {{/each}}
