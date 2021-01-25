@@ -10,7 +10,7 @@ class LMRTFY {
         onChange: (value) => LMRTFY.onThemeChange(value)
       });
       
-      Handlebars.registerHelper('controlledToken', function (actor) {
+      Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
         const activeToken = actor.getActiveTokens()[0];
         if (activeToken) {
             return activeToken._controlled;
