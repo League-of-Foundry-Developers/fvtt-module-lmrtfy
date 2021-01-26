@@ -165,7 +165,7 @@ class LMRTFYRequestor extends FormApplication {
             perception: formData['extra-perception'],
             tables: tables,
         }
-        //console.log("LMRTFY socket send : ", socketData)
+        // console.log("LMRTFY socket send : ", socketData)
         if (saveAsMacro) {
 
             const actorTargets = actors.map(a => game.actors.get(a)).filter(a => a).map(a => a.name).join(", ");

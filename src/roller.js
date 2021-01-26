@@ -78,7 +78,9 @@ class LMRTFYRoller extends Application {
         let skills = {}
         this.abilities.forEach(a => abilities[a] = LMRTFY.abilities[a])
         this.saves.forEach(a => saves[a] = LMRTFY.saves[a])
-        this.skills.forEach(s => skills[s] = LMRTFY.skills[s])
+        this.skills
+            .sort((a, b) => game.i18n.localize(LMRTFY.skills[a]).localeCompare(game.i18n.localize(LMRTFY.skills[b])))
+            .forEach(s => skills[s] = LMRTFY.skills[s]);
         return {
             actors: this.actors,
             abilities: abilities,
@@ -119,13 +121,13 @@ class LMRTFYRoller extends Application {
                 fakeEvent = LMRTFY.disadvantageRollEvent;
                 break;
             case 0:
-                fakeEvent = LMRTFY.normalRollEvent;
+                fakeEvent = event;
                 break;
             case 1:
                 fakeEvent = LMRTFY.advantageRollEvent;
                 break;
             case 2: 
-                fakeEvent = LMRTFY.queryRollEvent;
+                fakeEvent = event;
                 break;
         }
         const rollMode = game.settings.get("core", "rollMode");

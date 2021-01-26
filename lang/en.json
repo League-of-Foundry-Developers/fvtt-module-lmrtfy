@@ -43,5 +43,7 @@
     "LMRTFY.EnableParchmentThemeHint": "Enables the use of the stylized UI with a parchment look",
     "LMRTFY.SentNotification": "LMRTFY: Roll request sent to connected players",
     "LMRTFY.NothingNotification": "LMRTFY: Nothing to request",
-    "LMRTFY.RollTables": "Rollable Table :"
+    "LMRTFY.RollTables": "Rollable Table :",
+    "LMRTFY.DeselectOnRequestorRender": "Deselect tokens when opening requestor",
+    "LMRTFY.DeselectOnRequestorRenderHint": "Enable to prevent roll requests from being sent to GM user (yourself)"
 }
