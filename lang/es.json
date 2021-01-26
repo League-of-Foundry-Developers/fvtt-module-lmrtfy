@@ -1,6 +1,6 @@
 {
     "LMRTFY.Title" : "Déjame Tirar Eso Por Ti!",
-    "LMRTFY.ControlTitle": "Pedir Tírada",
+    "LMRTFY.ControlTitle": "Solicitar Tírada",
     "LMRTFY.AdvantageNote": "Estas tiradas se harán con ventaja",
     "LMRTFY.DisadvantageNote": "Estas tiradas se harán con desventaja",
     "LMRTFY.SelectUser": "Seleccionar Usuario:",
@@ -26,8 +26,8 @@
     "LMRTFY.SavingThrow": "Tirada de salvación : ",
     "LMRTFY.SkillChecks": "Pruebas de Habilidad :",
     "LMRTFY.SkillCheck": "Prueba de Habilidad : ",
-    "LMRTFY.RequestRolls": "Pedir Tiradas!",
-    "LMRTFY.SaveRequest": "Guardar Pedido como Macro!",
+    "LMRTFY.RequestRolls": "Solicitar Tiradas!",
+    "LMRTFY.SaveRequest": "Guardar Solicitud como Macro!",
     "LMRTFY.RollerIntro": " Tu GM ha pedido tiradas de tu(s) personaje(s) : ",
     "LMRTFY.Reason": "Razón : ",
     "LMRTFY.CustomFormula": "Fórmula a medida : ",
@@ -41,6 +41,8 @@
     "LMRTFY.Extras": "Extras",
     "LMRTFY.EnableParchmentTheme": "Activa el temario pergamino",
     "LMRTFY.EnableParchmentThemeHint": "Activa el uso del interfaz estilizado con una apariencia a pergamino",
-    "LMRTFY.SentNotification": "LMRTFY: Pedido de tirada enviado a todos los jugadores conectados",
-    "LMRTFY.NothingNotification": "LMRTFY: Nada que pedir"
+    "LMRTFY.SentNotification": "LMRTFY: Solicitud de tirada enviado a todos los jugadores conectados",
+    "LMRTFY.NothingNotification": "LMRTFY: Nada que solicitar",
+    "LMRTFY.DeselectOnRequestorRender": "Deseleccionar fichas al abrir solicitante",
+    "LMRTFY.DeselectOnRequestorRenderHint": "Activa para prevenir que se envia solicitudes de tiradas al GM (Usted mismo)"
 }
