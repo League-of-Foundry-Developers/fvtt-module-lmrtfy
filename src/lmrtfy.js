@@ -9,6 +9,15 @@ class LMRTFY {
         default: true,
         onChange: (value) => LMRTFY.onThemeChange(value)
       });
+      game.settings.register('lmrtfy', 'deselectOnRequestorRender', {
+        name: 'Deselect all controlled tokens when requestor is rendered', // localization + editing
+        hint: '',
+        scope: 'world',
+        config: true,
+        type: Boolean,
+        default: true,
+        onChange: () => window.location.reload()
+      });
       
       Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
         const activeToken = actor.getActiveTokens()[0];
@@ -58,6 +67,12 @@ class LMRTFY {
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
+        }
+
+        if (game.settings.get('lmrtfy', 'deselectOnRequestorRender')) {
+            Hooks.on("renderLMRTFYRequestor", () => {
+                canvas.tokens.releaseAll();
+            })
         }
     }
 
