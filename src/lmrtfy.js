@@ -38,10 +38,10 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.PF2E.abilities;
             LMRTFY.skills = CONFIG.PF2E.skills;
             LMRTFY.saves = CONFIG.PF2E.saves;
-            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
         } else if(game.system.id == "D35E") {
             LMRTFY.saveRollMethod = 'rollSave';
@@ -50,10 +50,10 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.D35E.abilities;
             LMRTFY.skills = CONFIG.D35E.skills;
             LMRTFY.saves = CONFIG.D35E.savingThrows;
-            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': true };
         } else {
             LMRTFY.saveRollMethod = 'rollAbilitySave';
@@ -62,10 +62,10 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.DND5E.abilities;
             LMRTFY.skills = CONFIG.DND5E.skills;
             LMRTFY.saves = CONFIG.DND5E.abilities;
-            LMRTFY.normalRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.normalRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-            LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
         }
 
