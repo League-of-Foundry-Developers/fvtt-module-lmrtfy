@@ -4,7 +4,7 @@
     "title": "Let Me Roll That For You!",
     "description": "Ask your players to make rolls for you.",
     "version": "1.5",
-    "author": "KaKaRoTo, iotech, Limping Ninja, Rughalt",
+    "author": "KaKaRoTo, iotech, Limping Ninja, Rughalt, Calego",
     "scripts": ["./src/lmrtfy.js", "./src/requestor.js", "./src/roller.js"],
     "styles": ["/css/lmrtfy.css"],
     "packs": [],
@@ -55,8 +55,8 @@
     }],
     "socket": true,
     "url": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy",
-    "manifest": "https://raw.githubusercontent.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/master/module.json",
-    "download": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/archive/v1.5.zip",
+    "manifest": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.json",
+    "download": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.zip",
     "minimumCoreVersion": "0.7.5",
     "compatibleCoreVersion": "0.8.0"
 }

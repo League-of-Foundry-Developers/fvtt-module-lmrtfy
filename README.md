@@ -22,3 +22,4 @@ This work is licensed under Foundry Virtual Tabletop [EULA - Limited License Agr
 Japanese translation by `@Brother Sharp`
 German translation by `@Acd-Jake`
 Portuguese translation by `@rinnocenti`
+Spanish translation by `@SanaRinomi`
