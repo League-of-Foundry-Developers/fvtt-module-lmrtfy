@@ -79,7 +79,6 @@ class LMRTFYRoller extends Application {
         this.abilities.forEach(a => abilities[a] = LMRTFY.abilities[a])
         this.saves.forEach(a => saves[a] = LMRTFY.saves[a])
         this.skills.forEach(s => skills[s] = LMRTFY.skills[s])
-
         return {
             actors: this.actors,
             abilities: abilities,
@@ -97,19 +96,19 @@ class LMRTFYRoller extends Application {
 
     activateListeners(html) {
         super.activateListeners(html);
-        this.element.find(".lmrtfy-ability-check").click(this._onAbilityCheck.bind(this));
-        this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this));
-        this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this));
-        this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this));
+        this.element.find(".lmrtfy-ability-check").click(this._onAbilityCheck.bind(this))
+        this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this))
+        this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
+        this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this))
         this.element.find(".lmrtfy-roll-table").click(this._onRollTable.bind(this));
         if(LMRTFY.specialRolls['initiative']) {
-            this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this));
+            this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
         }
         if(LMRTFY.specialRolls['deathsave']) {
-            this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this));
+            this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this))
         }
         if(LMRTFY.specialRolls['perception']) {
-            this.element.find(".lmrtfy-perception").click(this._onPerception.bind(this));
+            this.element.find(".lmrtfy-perception").click(this._onPerception.bind(this))
         }
     }
 
@@ -156,7 +155,7 @@ class LMRTFYRoller extends Application {
                 formula = formula.replace("1d20", "2d20kh1")
             else if (this.advantage === -1)
                 formula = formula.replace("1d20", "2d20kl1")
-        }        
+        }
         let chatMessages = []
         for (let actor of this.actors) {
             let chatData = {
@@ -186,8 +185,7 @@ class LMRTFYRoller extends Application {
             setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
             chatMessages.push(chatData);
         }
-        ChatMessage.create(chatMessages, {});
-        
+        ChatMessage.create(chatMessages, {});        
 
         event.currentTarget.disabled = true;
         if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
@@ -257,18 +255,15 @@ class LMRTFYRoller extends Application {
         const skill = event.currentTarget.dataset.skill;
         this._makeRoll(event, LMRTFY.skillRollMethod, skill);
     }
-
     _onCustomFormula(event) {
         event.preventDefault();
         this._makeDiceRoll(event, this.data.formula);
     }
-
     _onInitiative(event) {
         event.preventDefault();
         const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
         this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
     }
-
     _onDeathSave(event) {
         event.preventDefault();
         this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
