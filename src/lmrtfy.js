@@ -9,6 +9,24 @@ class LMRTFY {
         default: true,
         onChange: (value) => LMRTFY.onThemeChange(value)
       });
+      game.settings.register('lmrtfy', 'deselectOnRequestorRender', {
+        name: game.i18n.localize('LMRTFY.DeselectOnRequestorRender'),
+        hint: game.i18n.localize('LMRTFY.DeselectOnRequestorRenderHint'),
+        scope: 'world',
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: () => window.location.reload()
+      });
+      
+      Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
+        const activeToken = actor.getActiveTokens()[0];
+        if (activeToken) {
+            return activeToken._controlled;
+        } else {
+            return false;
+        }
+      });
     }
 
     static ready() {
@@ -49,6 +67,12 @@ class LMRTFY {
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
+        }
+
+        if (game.settings.get('lmrtfy', 'deselectOnRequestorRender')) {
+            Hooks.on("renderLMRTFYRequestor", () => {
+                canvas.tokens.releaseAll();
+            })
         }
     }
 
