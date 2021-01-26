@@ -115,13 +115,13 @@ class LMRTFYRoller extends Application {
                 fakeEvent = LMRTFY.disadvantageRollEvent;
                 break;
             case 0:
-                fakeEvent = LMRTFY.normalRollEvent;
+                fakeEvent = event;
                 break;
             case 1:
                 fakeEvent = LMRTFY.advantageRollEvent;
                 break;
             case 2: 
-                fakeEvent = LMRTFY.queryRollEvent;
+                fakeEvent = event;
                 break;
         }
         const rollMode = game.settings.get("core", "rollMode");
