@@ -10,12 +10,12 @@ class LMRTFY {
         onChange: (value) => LMRTFY.onThemeChange(value)
       });
       game.settings.register('lmrtfy', 'deselectOnRequestorRender', {
-        name: 'Deselect all controlled tokens when requestor is rendered', // localization + editing
-        hint: '',
+        name: game.i18n.localize('LMRTFY.DeselectOnRequestorRender'),
+        hint: game.i18n.localize('LMRTFY.DeselectOnRequestorRenderHint'),
         scope: 'world',
         config: true,
         type: Boolean,
-        default: true,
+        default: false,
         onChange: () => window.location.reload()
       });
       
