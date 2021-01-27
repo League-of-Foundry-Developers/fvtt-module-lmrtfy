@@ -8,7 +8,7 @@
     "scripts": ["./src/lmrtfy.js", "./src/requestor.js", "./src/roller.js"],
     "styles": ["/css/lmrtfy.css"],
     "packs": [],
-    "systems": ["dnd5e", "dnd5eJP", "pf2e", "D35E"],
+    "systems": ["dnd5e", "dnd5eJP", "pf2e", "D35E", "tormenta20"],
     "languages": [
         {
             "lang": "en",
