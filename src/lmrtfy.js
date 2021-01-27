@@ -55,6 +55,18 @@ class LMRTFY {
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
             LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': true };
+        } else if(game.system.id == "tormenta20") {
+            LMRTFY.saveRollMethod = '_onRollPericia';
+            LMRTFY.abilityRollMethod = '_onRollAtributo';
+            LMRTFY.skillRollMethod = '_onRollPericia';
+            LMRTFY.abilities = CONFIG.T20.atributos;
+            LMRTFY.skills = CONFIG.T20.pericias;
+            LMRTFY.saves = null;
+            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
+            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false }; // @deprecated
+            LMRTFY.specialRolls = { 'initiative': false, 'deathsave': false, 'perception': false };
         } else {
             LMRTFY.saveRollMethod = 'rollAbilitySave';
             LMRTFY.abilityRollMethod = 'rollAbilityTest';
