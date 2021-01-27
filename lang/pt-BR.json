@@ -44,5 +44,5 @@
     "LMRTFY.SentNotification": "LMRTFY: Solicitação de rolagem enviada para jogadores conectados",
     "LMRTFY.NothingNotification": "LMRTFY: Nada para requisitar",
     "LMRTFY.DeselectOnRequestorRender": "Deselecionar tokens ao abrir o solicitante",
-    "LMRTFY.DeselectOnRequestorRenderHint": "Ative para evitar solicitações de rolagem de serem enviados ao GM (você mesmo)"
+    "LMRTFY.DeselectOnRequestorRenderHint": "Ative para evitar que solicitações de rolagem sejam enviados ao GM (você mesmo)"
 }
