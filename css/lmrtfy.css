@@ -135,7 +135,8 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-custom-formula,
 .lmrtfy-initiative,
 .lmrtfy-death-save,
-.lmrtfy-perception {
+.lmrtfy-perception,
+.lmrtfy-roll-table {
 	height: 48px;
 	text-align: center;
 	margin-top: 4px;
@@ -146,7 +147,8 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-parchment .lmrtfy-custom-formula,
 .lmrtfy-parchment .lmrtfy-initiative,
 .lmrtfy-parchment .lmrtfy-death-save,
-.lmrtfy-parchment .lmrtfy-perception {
+.lmrtfy-parchment .lmrtfy-perception,
+.lmrtfy-parchment .lmrtfy-roll-table {
 	background: url(../images/button.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -230,7 +232,8 @@ form .form-group .lmrtfy-skill-checks {
 .d35ecustom .lmrtfy .lmrtfy-ability-save, 
 .d35ecustom .lmrtfy .lmrtfy-initiative, 
 .d35ecustom .lmrtfy .lmrtfy-perception, 
-.d35ecustom .lmrtfy .lmrtfy-save-roll {
+.d35ecustom .lmrtfy .lmrtfy-save-roll,
+.d35ecustom .lmrtfy .lmrtfy-roll-table  {
 	background: none !important;
     border-image: url(/systems/D35E/icons/ui/long-button.png);
     background-size: 100% 100%;
@@ -279,6 +282,9 @@ form .form-group .lmrtfy-skill-checks {
     padding: 0px;
 }
 
+.d35ecustom form .form-group .lmrtfy-roll-table-list {
+    min-height: 89px;
+}
 
 .d35ecustom form .form-group .lmrtfy-ability-checks .lmrtfy-ability {
     padding: 0px;

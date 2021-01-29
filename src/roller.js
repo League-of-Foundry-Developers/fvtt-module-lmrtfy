@@ -3,17 +3,19 @@
 class LMRTFYRoller extends Application {
 
     constructor(actors, data) {
-        super()
-        this.actors = actors
-        this.data = data
-        this.abilities = data.abilities
-        this.saves = data.saves
-        this.skills = data.skills
-        this.advantage = data.advantage
-        this.mode = data.mode
-        this.message = data.message
-        if (data.title)
+        super();
+        this.actors = actors;
+        this.data = data;
+        this.abilities = data.abilities;
+        this.saves = data.saves;
+        this.skills = data.skills;
+        this.advantage = data.advantage;
+        this.mode = data.mode;
+        this.message = data.message;
+        this.tables = data.tables;
+        if (data.title) {
             this.options.title = data.title;
+        }            
     }
 
     static get defaultOptions() {
@@ -89,7 +91,8 @@ class LMRTFYRoller extends Application {
             customFormula: this.data.formula || false,
             deathsave: this.data.deathsave,
             initiative: this.data.initiative,
-            perception: this.data.perception
+            perception: this.data.perception,
+            tables: this.tables,
         };
     }
 
@@ -99,6 +102,7 @@ class LMRTFYRoller extends Application {
         this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this))
         this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
         this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this))
+        this.element.find(".lmrtfy-roll-table").click(this._onRollTable.bind(this));
         if(LMRTFY.specialRolls['initiative']) {
             this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
         }
@@ -190,6 +194,51 @@ class LMRTFYRoller extends Application {
             this.close();
     }
 
+    _drawTable(event, table) {
+        let chatMessages = [];
+        let count = 0;
+        const rollTable = game.tables.getName(table);
+
+        if (rollTable) {
+            for (let actor of this.actors) {
+                rollTable.draw({ displayChat: false }).then((res) => {
+                    count++;
+                    const rollResult = res.results;
+    
+                    const nr = rollResult.length > 1 ? `${rollResult.length} results` : "a result";
+                    let content = "";
+                    for (const result of rollResult) {
+                        content += `<p>${result.text}</p>`
+                    }
+                    let chatData = {
+                        user: game.user._id,
+                        speaker: ChatMessage.getSpeaker({actor}),                
+                        flavor: `Draws ${nr} from the ${table} table.`,
+                        content: content,
+                        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+                    };
+
+                    if ( ["gmroll", "blindroll"].includes(this.mode) ) {
+                        chatData.whisper = ChatMessage.getWhisperRecipients("GM");
+                    }              
+                    if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
+                    if ( this.mode === "blindroll" ) chatData.blind = true;
+
+                    setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
+                    chatMessages.push(chatData);
+    
+                    if (count === this.actors.length) {
+                        ChatMessage.create(chatMessages, {});
+    
+                        event.currentTarget.disabled = true;
+                        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0) {
+                            this.close();
+                        }
+                    }
+                });                                 
+            }
+        }        
+    }
 
     _onAbilityCheck(event) {
         event.preventDefault();
@@ -225,6 +274,12 @@ class LMRTFYRoller extends Application {
     _onPerception(event) {
         event.preventDefault();
         this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
+    }
+
+    _onRollTable(event) {
+        event.preventDefault();
+        const table = event.currentTarget.dataset.table;
+        this._drawTable(event, table);
     }
 
 }
