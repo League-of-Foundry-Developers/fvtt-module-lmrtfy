@@ -35,7 +35,11 @@
             "name": "Español",
             "path": "lang/es.json"
         },
-        {
+ 	{
+            "lang": "fr",
+            "name": "Français",
+            "path": "lang/fr.json"
+        },       {
             "lang": "cn",
             "name": "中文",
             "path": "lang/cn.json"
