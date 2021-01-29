@@ -15,7 +15,7 @@ class LMRTFYRoller extends Application {
         this.tables = data.tables;
         if (data.title) {
             this.options.title = data.title;
-        }            
+        }
     }
 
     static get defaultOptions() {
