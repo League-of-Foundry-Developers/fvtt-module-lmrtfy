@@ -37,5 +37,6 @@
     "LMRTFY.InitiativeRollMessage": "Rolle für Initiative!",
     "LMRTFY.DeathSaveRollMessage": "Rettungswürfe gegen tod",
     "LMRTFY.PerceptionRollMessage": "Wahrnehmungprobe",
-    "LMRTFY.Extras": "Extras"
+    "LMRTFY.Extras": "Extras",
+    "LMRTFY.RollTables": "Rollbarer Tisch :"
 }

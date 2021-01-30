@@ -20,7 +20,7 @@
         <div class="form-group lmrtfy-actor-avatars">
         {{#each actors}}
             <div class="lmrtfy-actor" data-id="{{this.id}}">
-                <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" checked />
+                <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" {{#if (lmrtfy-controlledToken this)}}checked{{/if}} />
                 <label for="lmrtf-actor-{{this.id}}"><img src="{{this.img}}" /></label>
             </div>
         {{/each}}
@@ -130,6 +130,20 @@
             </div>
         </div>
     </fieldset>
+
+    {{#if tables}}
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.RollTables"}}</label>
+
+            <select name="table" class="lmrtfy-roll-table-list" data-dtype="String" multiple="multiple">
+                {{#each tables as |name|}}
+                    <option value="{{name}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </fieldset>
+    {{/if}}
 
     <div class="lmrtfy-submit">
         <button type="submit" class="lmrtfy-request-roll" name="submit" value="1"><i class="fas fa-dice"></i>{{localize "LMRTFY.RequestRolls"}}</button>

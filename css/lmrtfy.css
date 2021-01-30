@@ -135,7 +135,8 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-custom-formula,
 .lmrtfy-initiative,
 .lmrtfy-death-save,
-.lmrtfy-perception {
+.lmrtfy-perception,
+.lmrtfy-roll-table {
 	height: 48px;
 	text-align: center;
 	margin-top: 4px;
@@ -146,7 +147,8 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-parchment .lmrtfy-custom-formula,
 .lmrtfy-parchment .lmrtfy-initiative,
 .lmrtfy-parchment .lmrtfy-death-save,
-.lmrtfy-parchment .lmrtfy-perception {
+.lmrtfy-parchment .lmrtfy-perception,
+.lmrtfy-parchment .lmrtfy-roll-table {
 	background: url(../images/button.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -174,4 +176,141 @@ form .form-group .lmrtfy-skill-checks {
 	text-align: center;
 	white-space: nowrap;
 	word-break: break-all;
+}
+
+.d35ecustom .lmrtfy {
+	border: 8px solid #55493B;
+    border-image: url(/systems/D35E/icons/ui/dialog-frame.png) 30 round;
+    background: url(/systems/D35E/icons/ui/sidebar-bg.png);
+	border-radius: 0;
+}
+
+.d35ecustom .lmrtfy .window-content {
+	color: white;
+	background: none;
+}
+
+.d35ecustom .lmrtfy .select-all, .d35ecustom .lmrtfy .deselect-all {
+	border-radius: 0;
+	cursor: pointer;
+}
+
+.d35ecustom .lmrtfy input[type="text"], .d35ecustom .lmrtfy input[type="number"], .d35ecustom .lmrtfy input[type="password"], .d35ecustom .lmrtfy input[type="date"], .d35ecustom .lmrtfy input[type="time"] {
+	color: white !important;
+    width: calc(100% - 2px);
+    min-width: 20px;
+    height: 26px;
+    background: rgba(0, 0, 0, 0.05) !important;
+    padding: 1px 3px;
+    margin: 0;
+    color: #191813;
+    font-family: inherit;
+    font-size: inherit;
+    text-align: inherit;
+    line-height: inherit;
+    border: 1px solid #7a7971;
+    border-radius: 3px;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+	user-select: text;
+}
+
+.d35ecustom .lmrtfy select {
+	color: white !important;
+	height: 27px;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #7a7971;
+    border-radius: 3px;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+}
+
+.d35ecustom .lmrtfy .lmrtfy-request-roll, 
+.d35ecustom .lmrtfy .lmrtfy-ability-check, 
+.d35ecustom .lmrtfy .lmrtfy-skill-check, 
+.d35ecustom .lmrtfy .lmrtfy-ability-save, 
+.d35ecustom .lmrtfy .lmrtfy-initiative, 
+.d35ecustom .lmrtfy .lmrtfy-perception, 
+.d35ecustom .lmrtfy .lmrtfy-save-roll,
+.d35ecustom .lmrtfy .lmrtfy-roll-table  {
+	background: none !important;
+    border-image: url(/systems/D35E/icons/ui/long-button.png);
+    background-size: 100% 100%;
+    color: white;
+	height: 40px;
+	border-image-slice: 80 80 fill;
+	border-image-width: 600px;
+	cursor: pointer;
+}
+
+.d35ecustom .lmrtfy .form-group:not(.lmrtfy-actor-avatars) input[type=checkbox] + label {
+    margin: 2px;
+    color: white;
+    background: none !important;
+    border-image: url(/systems/D35E/icons/ui/toggle-off.png);
+    border-image-slice: 20 20 fill;
+    border-image-width: 170px;
+    cursor: pointer;
+    padding: 1px 16px;
+	border-radius: 2px;
+	text-align: center;
+}
+
+.d35ecustom .lmrtfy .form-group:not(.lmrtfy-actor-avatars) input[type=checkbox]:checked + label {
+    margin: 2px;
+    color: white;
+    background: none !important;
+    border-image: url(/systems/D35E/icons/ui/toggle-on.png);
+    border-image-slice: 20 20 fill;
+    border-image-width: 170px;
+    cursor: pointer;
+	padding: 1px 16px;
+	
+	font-weight: normal;
+	border-radius: 2px;
+}
+
+.d35ecustom form .form-group .lmrtfy-ability-checks {
+	flex-wrap: wrap;
+}
+
+.d35ecustom form .form-group .lmrtfy-extras div {
+    padding: 0px;
+}
+.d35ecustom form .form-group .lmrtfy-saving-throws .lmrtfy-ability {
+    padding: 0px;
+}
+
+.d35ecustom form .form-group .lmrtfy-roll-table-list {
+    min-height: 89px;
+}
+
+.d35ecustom form .form-group .lmrtfy-ability-checks .lmrtfy-ability {
+    padding: 0px;
+}
+.d35ecustom .lmrtfy-skill-checks .lmrtfy-skill {
+	flex: 3;
+    padding: 0px;
+    display: flex;
+    max-width: 147px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 147px;
+}
+
+.d35ecustom .lmrtfy .lmrtfy-skill-checks input[type=checkbox] + label {
+    max-width: 147px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	width: 147px;
+	overflow: hidden;
+}
+
+.system-D35E form .form-group .lmrtfy-skill-checks {
+	max-height: 600px;
+}
+
+.d35ecustom .lmrtfy fieldset {
+	border: none;
 }

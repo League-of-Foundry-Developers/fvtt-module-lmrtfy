@@ -9,6 +9,24 @@ class LMRTFY {
         default: true,
         onChange: (value) => LMRTFY.onThemeChange(value)
       });
+      game.settings.register('lmrtfy', 'deselectOnRequestorRender', {
+        name: game.i18n.localize('LMRTFY.DeselectOnRequestorRender'),
+        hint: game.i18n.localize('LMRTFY.DeselectOnRequestorRenderHint'),
+        scope: 'world',
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: () => window.location.reload()
+      });
+      
+      Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
+        const activeToken = actor.getActiveTokens()[0];
+        if (activeToken) {
+            return activeToken._controlled;
+        } else {
+            return false;
+        }
+      });
     }
 
     static ready() {
@@ -20,11 +38,23 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.PF2E.abilities;
             LMRTFY.skills = CONFIG.PF2E.skills;
             LMRTFY.saves = CONFIG.PF2E.saves;
-            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
+        } else if(game.system.id == "D35E") {
+            LMRTFY.saveRollMethod = 'rollSave';
+            LMRTFY.abilityRollMethod = 'rollAbility';
+            LMRTFY.skillRollMethod = 'rollSkill';
+            LMRTFY.abilities = CONFIG.D35E.abilities;
+            LMRTFY.skills = CONFIG.D35E.skills;
+            LMRTFY.saves = CONFIG.D35E.savingThrows;
+            LMRTFY.normalRollEvent  = { shiftKey: false, altKey: false, ctrlKey: false }; // @deprecated
+            LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
+            LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
+            LMRTFY.queryRollEvent = { shiftKey: true, altKey: false, ctrlKey: false }; // @deprecated
+            LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': true };
         } else {
             LMRTFY.saveRollMethod = 'rollAbilitySave';
             LMRTFY.abilityRollMethod = 'rollAbilityTest';
@@ -32,11 +62,17 @@ class LMRTFY {
             LMRTFY.abilities = CONFIG.DND5E.abilities;
             LMRTFY.skills = CONFIG.DND5E.skills;
             LMRTFY.saves = CONFIG.DND5E.abilities;
-            LMRTFY.normalRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false };
+            LMRTFY.normalRollEvent  = { shiftKey: true, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
             LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-            LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+            LMRTFY.queryRollEvent = { shiftKey: false, altKey: false, ctrlKey: false }; // @deprecated
             LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
+        }
+
+        if (game.settings.get('lmrtfy', 'deselectOnRequestorRender')) {
+            Hooks.on("renderLMRTFYRequestor", () => {
+                canvas.tokens.releaseAll();
+            })
         }
     }
 

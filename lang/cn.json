@@ -42,5 +42,6 @@
     "LMRTFY.EnableParchmentTheme": "启用羊皮纸主题",
     "LMRTFY.EnableParchmentThemeHint": "启用仿羊皮纸的风格的UI",
     "LMRTFY.SentNotification": "LMRTFY: 掷骰请求已发送给已连接玩家",
-    "LMRTFY.NothingNotification": "LMRTFY: 无请求发送"
+    "LMRTFY.NothingNotification": "LMRTFY: 无请求发送",
+    "LMRTFY.RollTables": "卷式桌： "
 }
