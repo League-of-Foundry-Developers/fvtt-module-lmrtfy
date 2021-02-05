@@ -41,6 +41,9 @@
     "LMRTFY.Extras": "其他",
     "LMRTFY.EnableParchmentTheme": "启用羊皮纸主题",
     "LMRTFY.EnableParchmentThemeHint": "启用仿羊皮纸的风格的UI",
-    "LMRTFY.SentNotification": "LMRTFY: 掷骰请求已发送给已连接玩家",
-    "LMRTFY.NothingNotification": "LMRTFY: 无请求发送"
+    "LMRTFY.SentNotification": "LMRTFY: 掷骰请求已发送给在线玩家",
+    "LMRTFY.NothingNotification": "LMRTFY: 未发送请求",
+    "LMRTFY.RollTables": "掷骰表:",
+    "LMRTFY.DeselectOnRequestorRender": "打开请求窗口时取消所有指示物",
+    "LMRTFY.DeselectOnRequestorRenderHint": "启用以避免掷骰请求发送到 GM 用户（自己）"
 }
