@@ -39,10 +39,16 @@
             "lang": "fr",
             "name": "Français",
             "path": "lang/fr.json"
-        },       {
+        },       
+        {
             "lang": "cn",
             "name": "中文",
             "path": "lang/cn.json"
+        },       
+        {
+            "lang": "zh-tw",
+            "name": "正體中文",
+            "path": "lang/zh-tw.json"
         }
     ],
     "media": [{
