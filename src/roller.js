@@ -263,8 +263,17 @@ class LMRTFYRoller extends Application {
     }
     _onInitiative(event) {
         event.preventDefault();
-        const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
-        this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
+        if(game.system.id == "dnd5e") {
+            for (let actor of this.actors) {
+                actor.rollInitiative();
+            }
+            event.currentTarget.disabled = true;
+            if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
+                this.close();
+        } else {
+            const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
+            this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
+        }
     }
     _onDeathSave(event) {
         event.preventDefault();
