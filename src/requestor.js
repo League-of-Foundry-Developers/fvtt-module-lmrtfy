@@ -27,8 +27,9 @@ class LMRTFYRequestor extends FormApplication {
         // Note: Maybe these work better at a global level, but keeping things simple
         const abilities = LMRTFY.abilities;
         const saves = LMRTFY.saves;
-        const skills = LMRTFY.skills;
-        
+        const skills = LMRTFY.skills.sort((a, b) => game.i18n.localize(LMRTFY.skills[a]).localeCompare(game.i18n.localize(LMRTFY.skills[b])))
+            .forEach(s => skills[s] = LMRTFY.skills[s]);
+
         let tables = null;
         if (game.tables) {
             tables = [];

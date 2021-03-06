@@ -1,5 +1,3 @@
-
-
 class LMRTFYRoller extends Application {
 
     constructor(actors, data) {
@@ -121,7 +119,7 @@ class LMRTFYRoller extends Application {
                 fakeEvent = LMRTFY.disadvantageRollEvent;
                 break;
             case 0:
-                fakeEvent = event;
+                fakeEvent = LMRTFY.normalRollEvent;
                 break;
             case 1:
                 fakeEvent = LMRTFY.advantageRollEvent;
@@ -130,19 +128,30 @@ class LMRTFYRoller extends Application {
                 fakeEvent = event;
                 break;
         }
+
+        // save the current roll mode to reset it after this roll
         const rollMode = game.settings.get("core", "rollMode");
         game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
+
         for (let actor of this.actors) {
             Hooks.once("preCreateChatMessage", this._tagMessage.bind(this));
-            if(game.system.id=="pf2e") {
-                actor[rollMethod].call(actor, fakeEvent, ...args);                        
-            } else {
-                actor[rollMethod].call(actor, ...args, { event: fakeEvent });                        
-            }
 
+            // system specific roll handling
+            switch (game.system.id) {
+                case "pf2e": {
+                    actor[rollMethod].call(actor, fakeEvent, ...args);
+                    break;
+                }
+                default: {
+                    actor[rollMethod].call(actor, ...args, { event: fakeEvent });
+                }
+            }
         }
+
         game.settings.set("core", "rollMode", rollMode);
+
         event.currentTarget.disabled = true;
+
         if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
             this.close();
     }
