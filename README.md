@@ -35,7 +35,10 @@ This work is licensed under Foundry Virtual Tabletop [EULA - Limited License Agr
 
 ## Attributions
 
-Japanese translation by `@Brother Sharp`
-German translation by `@Acd-Jake`
-Portuguese translation by `@rinnocenti`
-Spanish translation by `@SanaRinomi`
+- Japanese translation by `@Brother Sharp`
+- German translation by `@Acd-Jake`
+- Portuguese translation by `@rinnocenti`
+- Spanish translation by `@SanaRinomi`
+- French translation by `@Elfenduil`
+- Chinese translation by `@hmqgg`
+- Taiwanese translation by `@zeteticl`
