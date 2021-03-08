@@ -35,6 +35,7 @@ class LMRTFY {
         switch (game.system.id) {
             case 'dnd5eJP':
             case 'dnd5e':
+            case 'sw5e':
                 LMRTFY.saveRollMethod = 'rollAbilitySave';
                 LMRTFY.abilityRollMethod = 'rollAbilityTest';
                 LMRTFY.skillRollMethod = 'rollSkill';
