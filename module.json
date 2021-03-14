@@ -3,7 +3,7 @@
     "name": "lmrtfy",
     "title": "Let Me Roll That For You!",
     "description": "Ask your players to make rolls for you.",
-    "version": "1.9",
+    "version": "1.9.1",
     "author": "KaKaRoTo, iotech, Limping Ninja, Rughalt, Calego",
     "scripts": [
         "./src/lmrtfy.js",
