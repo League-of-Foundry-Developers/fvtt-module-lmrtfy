@@ -286,7 +286,16 @@ class LMRTFYRoller extends Application {
     }
     _onDeathSave(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
+        if(game.system.id == "dnd5e") {
+            for (let actor of this.actors) {
+                actor.rollDeathSave(event);
+            }
+            event.currentTarget.disabled = true;
+            if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
+                this.close();
+        } else {
+            this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
+        }
     }
 
     _onPerception(event) {
