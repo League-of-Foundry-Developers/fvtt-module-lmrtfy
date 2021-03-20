@@ -18,6 +18,7 @@ Writing this module was the idea of iotech, based on the Fantasy Grounds "[Roll 
 - dnd5e
 - dnd5eJP
 - pf2e
+- pf1e
 - D35E
 
 Your favorite system not on this list? Adding compatibility is easy! Have a look at [CONTRIBUTING.md](/CONTRIBUTING.md) and open a PR!
