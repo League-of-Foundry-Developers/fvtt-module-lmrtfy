@@ -49,7 +49,7 @@ class LMRTFY {
                 break;
 
             case 'pf1':
-                LMRTFY.saveRollMethod = 'rollSave';
+                LMRTFY.saveRollMethod = 'rollSavingThrow';
                 LMRTFY.abilityRollMethod = 'rollAbility';
                 LMRTFY.skillRollMethod = 'rollSkill';
                 LMRTFY.abilities = CONFIG.PF1.abilities;
