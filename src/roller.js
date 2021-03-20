@@ -272,7 +272,7 @@ class LMRTFYRoller extends Application {
     }
     _onInitiative(event) {
         event.preventDefault();
-        if(game.system.id == "dnd5e") {
+        if(this.data.initiative) {
             for (let actor of this.actors) {
                 actor.rollInitiative();
             }
