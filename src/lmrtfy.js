@@ -58,7 +58,7 @@ class LMRTFY {
                 LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': true };
+                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': false };
                 break;
 
             case 'pf2e':
