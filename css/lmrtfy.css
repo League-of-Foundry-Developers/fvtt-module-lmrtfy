@@ -314,3 +314,7 @@ form .form-group .lmrtfy-skill-checks {
 .d35ecustom .lmrtfy fieldset {
 	border: none;
 }
+
+.system-pf1 form .form-group .lmrtfy-skill-checks {
+	max-height: 600px;
+}
