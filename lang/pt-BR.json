@@ -42,5 +42,6 @@
     "LMRTFY.EnableParchmentTheme": "Habilitar tema de pergaminho",
     "LMRTFY.EnableParchmentThemeHint": "Permite o uso da UI estilizada com aparência de pergaminho",
     "LMRTFY.SentNotification": "LMRTFY: Solicitação de rolagem enviada para jogadores conectados",
-    "LMRTFY.NothingNotification": "LMRTFY: Nada para requisitar"
+    "LMRTFY.NothingNotification": "LMRTFY: Nada para requisitar",
+    "LMRTFY.RollTables": "Mesa Rolável :"
 }

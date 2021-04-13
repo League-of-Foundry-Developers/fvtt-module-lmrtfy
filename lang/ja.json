@@ -40,5 +40,6 @@
     "LMRTFY.PerceptionRollMessage": "知覚判定",
     "LMRTFY.Extras": "その他",
     "LMRTFY.EnableParchmentTheme": "巻物風の背景を使用する",
-    "LMRTFY.EnableParchmentThemeHint": "巻物風のスタイルが適用されたUI使用します"
+    "LMRTFY.EnableParchmentThemeHint": "巻物風のスタイルが適用されたUI使用します",
+    "LMRTFY.RollTables": "ロール可能なテーブル :"
 }
