@@ -204,6 +204,16 @@ class LMRTFYRoller extends Application {
     }
 
     _drawTable(event, table) {
+        const icons = {
+            Actor: 'fas fa-user',
+            Item: 'fas fa-suitcase',
+            Scene: 'fas fa-map',
+            JournalEntry: 'fas fa-book-open',
+            Macro: 'fas fa-terminal',
+            Playlist: '',
+            Compendium: 'fas fa-atlas',
+        }
+
         let chatMessages = [];
         let count = 0;
         const rollTable = game.tables.getName(table);
@@ -217,7 +227,18 @@ class LMRTFYRoller extends Application {
                     const nr = rollResult.length > 1 ? `${rollResult.length} results` : "a result";
                     let content = "";
                     for (const result of rollResult) {
-                        content += `<p>${result.text}</p>`
+                        if (!result.collection) {
+                            content += `<p>${result.text}</p>`;
+                        } else if (['Actor', 'Item', 'Scene', 'JournalEntry', 'Macro'].includes(result.collection)) {
+                            content += `<p><a class="entity-link" draggable="true" data-entity="${result.collection}" data-id="${result.resultId}">
+                                <i class="${icons[result.collection]}"></i> ${result.text}</a></p>`;
+                        } else if (result.collection === 'Playlist') {
+                            content += `<p>@${result.collection}[${result.resultId}]{${result.text}}</p>`;
+                        } else if (result.collection) { // if not specific collection, then is compendium
+                            content += `<p><a class="entity-link" draggable="true" data-pack="${result.collection}" data-id="${result.resultId}">
+                                <i class="${icons[result.collection]}"></i> ${result.text}</a></p>`;
+                        }
+                        
                     }
                     let chatData = {
                         user: game.user._id,
@@ -233,7 +254,8 @@ class LMRTFYRoller extends Application {
                     if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
                     if ( this.mode === "blindroll" ) chatData.blind = true;
 
-                    setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
+                    setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach, "blind": chatData.blind});
+                    
                     chatMessages.push(chatData);
     
                     if (count === this.actors.length) {

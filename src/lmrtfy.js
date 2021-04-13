@@ -149,8 +149,18 @@ class LMRTFY {
             });
         }
     }
+
+    static async hideBlind(app, html, msg) {
+        if (msg.message.flags && msg.message.flags.lmrtfy) {
+            if (msg.message.flags.lmrtfy.blind && !game.user.isGM) {
+                html.find(".message-header").remove();
+                html.html("").css("display", "none");
+            }
+        }
+    }
 }
 
 Hooks.once('init', LMRTFY.init);
 Hooks.on('ready', LMRTFY.ready);
 Hooks.on('getSceneControlButtons', LMRTFY.getSceneControlButtons);
+Hooks.on('renderChatMessage', LMRTFY.hideBlind);
