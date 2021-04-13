@@ -153,8 +153,11 @@ class LMRTFY {
     static async hideBlind(app, html, msg) {
         if (msg.message.flags && msg.message.flags.lmrtfy) {
             if (msg.message.flags.lmrtfy.blind && !game.user.isGM) {
-                html.find(".message-header").remove();
-                html.html("").css("display", "none");
+                msg.content = '<p>??</p>';
+                
+                let idx = html[0].innerHTML.indexOf('<div class="message-content">');
+                html[0].innerHTML = html[0].innerHTML.substring(0, idx);
+                html[0].innerHTML += '<div class="message-content"><p>??</p></div>';
             }
         }
     }
