@@ -157,7 +157,7 @@ class LMRTFY {
                 
                 let idx = html[0].innerHTML.indexOf('<div class="message-content">');
                 html[0].innerHTML = html[0].innerHTML.substring(0, idx);
-                html[0].innerHTML += '<div class="message-content"><p>??</p></div>';
+                html[0].innerHTML += `<div class="message-content">${msg.content}</div>`;
             }
         }
     }
