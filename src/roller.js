@@ -161,7 +161,6 @@ class LMRTFYRoller extends Application {
     }
 
     async _makeDiceRoll(event, formula, defaultMessage = null) {
-        debugger;
         if (formula.startsWith("1d20")) {
             if (this.advantage === 1)
                 formula = formula.replace("1d20", "2d20kh1")
