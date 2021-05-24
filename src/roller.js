@@ -222,11 +222,14 @@ class LMRTFYRoller extends Application {
             for (let actor of this.actors) {
                 rollTable.draw({ displayChat: false }).then((res) => {
                     count++;
-                    const rollResult = res.results;
+                    const rollResults = res.results;
     
-                    const nr = rollResult.length > 1 ? `${rollResult.length} results` : "a result";
+                    const nr = rollResults.length > 1 ? `${rollResults.length} results` : "a result";
                     let content = "";
-                    for (const result of rollResult) {
+                    
+                    for (const rollResult of rollResults) {
+                        const result = rollResult.data;
+                        
                         if (!result.collection) {
                             content += `<p>${result.text}</p>`;
                         } else if (['Actor', 'Item', 'Scene', 'JournalEntry', 'Macro'].includes(result.collection)) {
