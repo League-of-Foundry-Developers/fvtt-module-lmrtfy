@@ -20,17 +20,17 @@
 
     {{#each abilities as |name ability|}}
     <div>
-        <button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>{{localize "LMRTFY.AbilityCheck"}} {{name}}</button>
+        <button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>{{localize "LMRTFY.AbilityCheck"}} {{localize name}}</button>
     </div>
     {{/each}}
     {{#each saves as |name ability|}}
     <div>
-        <button type="button" class="lmrtfy-ability-save" data-ability="{{ability}}">{{localize "LMRTFY.SavingThrow"}} {{name}}</button>
+        <button type="button" class="lmrtfy-ability-save" data-ability="{{ability}}">{{localize "LMRTFY.SavingThrow"}} {{localize name}}</button>
     </div>
     {{/each}}
     {{#each skills as |name skill|}}
     <div>
-        <button type="button" class="lmrtfy-skill-check" data-skill="{{skill}}">{{localize "LMRTFY.SkillCheck"}} {{name}}</button>
+        <button type="button" class="lmrtfy-skill-check" data-skill="{{skill}}">{{localize "LMRTFY.SkillCheck"}} {{localize name}}</button>
     </div>
     {{/each}}
     {{#if customFormula}}
