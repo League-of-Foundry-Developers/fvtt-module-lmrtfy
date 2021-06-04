@@ -156,47 +156,44 @@ class LMRTFYRoller extends Application {
             this.close();
     }
 
-    _tagMessage(data, options) {
-      setProperty(data, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
+    _tagMessage(candidate, data, options) {
+        let update = {flags: {lmrtfy: {"message": this.data.message, "data": this.data.attach}}};
+        candidate.data.update(update);
     }
 
-    _makeDiceRoll(event, formula, defaultMessage = null) {
+    async _makeDiceRoll(event, formula, defaultMessage = null) {
         if (formula.startsWith("1d20")) {
             if (this.advantage === 1)
                 formula = formula.replace("1d20", "2d20kh1")
             else if (this.advantage === -1)
                 formula = formula.replace("1d20", "2d20kl1")
         }
-        let chatMessages = []
+
+        const chatMessages = [];
+        const messageFlag = {"message": this.data.message, "data": this.data.attach};
         for (let actor of this.actors) {
-            let chatData = {
-              user: game.user._id,
-              speaker: ChatMessage.getSpeaker({actor}),
-              content: formula,
-              flavor: this.message || defaultMessage,
-              type: CONST.CHAT_MESSAGE_TYPES.ROLL
-            };
             try {
-                let data = duplicate(actor.data.data);
-                data["name"] = actor.name;
-                let roll = new Roll(formula, data).roll();
-                chatData.roll = JSON.stringify(roll);
-                chatData.sound = CONFIG.sounds.dice;
+                const rollData = actor.getRollData();
+                const roll = new Roll(formula, rollData);
+                const messageData = await roll.toMessage({"flags.lmrtfy": messageFlag}, {rollMode: this.mode, create: false});
+                
+                const speaker = ChatMessage.getSpeaker({actor: actor});
+                messageData.update({
+                    speaker: {
+                        alias: speaker.alias,
+                        scene: speaker.scene,
+                        token: speaker.token,
+                        actor: speaker.actor,
+                    },
+                    flavor: this.message || defaultMessage,
+                });
+
+                chatMessages.push(messageData);
             } catch(err) {
-                chatData.content = `Error parsing the roll formula: ${formula}`
-                chatData.roll = null;
-                chatData.type = CONST.CHAT_MESSAGE_TYPES.OOC;
+                continue;
             }
-        
-            // Record additional roll data
-            if ( ["gmroll", "blindroll"].includes(this.mode) )
-                chatData.whisper = ChatMessage.getWhisperRecipients("GM");
-            if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
-            if ( this.mode === "blindroll" ) chatData.blind = true;
-            setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach});
-            chatMessages.push(chatData);
         }
-        ChatMessage.create(chatMessages, {});
+        ChatMessage.create(chatMessages);
 
         event.currentTarget.disabled = true;
         if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
@@ -222,11 +219,14 @@ class LMRTFYRoller extends Application {
             for (let actor of this.actors) {
                 rollTable.draw({ displayChat: false }).then((res) => {
                     count++;
-                    const rollResult = res.results;
+                    const rollResults = res.results;
     
-                    const nr = rollResult.length > 1 ? `${rollResult.length} results` : "a result";
+                    const nr = rollResults.length > 1 ? `${rollResults.length} results` : "a result";
                     let content = "";
-                    for (const result of rollResult) {
+                    
+                    for (const rollResult of rollResults) {
+                        const result = rollResult.data;
+
                         if (!result.collection) {
                             content += `<p>${result.text}</p>`;
                         } else if (['Actor', 'Item', 'Scene', 'JournalEntry', 'Macro'].includes(result.collection)) {
@@ -288,9 +288,9 @@ class LMRTFYRoller extends Application {
         const skill = event.currentTarget.dataset.skill;
         this._makeRoll(event, LMRTFY.skillRollMethod, skill);
     }
-    _onCustomFormula(event) {
+    async _onCustomFormula(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, this.data.formula);
+        await this._makeDiceRoll(event, this.data.formula);
     }
     _onInitiative(event) {
         event.preventDefault();
