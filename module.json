@@ -81,6 +81,7 @@
     "url": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy",
     "manifest": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.json",
     "download": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.zip",
+    "changelog": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases",
     "bugs": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/issues",
     "minimumCoreVersion": "0.7.5",
     "compatibleCoreVersion": "0.7.9",
