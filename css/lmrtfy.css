@@ -178,6 +178,66 @@ form .form-group .lmrtfy-skill-checks {
 	word-break: break-all;
 }
 
+.lmrtfy-dice-tray-buttons {
+    width: 75%;
+    padding-left: 207px;
+}
+
+.lmrtfy-dice-tray-button {
+    background: transparent;
+    border: 1px solid #000;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    -webkit-box-shadow: 0 0 6px inset #8d9ea7;
+    box-shadow: 0 0 6px inset #8d9ea7;
+    -webkit-transition: all ease-in-out 0.25s;
+    -o-transition: all ease-in-out 0.25s;
+    transition: all ease-in-out 0.25s;
+    position: relative;
+    margin: 6px;
+    border-radius: 5px
+}
+
+.lmrtfy-bonus-button  {
+    color: #000 !important;
+}
+
+.lmrtfy-dice-tray-button:hover {
+    color: red;
+    border-color: red;
+    box-shadow: 0 0 6px inset #ff6400;
+}
+
+.lmrtfy-bonus-button:hover {
+    color: black !important;
+}
+
+.lmrtfy-dice-svg-normal {
+    height: 35px;
+}
+
+.lmrtfy-dice-svg-smaller {
+    padding: 3px;
+}
+
+.lmrtfy-dice-row-flexrow {
+    flex-wrap: nowrap;
+}
+
 .d35ecustom .lmrtfy {
 	border: 8px solid #55493B;
     border-image: url(/systems/D35E/icons/ui/dialog-frame.png) 30 round;

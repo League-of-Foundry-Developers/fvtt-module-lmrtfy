@@ -3,7 +3,22 @@
 class LMRTFYRequestor extends FormApplication {
     constructor(...args) {
         super(...args)
-        game.users.apps.push(this)
+        game.users.apps.push(this);
+        
+        this.selectedDice = [];
+        this.dice = [
+            'd4',
+            'd6',
+            'd8',
+            'd10',
+            'd12',
+            'd20',
+            'd100'
+        ];
+
+        this.diceFormula = '';
+        this.bonusFormula = '';
+        this.modifierFormula = '';
     }
 
     static get defaultOptions() {
@@ -20,7 +35,7 @@ class LMRTFYRequestor extends FormApplication {
           options.classes.push('lmrtfy-parchment');
         }
         return options;
-    }
+    }    
 
     async getData() {
         // Return data to the template
@@ -62,7 +77,7 @@ class LMRTFYRequestor extends FormApplication {
         if (action === "update" && !data.some(d => "character" in d)) return;
         if (force !== true && !action) return;
         return super.render(force, context);
-      }
+    }
     
     activateListeners(html) {
         super.activateListeners(html);
@@ -71,6 +86,9 @@ class LMRTFYRequestor extends FormApplication {
         this.element.find("select[name=user]").change(this._onUserChange.bind(this));
         this.element.find(".lmrtfy-save-roll").click(this._onSubmit.bind(this));
         this.element.find(".lmrtfy-actor").hover(this._onHoverActor.bind(this));
+        this.element.find(".lmrtfy-dice-tray-button").click(this.diceLeftClick.bind(this));
+        this.element.find(".lmrtfy-dice-tray-button").contextmenu(this.diceRightClick.bind(this));
+        this.element.find(".lmrtfy-bonus-button").click(this.bonusClick.bind(this));        
         this._onUserChange();
     }
 
@@ -120,6 +138,79 @@ class LMRTFYRequestor extends FormApplication {
         const actors = this._getUserActorIds(userId)
         this.element.find(".lmrtfy-actor").hide().filter((i, e) => actors.includes(e.dataset.id)).show();
 
+    }
+
+    diceLeftClick(event) {
+        this.selectedDice.push(event?.currentTarget?.dataset?.value);
+        this.diceFormula = this.convertSelectedDiceToFormula();
+
+        this.combineFormula();
+    }
+
+    diceRightClick(event) {
+        const index = this.selectedDice.indexOf(event?.currentTarget?.dataset?.value);
+
+        if (index > -1) {
+            this.selectedDice.splice(index, 1);
+        }
+        this.diceFormula = this.convertSelectedDiceToFormula();
+
+        this.combineFormula();
+    }
+
+    bonusClick(event) {
+        let bonus = event?.currentTarget?.dataset?.value;
+        let newBonus = +(this.bonusFormula.trim().replace(' ', '')) + +bonus;
+        
+        if (newBonus === 0) {
+            this.bonusFormula = '';
+        } else {
+            this.bonusFormula = ((newBonus > 0) ? ' + ' : ' - ') + Math.abs(newBonus).toString();
+        }
+
+        this.combineFormula();
+    }
+
+    modifierClick(event) {
+
+    }
+
+    convertSelectedDiceToFormula() {
+        const occurences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+        let formula = '';
+
+        for (let die of this.dice) {
+            let count = occurences(this.selectedDice, die);
+
+            if (count > 0) {
+                if (formula?.length) {
+                    formula += ' + ';
+                }
+
+                formula += count + die;
+            }            
+        }
+
+        return formula;        
+    }
+
+    combineFormula() {
+        let customFormula = '';
+        if (this.diceFormula?.length) {
+            customFormula += this.diceFormula;
+
+            if (this.bonusFormula?.length) {
+                customFormula += this.bonusFormula;
+            }
+
+            if (this.modifierFormula?.length) {
+
+            }
+        }
+
+        if (customFormula?.length) {
+            this.element.find(".custom-formula").val(customFormula);
+        }
     }
 
     async _updateObject(event, formData) {
