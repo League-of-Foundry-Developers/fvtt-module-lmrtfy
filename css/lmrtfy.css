@@ -222,6 +222,10 @@ form .form-group .lmrtfy-skill-checks {
     box-shadow: 0 0 6px inset #ff6400;
 }
 
+.lmrtfy-dice-tray-checks {
+    padding-left: 207px;
+}
+
 .lmrtfy-bonus-button:hover {
     color: black !important;
 }
@@ -236,6 +240,18 @@ form .form-group .lmrtfy-skill-checks {
 
 .lmrtfy-dice-row-flexrow {
     flex-wrap: nowrap;
+}
+
+.lmrtfy-dice-tray-details {
+    padding-top: 7px;
+}
+
+.lmrtfy-dice-tray-expander {
+    padding-left: 220px;
+}
+
+.lmrtfy-clear-button-area {
+    padding-left: 214px;
 }
 
 .d35ecustom .lmrtfy {
