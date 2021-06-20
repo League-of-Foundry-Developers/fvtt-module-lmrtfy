@@ -36,7 +36,7 @@ class LMRTFYRequestor extends FormApplication {
           options.classes.push('lmrtfy-parchment');
         }
         return options;
-    }    
+    }
 
     async getData() {
         // Return data to the template
