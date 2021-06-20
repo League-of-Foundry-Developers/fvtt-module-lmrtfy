@@ -141,7 +141,7 @@ class LMRTFY {
                 console.error('LMRFTY | Unsupported system detected');
         }
 
-        for (let key in abbreviations) {
+        for (let key in abilities) {
             if (abbreviations.hasOwnProperty(key)) {
                 abilityMods[`abilities.${abbreviations[key]}.${modIdentifier}`] = abilities[key];
             }
