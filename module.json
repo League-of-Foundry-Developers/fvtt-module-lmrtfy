@@ -19,10 +19,10 @@
         "pf1",
         "pf2e",
         "D35E",
-        "sw5e"
+        "sw5e",
+        "sfrpg"
     ],
-    "languages": [
-        {
+    "languages": [{
             "lang": "en",
             "name": "English",
             "path": "lang/en.json"
@@ -63,8 +63,7 @@
             "path": "lang/zh-tw.json"
         }
     ],
-    "media": [
-        {
+    "media": [{
             "type": "cover",
             "link": "images/lmrtfy-roller.png"
         },
