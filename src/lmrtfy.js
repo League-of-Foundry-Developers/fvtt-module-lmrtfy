@@ -19,7 +19,7 @@ class LMRTFY {
             onChange: () => window.location.reload()
         });
 
-        Handlebars.registerHelper('lmrtfy-controlledToken', function(actor) {
+        Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
             const activeToken = actor.getActiveTokens()[0];
             if (activeToken) {
                 return activeToken._controlled;
@@ -143,7 +143,7 @@ class LMRTFY {
             LMRTFY.requestor.options.classes.push("lmrtfy-parchment")
         else
             LMRTFY.requestor.options.classes = LMRTFY.requestor.options.classes.filter(c => c !== "lmrtfy-parchment")
-            // Resize to fit the new theme
+        // Resize to fit the new theme
         if (LMRTFY.requestor.element.length)
             LMRTFY.requestor.setPosition({ width: "auto", height: "auto" })
     }
