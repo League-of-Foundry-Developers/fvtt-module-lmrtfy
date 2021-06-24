@@ -112,7 +112,7 @@ class LMRTFYRoller extends Application {
         }
     }
 
-    _makeRoll(event, rollMethod, ...args) {
+    async _makeRoll(event, rollMethod, ...args) {
         let fakeEvent = {}
         switch(this.advantage) {
             case -1: 
@@ -139,11 +139,11 @@ class LMRTFYRoller extends Application {
             // system specific roll handling
             switch (game.system.id) {
                 case "pf2e": {
-                    actor[rollMethod].call(actor, fakeEvent, ...args);
+                    await actor[rollMethod].call(actor, fakeEvent, ...args);
                     break;
                 }
                 default: {
-                    actor[rollMethod].call(actor, ...args, { event: fakeEvent });
+                    await actor[rollMethod].call(actor, ...args, { event: fakeEvent });
                 }
             }
         }
