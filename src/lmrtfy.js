@@ -46,6 +46,9 @@ class LMRTFY {
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
                 LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
+                LMRTFY.abilityAbbreviations = CONFIG.DND5E.abilityAbbreviations;
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
 
             case 'pf1':
@@ -59,6 +62,9 @@ class LMRTFY {
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
                 LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': false };
+                LMRTFY.abilityAbbreviations = CONFIG.PF1.abilityAbbreviations;
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
 
             case 'pf2e':
@@ -72,6 +78,9 @@ class LMRTFY {
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
                 LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
+                LMRTFY.abilityAbbreviations = CONFIG.PF2E.abilityAbbreviations;
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
 
             case 'D35E':
@@ -85,6 +94,9 @@ class LMRTFY {
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
                 LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': true };
+                LMRTFY.abilityAbbreviations = CONFIG.D35E.abilityAbbreviations;
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
 
             default:
@@ -97,6 +109,26 @@ class LMRTFY {
                 canvas.tokens.releaseAll();
             })
         }
+    }
+
+    static parseAbilityModifiers() {
+        let abilityMods = {};
+
+        for (let key in LMRTFY.abilities) {
+            if (LMRTFY.abilityAbbreviations.hasOwnProperty(key)) {
+                abilityMods[`abilities.${LMRTFY.abilityAbbreviations[key]}.${LMRTFY.modIdentifier}`] = LMRTFY.abilities[key];
+            }
+        }
+
+        if (
+            game.system.id === 'dnd5eJP' ||
+            game.system.id === 'dnd5e' ||
+            game.system.id === 'sw5e'
+        ) {
+            abilityMods['attributes.prof'] = 'DND5E.Proficiency';            
+        }
+
+        return abilityMods;
     }
 
     static onMessage(data) {

@@ -3,7 +3,23 @@
 class LMRTFYRequestor extends FormApplication {
     constructor(...args) {
         super(...args)
-        game.users.apps.push(this)
+        game.users.apps.push(this);
+        
+        this.selectedDice = [];
+        this.selectedModifiers = [];
+        this.dice = [
+            'd4',
+            'd6',
+            'd8',
+            'd10',
+            'd12',
+            'd20',
+            'd100'
+        ];
+
+        this.diceFormula = '';
+        this.bonusFormula = '';
+        this.modifierFormula = '';
     }
 
     static get defaultOptions() {
@@ -29,6 +45,7 @@ class LMRTFYRequestor extends FormApplication {
         // Note: Maybe these work better at a global level, but keeping things simple
         const abilities = LMRTFY.abilities;
         const saves = LMRTFY.saves;
+        const abilityModifiers = LMRTFY.abilityModifiers;
 
         const skills = Object.keys(LMRTFY.skills)
             .sort((a, b) => game.i18n.localize(LMRTFY.skills[a]).localeCompare(game.i18n.localize(LMRTFY.skills[b])))
@@ -52,6 +69,7 @@ class LMRTFYRequestor extends FormApplication {
             tables,
             specialRolls: LMRTFY.specialRolls,
             rollModes: CONFIG.Dice.rollModes,
+            abilityModifiers,
         };
     }
 
@@ -62,7 +80,7 @@ class LMRTFYRequestor extends FormApplication {
         if (action === "update" && !data.some(d => "character" in d)) return;
         if (force !== true && !action) return;
         return super.render(force, context);
-      }
+    }
     
     activateListeners(html) {
         super.activateListeners(html);
@@ -71,6 +89,11 @@ class LMRTFYRequestor extends FormApplication {
         this.element.find("select[name=user]").change(this._onUserChange.bind(this));
         this.element.find(".lmrtfy-save-roll").click(this._onSubmit.bind(this));
         this.element.find(".lmrtfy-actor").hover(this._onHoverActor.bind(this));
+        this.element.find(".lmrtfy-dice-tray-button").click(this.diceLeftClick.bind(this));
+        this.element.find(".lmrtfy-dice-tray-button").contextmenu(this.diceRightClick.bind(this));
+        this.element.find(".lmrtfy-bonus-button").click(this.bonusClick.bind(this));
+        this.element.find(".lmrtfy-formula-ability").click(this.modifierClick.bind(this));
+        this.element.find(".lmrtfy-clear-formula").click(this.clearCustomFormula.bind(this));        
         this._onUserChange();
     }
 
@@ -120,6 +143,124 @@ class LMRTFYRequestor extends FormApplication {
         const actors = this._getUserActorIds(userId)
         this.element.find(".lmrtfy-actor").hide().filter((i, e) => actors.includes(e.dataset.id)).show();
 
+    }
+
+    diceLeftClick(event) {
+        this.selectedDice.push(event?.currentTarget?.dataset?.value);
+        this.diceFormula = this.convertSelectedDiceToFormula();
+
+        this.combineFormula();
+    }
+
+    diceRightClick(event) {
+        const index = this.selectedDice.indexOf(event?.currentTarget?.dataset?.value);
+
+        if (index > -1) {
+            this.selectedDice.splice(index, 1);
+        }
+        this.diceFormula = this.convertSelectedDiceToFormula();
+
+        this.combineFormula();
+    }
+
+    bonusClick(event) {
+        let bonus = event?.currentTarget?.dataset?.value;
+        let newBonus = +(this.bonusFormula.trim().replace(' ', '')) + +bonus;
+        
+        if (newBonus === 0) {
+            this.bonusFormula = '';
+        } else {
+            this.bonusFormula = ((newBonus > 0) ? ' + ' : ' - ') + Math.abs(newBonus).toString();
+        }
+
+        this.combineFormula();
+    }
+
+    modifierClick(event) {
+        let checked = event?.currentTarget?.checked;
+
+        if (checked) {
+            this.selectedModifiers.push(event?.currentTarget?.dataset?.value)
+        } else {
+            const index = this.selectedModifiers.indexOf(event?.currentTarget?.dataset?.value);
+            this.selectedModifiers.splice(index, 1);
+        }
+        
+        this.modifierFormula = this.convertSelectedModifiersToFormula();
+        this.combineFormula();
+    }
+
+    convertSelectedDiceToFormula() {
+        const occurences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+        let formula = '';
+
+        if (!this.selectedDice?.length) {
+            return '';
+        }
+
+        for (let die of this.dice) {
+            let count = occurences(this.selectedDice, die);
+
+            if (count > 0) {
+                if (formula?.length) {
+                    formula += ' + ';
+                }
+
+                formula += count + die;
+            }            
+        }
+
+        return formula;        
+    }
+
+    convertSelectedModifiersToFormula() {
+        let formula = '';
+
+        if (!this.selectedModifiers?.length) {
+            return '';
+        }
+
+        for (let mod of this.selectedModifiers) {
+            if (formula?.length) {
+                formula += ' + ';
+            }
+
+            formula += `@${mod}`;
+        }
+
+        return formula;        
+    }
+
+    combineFormula() {
+        let customFormula = '';
+        if (this.diceFormula?.length) {
+            customFormula += this.diceFormula;
+
+            if (this.modifierFormula?.length) {
+                customFormula += ` + ${this.modifierFormula}`;
+            }
+
+            if (this.bonusFormula?.length) {
+                customFormula += this.bonusFormula;
+            }            
+        } else {
+            this.element.find(".custom-formula").val('');
+        }
+
+        if (customFormula?.length) {
+            this.element.find(".custom-formula").val(customFormula);
+        }
+    }
+
+    clearCustomFormula() {
+        this.diceFormula = '';
+        this.modifierFormula = '';
+        this.bonusFormula = '';
+        this.selectedDice = [];
+        this.selectedModifiers = [];
+        this.element.find(".lmrtfy-formula-ability").prop('checked', false);
+
+        this.combineFormula();
     }
 
     async _updateObject(event, formData) {
