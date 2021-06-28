@@ -31,6 +31,11 @@ case 'dnd5e':
 
     // does your system support initiative rolls or deathsaves (as dnd5e understands them)?
     LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
+
+    // does you system use ability modifiers. this is for the dice and modifier buttons under custom formula
+    LMRTFY.abilityAbbreviations = CONFIG.DND5E.abilityAbbreviations;
+    LMRTFY.modIdentifier = 'mod';
+    LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
     break;
 ```
 
