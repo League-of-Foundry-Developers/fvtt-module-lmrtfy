@@ -144,7 +144,7 @@ class LMRTFY {
         else if (data.user === "tokens")
             actors = canvas.tokens.controlled.map(t => t.actor).filter(a => data.actors.includes(a.id));
         else
-            actors = data.actors.map(id => game.actors.get(id));
+            actors = data.actors.map(aid => LMRTFY.fromUuid(aid));
         actors = actors.filter(a => a);
         if (actors.length === 0) return;
         new LMRTFYRoller(actors, data).render(true);
@@ -193,6 +193,34 @@ class LMRTFY {
             }
         }
     }
+
+    static fromUuid(uuid) {
+        let parts = uuid.split(".");
+        let doc;
+      
+        if (parts.length === 1) return game.actors.get(uuid);
+        // Compendium Documents
+        if ( parts[0] === "Compendium" ) {
+            return undefined;
+        }
+      
+        // World Documents
+        else {
+            const [docName, docId] = parts.slice(0, 2);
+            parts = parts.slice(2);
+            const collection = CONFIG[docName].collection.instance;
+            doc = collection.get(docId);
+        }
+      
+        // Embedded Documents
+        while ( parts.length > 1 ) {
+            const [embeddedName, embeddedId] = parts.slice(0, 2);
+            doc = doc.getEmbeddedDocument(embeddedName, embeddedId);
+            parts = parts.slice(2);
+        }
+        if (doc.actor) doc = doc.actor;
+        return doc || undefined;
+      }
 }
 
 Hooks.once('init', LMRTFY.init);
