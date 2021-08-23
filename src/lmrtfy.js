@@ -99,6 +99,21 @@ class LMRTFY {
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
 
+            case 'cof':
+                LMRTFY.saveRollMethod = 'rollAbility';
+                LMRTFY.abilityRollMethod = 'rollAbility';
+                LMRTFY.skillRollMethod = 'rollAbility';
+                LMRTFY.abilities = CONFIG.COF.abilities;
+                LMRTFY.skills = CONFIG.COF.skills;
+                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+                LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+                LMRTFY.specialRolls = {};
+                LMRTFY.abilityAbbreviations = CONFIG.COF.abilityAbbreviations;
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                break;
+
             default:
                 console.error('LMRFTY | Unsupported system detected');
 
@@ -125,7 +140,7 @@ class LMRTFY {
             game.system.id === 'dnd5e' ||
             game.system.id === 'sw5e'
         ) {
-            abilityMods['attributes.prof'] = 'DND5E.Proficiency';            
+            abilityMods['attributes.prof'] = 'DND5E.Proficiency';
         }
 
         return abilityMods;
@@ -186,7 +201,7 @@ class LMRTFY {
         if (msg.message.flags && msg.message.flags.lmrtfy) {
             if (msg.message.flags.lmrtfy.blind && !game.user.isGM) {
                 msg.content = '<p>??</p>';
-                
+
                 let idx = html[0].innerHTML.indexOf('<div class="message-content">');
                 html[0].innerHTML = html[0].innerHTML.substring(0, idx);
                 html[0].innerHTML += `<div class="message-content">${msg.content}</div>`;
@@ -197,13 +212,13 @@ class LMRTFY {
     static fromUuid(uuid) {
         let parts = uuid.split(".");
         let doc;
-      
+
         if (parts.length === 1) return game.actors.get(uuid);
         // Compendium Documents
-        if ( parts[0] === "Compendium" ) {
+        if (parts[0] === "Compendium") {
             return undefined;
         }
-      
+
         // World Documents
         else {
             const [docName, docId] = parts.slice(0, 2);
@@ -211,16 +226,16 @@ class LMRTFY {
             const collection = CONFIG[docName].collection.instance;
             doc = collection.get(docId);
         }
-      
+
         // Embedded Documents
-        while ( parts.length > 1 ) {
+        while (parts.length > 1) {
             const [embeddedName, embeddedId] = parts.slice(0, 2);
             doc = doc.getEmbeddedDocument(embeddedName, embeddedId);
             parts = parts.slice(2);
         }
         if (doc.actor) doc = doc.actor;
         return doc || undefined;
-      }
+    }
 }
 
 Hooks.once('init', LMRTFY.init);
