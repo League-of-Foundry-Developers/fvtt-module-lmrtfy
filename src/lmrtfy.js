@@ -100,16 +100,16 @@ class LMRTFY {
                 break;
 
             case 'cof':
-                LMRTFY.saveRollMethod = 'rollAbility';
-                LMRTFY.abilityRollMethod = 'rollAbility';
-                LMRTFY.skillRollMethod = 'rollAbility';
-                LMRTFY.abilities = CONFIG.COF.abilities;
+                LMRTFY.saveRollMethod = 'rollStat';
+                LMRTFY.abilityRollMethod = 'rollStat';
+                LMRTFY.skillRollMethod = 'rollStat';
+                LMRTFY.abilities = CONFIG.COF.stats;
                 LMRTFY.skills = CONFIG.COF.skills;
                 LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
                 LMRTFY.specialRolls = {};
-                LMRTFY.abilityAbbreviations = CONFIG.COF.abilityAbbreviations;
+                LMRTFY.abilityAbbreviations = CONFIG.COF.statAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
