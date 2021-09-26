@@ -54,13 +54,6 @@
     </div>
     </fieldset>
 
-    {{#if (
-        or
-            (specialRolls.initiative)
-            (specialRolls.deathsave)
-            (specialRolls.perception)
-        )
-    }}
     <fieldset>
         <div class="form-group">
             <label>{{localize "LMRTFY.Extras"}}</label>
@@ -88,7 +81,6 @@
             </div>
         </div>        
     </fieldset>
-    {{/if}}
 
     <fieldset>
         <div class="form-group">
@@ -249,8 +241,7 @@
         </div>
     </div>
     </fieldset>
-     
-    {{#if saves}}
+
     <fieldset>
     <div class="form-group">
         <label>{{localize "LMRTFY.SavingThrows"}}</label>
@@ -265,7 +256,6 @@
         </div>
     </div>
     </fieldset>
-    {{/if}}
 
     <fieldset>
         <div class="form-group">
