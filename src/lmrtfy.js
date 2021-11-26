@@ -114,6 +114,21 @@ class LMRTFY {
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
 
+            case 'coc':
+                LMRTFY.saveRollMethod = 'rollStat';
+                LMRTFY.abilityRollMethod = 'rollStat';
+                LMRTFY.skillRollMethod = 'rollStat';
+                LMRTFY.abilities = CONFIG.COC.stats;
+                LMRTFY.skills = CONFIG.COC.skills;
+                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+                LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+                LMRTFY.specialRolls = {};
+                LMRTFY.abilityAbbreviations = CONFIG.COC.statAbbreviations;
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+            break;
+
             default:
                 console.error('LMRFTY | Unsupported system detected');
 
