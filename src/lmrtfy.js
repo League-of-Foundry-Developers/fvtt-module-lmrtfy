@@ -130,8 +130,8 @@ class LMRTFY {
             break;
 
             case 'demonlord':
-                const abilities = duplicate(CONFIG.DL.attributes)
-                delete abilities.defense
+                const abilities = duplicate(CONFIG.DL.attributes);
+                delete abilities.defense;
                 LMRTFY.saveRollMethod = 'rollChallenge';
                 LMRTFY.abilityRollMethod = 'rollChallenge';
                 LMRTFY.skillRollMethod = 'rollChallenge';
