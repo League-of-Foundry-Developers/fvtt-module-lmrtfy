@@ -142,6 +142,10 @@ class LMRTFYRoller extends Application {
                     await actor[rollMethod].call(actor, fakeEvent, ...args);
                     break;
                 }
+                case "demonlord": {
+                    await actor[rollMethod].call(actor, ...args);
+                    break;
+                }
                 default: {
                     await actor[rollMethod].call(actor, ...args, { event: fakeEvent });
                 }

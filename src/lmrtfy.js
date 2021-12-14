@@ -129,6 +129,24 @@ class LMRTFY {
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
             break;
 
+            case 'demonlord':
+                const abilities = duplicate(CONFIG.DL.attributes);
+                delete abilities.defense;
+                LMRTFY.saveRollMethod = 'rollChallenge';
+                LMRTFY.abilityRollMethod = 'rollChallenge';
+                LMRTFY.skillRollMethod = 'rollChallenge';
+                LMRTFY.abilities = abilities;
+                LMRTFY.skills = {};
+                LMRTFY.saves = {};
+                LMRTFY.normalRollEvent = {};
+                LMRTFY.advantageRollEvent = {};
+                LMRTFY.disadvantageRollEvent = {};
+                LMRTFY.specialRolls = {};
+                LMRTFY.abilityAbbreviations = abilities;
+                LMRTFY.modIdentifier = 'modifier';
+                LMRTFY.abilityModifiers = {};
+                break;
+
             default:
                 console.error('LMRFTY | Unsupported system detected');
 
