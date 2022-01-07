@@ -11,10 +11,23 @@ class LMRTFYRoller extends Application {
         this.mode = data.mode;
         this.message = data.message;
         this.tables = data.tables;
+        this.chooseOne = data.chooseOne ?? false;
+
+        if (game.system.id === 'pf2e') {
+            this.dc = data.dc;            
+        }        
+
         if (data.title) {
             this.options.title = data.title;
         }
-    }
+
+        this.pf2eRollFor = {
+            ABILITY: "ability",
+            SAVE: "save",
+            SKILL: "skill",        
+            PERCEPTION: "perception",
+        }
+    }    
 
     static get defaultOptions() {
         const options = super.defaultOptions;
@@ -79,7 +92,8 @@ class LMRTFYRoller extends Application {
         this.skills
             .sort((a, b) => game.i18n.localize(LMRTFY.skills[a]).localeCompare(game.i18n.localize(LMRTFY.skills[b])))
             .forEach(s => skills[s] = LMRTFY.skills[s]);
-        return {
+
+        const data = {
             actors: this.actors,
             abilities: abilities,
             saves: saves,
@@ -91,7 +105,10 @@ class LMRTFYRoller extends Application {
             initiative: this.data.initiative,
             perception: this.data.perception,
             tables: this.tables,
+            chooseOne: this.chooseOne,
         };
+
+        return data;
     }
 
     activateListeners(html) {
@@ -112,7 +129,13 @@ class LMRTFYRoller extends Application {
         }
     }
 
-    async _makeRoll(event, rollMethod, ...args) {
+    _checkClose() {
+        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0 || this.chooseOne) {
+            this.close();
+        }
+    }
+
+    async _makeRoll(event, rollMethod, rollId, rollFor) {
         let fakeEvent = {}
         switch(this.advantage) {
             case -1: 
@@ -139,25 +162,73 @@ class LMRTFYRoller extends Application {
             // system specific roll handling
             switch (game.system.id) {
                 case "pf2e": {
-                    await actor[rollMethod].call(actor, fakeEvent, ...args);
+                    switch (rollFor) {
+                        case this.pf2eRollFor.ABILITY:
+                            const modifier = LMRTFY.buildAbilityModifier(actor, rollId);
+                            game.pf2e.Check.roll(modifier, { type: 'skill-check', dc: this.dc, actor }, event);
+                            break;
+
+                        case this.pf2eRollFor.SAVE:
+                            const save = actor.saves[rollId].check;
+                            const saveOptions = actor.getRollOptions(['all', `${save.ability}-based`, 'saving-throw', save.name]);
+                            save.roll({ event, saveOptions, dc: this.dc });
+                            break;
+
+                        case this.pf2eRollFor.SKILL:
+                            // system specific roll handling
+                            const skill = actor.data.data.skills[rollId];
+                            // roll lore skills only for actors who have them ...
+                            if (!skill) continue;
+
+                            const skillOptions = actor.getRollOptions(['all', `${skill.ability ?? 'int'}-based`, 'skill-check', skill.name]);
+                            skill.roll({ event, skillOptions, dc: this.dc });
+                            break;
+
+                        case this.pf2eRollFor.PERCEPTION:
+                            const precOptions = actor.getRollOptions(['all', 'wis-based', 'perception']);
+                            actor.data.data.attributes.perception.roll({ event, precOptions, dc: this.dc });
+                            break;
+                    }
+                    
                     break;
                 }
-                case "demonlord": {
-                    await actor[rollMethod].call(actor, ...args);
-                    break;
-                }
+                
                 default: {
-                    await actor[rollMethod].call(actor, ...args, { event: fakeEvent });
+                    await actor[rollMethod].call(actor, rollId, { event: fakeEvent });
                 }
             }
         }
 
         game.settings.set("core", "rollMode", rollMode);
-
         event.currentTarget.disabled = true;
 
-        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
-            this.close();
+        this._checkClose();
+    }
+
+    _makePF2EInitiativeRoll(event) {
+        // save the current roll mode to reset it after this roll
+        const rollMode = game.settings.get("core", "rollMode");
+        game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
+
+        for (let actor of this.actors) {
+            const initiative = actor.data.data.attributes.initiative;
+            const rollNames = ['all', 'initiative'];
+            if (initiative.ability === 'perception') {
+                rollNames.push('wis-based');
+                rollNames.push('perception');
+            } else {
+                const skill = actor.data.data.skills[initiative.ability];
+                rollNames.push(`${skill.ability}-based`);
+                rollNames.push(skill.name);
+            }
+            const options = actor.getRollOptions(rollNames);
+            initiative.roll({ event, options });
+        }
+
+        game.settings.set("core", "rollMode", rollMode);
+
+        event.currentTarget.disabled = true;
+        this._checkClose();
     }
 
     _tagMessage(candidate, data, options) {
@@ -200,8 +271,7 @@ class LMRTFYRoller extends Application {
         ChatMessage.create(chatMessages);
 
         event.currentTarget.disabled = true;
-        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
-            this.close();
+        this._checkClose();
     }
 
     _drawTable(event, table) {
@@ -266,9 +336,7 @@ class LMRTFYRoller extends Application {
                         ChatMessage.create(chatMessages, {});
     
                         event.currentTarget.disabled = true;
-                        if (this.element.find("button").filter((i, e) => !e.disabled).length === 0) {
-                            this.close();
-                        }
+                        this._checkClose();
                     }
                 });                                 
             }
@@ -278,47 +346,59 @@ class LMRTFYRoller extends Application {
     _onAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
+        this._makeRoll(event, LMRTFY.abilityRollMethod, ability, (game.system.id === 'pf2e') ? this.pf2eRollFor.ABILITY : null);
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
         const saves = event.currentTarget.dataset.ability;
-        this._makeRoll(event, LMRTFY.saveRollMethod, saves);
+        this._makeRoll(event, LMRTFY.saveRollMethod, saves, (game.system.id === 'pf2e') ? this.pf2eRollFor.SAVE : null);
     }
 
     _onSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
-        this._makeRoll(event, LMRTFY.skillRollMethod, skill);
+        this._makeRoll(event, LMRTFY.skillRollMethod, skill, (game.system.id === 'pf2e') ? this.pf2eRollFor.SKILL : null);
     }
+
     async _onCustomFormula(event) {
         event.preventDefault();
         await this._makeDiceRoll(event, this.data.formula);
     }
+
     _onInitiative(event) {
         event.preventDefault();
-        if(this.data.initiative) {
-            for (let actor of this.actors) {
-                actor.rollInitiative();
-            }
-            event.currentTarget.disabled = true;
-            if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
-                this.close();
+
+        if (game.system.id === 'pf2e') {
+            this._makePF2EInitiativeRoll(event);
         } else {
-            const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
-            this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
+            if (this.data.initiative) {
+                for (let actor of this.actors) {
+                    actor.rollInitiative();
+                }
+                event.currentTarget.disabled = true;
+                this._checkClose();
+            } else {
+                const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
+                this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
+            }
         }
     }
+
     _onDeathSave(event) {
         event.preventDefault();
-        if(game.system.id == "dnd5e") {
+        if (game.system.id == "dnd5e") {
             for (let actor of this.actors) {
                 actor.rollDeathSave(event);
             }
             event.currentTarget.disabled = true;
-            if (this.element.find("button").filter((i, e) => !e.disabled).length === 0)
-                this.close();
+            this._checkClose();
+        } else if (game.system.id == "pf2e") {
+            for (let actor of this.actors) {
+                actor.rollRecovery();
+            }
+            event.currentTarget.disabled = true;
+            this._checkClose();
         } else {
             this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
         }

@@ -78,7 +78,7 @@ class LMRTFY {
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
                 LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
-                LMRTFY.abilityAbbreviations = CONFIG.PF2E.abilityAbbreviations;
+                LMRTFY.abilityAbbreviations = CONFIG.PF2E.abilities;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
@@ -163,8 +163,8 @@ class LMRTFY {
         let abilityMods = {};
 
         for (let key in LMRTFY.abilities) {
-            if (LMRTFY.abilityAbbreviations.hasOwnProperty(key)) {
-                abilityMods[`abilities.${LMRTFY.abilityAbbreviations[key]}.${LMRTFY.modIdentifier}`] = LMRTFY.abilities[key];
+            if (LMRTFY.abilityAbbreviations?.hasOwnProperty(key)) {
+                abilityMods[`abilities.${game.i18n.localize(LMRTFY.abilityAbbreviations[key])}.${LMRTFY.modIdentifier}`] = game.i18n.localize(LMRTFY.abilities[key]);
             }
         }
 
@@ -228,6 +228,25 @@ class LMRTFY {
                 button: true
             });
         }
+    }
+
+    static buildAbilityModifier(actor, ability) {
+        const modifiers = [];
+
+        const mod = game.pf2e.AbilityModifier.fromScore(ability, actor.data.data.abilities[ability].value);
+        modifiers.push(mod);
+
+        const rules = actor.items
+            .reduce((rules, item) => rules.concat(game.pf2e.RuleElements.fromOwnedItem(item)), [])
+            .filter((rule) => !rule.ignored);
+
+        const { statisticsModifiers } = actor.prepareCustomModifiers(rules);
+        
+        [`${ability}-based`, 'ability-check', 'all'].forEach((key) => {
+            (statisticsModifiers[key] || []).map((m) => duplicate(m)).forEach((m) => modifiers.push(m));
+        });
+        
+        return new game.pf2e.StatisticModifier(`${game.i18n.localize('LMRTFY.AbilityCheck')} ${game.i18n.localize(mod.label)}`, modifiers);
     }
 
     static async hideBlind(app, html, msg) {
