@@ -14,7 +14,8 @@ class LMRTFYRoller extends Application {
         this.chooseOne = data.chooseOne ?? false;
 
         if (game.system.id === 'pf2e') {
-            this.dc = data.dc;            
+            this.dc = data.dc;
+            this.pf2Roll = '';
         }        
 
         if (data.title) {
@@ -135,7 +136,7 @@ class LMRTFYRoller extends Application {
         }
     }
 
-    async _makeRoll(event, rollMethod, rollId, rollFor) {
+    async _makeRoll(event, rollMethod, ...args) {
         let fakeEvent = {}
         switch(this.advantage) {
             case -1: 
@@ -162,21 +163,21 @@ class LMRTFYRoller extends Application {
             // system specific roll handling
             switch (game.system.id) {
                 case "pf2e": {
-                    switch (rollFor) {
+                    switch (this.pf2Roll) {
                         case this.pf2eRollFor.ABILITY:
-                            const modifier = LMRTFY.buildAbilityModifier(actor, rollId);
+                            const modifier = LMRTFY.buildAbilityModifier(actor, args[0]);
                             game.pf2e.Check.roll(modifier, { type: 'skill-check', dc: this.dc, actor }, event);
                             break;
 
                         case this.pf2eRollFor.SAVE:
-                            const save = actor.saves[rollId].check;
+                            const save = actor.saves[args[0]].check;
                             const saveOptions = actor.getRollOptions(['all', `${save.ability}-based`, 'saving-throw', save.name]);
                             save.roll({ event, saveOptions, dc: this.dc });
                             break;
 
                         case this.pf2eRollFor.SKILL:
                             // system specific roll handling
-                            const skill = actor.data.data.skills[rollId];
+                            const skill = actor.data.data.skills[args[0]];
                             // roll lore skills only for actors who have them ...
                             if (!skill) continue;
 
@@ -194,7 +195,7 @@ class LMRTFYRoller extends Application {
                 }
                 
                 default: {
-                    await actor[rollMethod].call(actor, rollId, { event: fakeEvent });
+                    await actor[rollMethod].call(actor, ...args, { event: fakeEvent });
                 }
             }
         }
@@ -346,19 +347,22 @@ class LMRTFYRoller extends Application {
     _onAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        this._makeRoll(event, LMRTFY.abilityRollMethod, ability, (game.system.id === 'pf2e') ? this.pf2eRollFor.ABILITY : null);
+        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
+        this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
         const saves = event.currentTarget.dataset.ability;
-        this._makeRoll(event, LMRTFY.saveRollMethod, saves, (game.system.id === 'pf2e') ? this.pf2eRollFor.SAVE : null);
+        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
+        this._makeRoll(event, LMRTFY.saveRollMethod, saves);
     }
 
     _onSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
-        this._makeRoll(event, LMRTFY.skillRollMethod, skill, (game.system.id === 'pf2e') ? this.pf2eRollFor.SKILL : null);
+        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
+        this._makeRoll(event, LMRTFY.skillRollMethod, skill);
     }
 
     async _onCustomFormula(event) {
