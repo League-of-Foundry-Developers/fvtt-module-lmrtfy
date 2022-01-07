@@ -179,10 +179,10 @@ class LMRTFYRoller extends Application {
             try {
                 const rollData = actor.getRollData();
                 const roll = new Roll(formula, rollData);
-                const messageData = await roll.toMessage({"flags.lmrtfy": messageFlag}, {rollMode: this.mode, create: false});
+                const rollMessageData = await roll.toMessage({"flags.lmrtfy": messageFlag}, {rollMode: this.mode, create: false});
                 
                 const speaker = ChatMessage.getSpeaker({actor: actor});
-                messageData.update({
+                const messageData = mergeObject(rollMessageData, {
                     speaker: {
                         alias: speaker.alias,
                         scene: speaker.scene,
