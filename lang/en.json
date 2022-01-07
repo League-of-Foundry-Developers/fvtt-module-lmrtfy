@@ -47,5 +47,10 @@
     "LMRTFY.DeselectOnRequestorRender": "Deselect tokens when opening requestor",
     "LMRTFY.DeselectOnRequestorRenderHint": "Enable to prevent roll requests from being sent to GM user (yourself)",
     "LMRTFY.Selectors": "Dice & Modifiers",
-    "LMRTFY.ClearCustomFormula": "Clear Custom Formula"
+    "LMRTFY.ClearCustomFormula": "Clear Custom Formula",
+    "LMRTFY.Visibility": "Visibility",
+    "LMRTFY.ChooseOneDM": "Player chooses one request to roll:",
+    "LMRTFY.ChooseOne": "Pick one to roll:",
+    "LMRTFY.Enabled": "Enabled",
+    "LMRTFY.DC": "DC"
 }

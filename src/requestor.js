@@ -69,6 +69,7 @@ class LMRTFYRequestor extends FormApplication {
             tables,
             specialRolls: LMRTFY.specialRolls,
             rollModes: CONFIG.Dice.rollModes,
+            showDC: (game.system.id === 'pf2e') ? true : false,
             abilityModifiers,
         };
     }
@@ -302,6 +303,17 @@ class LMRTFYRequestor extends FormApplication {
             ui.notifications.warn(game.i18n.localize("LMRTFY.NothingNotification"));
             return;
         }
+
+        let dc = undefined;
+        if (game.system.id === 'pf2e') {
+            if (Number.isInteger(formData.dc)) {
+                dc = {
+                    value: formData.dc,
+                    visibility: formData.visibility
+                }
+            }
+        }
+
         const socketData = {
             user: formData.user,
             actors,
@@ -317,8 +329,12 @@ class LMRTFYRequestor extends FormApplication {
             initiative: formData['extra-initiative'],
             perception: formData['extra-perception'],
             tables: tables,
+            chooseOne: formData['choose-one'],
         }
-        // console.log("LMRTFY socket send : ", socketData)
+        if (game.system.id === 'pf2e' && dc) {
+            socketData['dc'] = dc;
+        }
+        
         if (saveAsMacro) {
 
             const actorTargets = actors.map(a => game.actors.get(a)).filter(a => a).map(a => a.name).join(", ");
