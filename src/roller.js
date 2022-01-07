@@ -193,19 +193,13 @@ class LMRTFYRoller extends Application {
                     break;
                 }
                 
-                case "demonlord": {
-                    await actor[rollMethod].call(actor, ...args);
-                    break;
-                }
-
                 default: {
-                    await actor[rollMethod].call(actor, ...args, { event: fakeEvent });
+                    await actor[rollMethod].call(actor, rollId, { event: fakeEvent });
                 }
             }
         }
 
         game.settings.set("core", "rollMode", rollMode);
-
         event.currentTarget.disabled = true;
 
         this._checkClose();
