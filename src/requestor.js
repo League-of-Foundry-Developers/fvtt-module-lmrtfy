@@ -40,8 +40,8 @@ class LMRTFYRequestor extends FormApplication {
 
     async getData() {
         // Return data to the template
-        const actors = game.actors.entities;
-        const users = game.users.entities;
+        const actors = game.actors.entities || game.actors.contents;
+        const users = game.users.entities || game.users.contents;
         // Note: Maybe these work better at a global level, but keeping things simple
         const abilities = LMRTFY.abilities;
         const saves = LMRTFY.saves;
@@ -117,7 +117,8 @@ class LMRTFYRequestor extends FormApplication {
             const actorId = div.dataset.id;
             const actor = game.actors.get(actorId);
             if (!actor) return;
-            const user = userId === "character" ? game.users.entities.find(u => u.character && u.character._id === actor._id) : null;
+            const gameUsers = game.users.entities || game.users.contents;
+            const user = userId === "character" ? gameUsers.find(u => u.character && u.character._id === actor._id) : null;
             const tooltip = document.createElement("SPAN");
             tooltip.classList.add("tooltip");
             tooltip.textContent = `${actor.name}${user ? ` (${user.name})` : ''}`;
@@ -128,21 +129,24 @@ class LMRTFYRequestor extends FormApplication {
     _getUserActorIds(userId) {
         let actors = [];
         if (userId === "character") {
-            actors = game.users.entities.map(u => u.character && u.character.id).filter(a => a)
+            const gameUsers = game.users.entities || game.users.contents;
+            actors = gameUsers.map(u => u.character?.id).filter(a => a)
         } else if (userId === "tokens") {
             actors = Array.from(new Set(canvas.tokens.placeables.map(t => t.data.actorId))).filter(a => a);
         } else {
             const user = game.users.get(userId);
-            if (user)
-                actors = game.actors.entities.filter(a => a.hasPerm(user, "OWNER")).map(a => a.id)
+            if (user) {
+                const gameActors = game.actors.contents || game.actors.entities;
+                actors = gameActors.filter(a => a.testUserPermission(user, "OWNER")).map(a => a.id)
+            }
         }
         return actors;
     }
+
     _onUserChange() {
         const userId = this.element.find("select[name=user]").val();
         const actors = this._getUserActorIds(userId)
         this.element.find(".lmrtfy-actor").hide().filter((i, e) => actors.includes(e.dataset.id)).show();
-
     }
 
     diceLeftClick(event) {
