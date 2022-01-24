@@ -62,7 +62,7 @@ class LMRTFY {
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
                 LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': false };
-                LMRTFY.abilityAbbreviations = CONFIG.PF1.abilityAbbreviations;
+                LMRTFY.abilityAbbreviations = CONFIG.PF1.abilitiesShort;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 break;
