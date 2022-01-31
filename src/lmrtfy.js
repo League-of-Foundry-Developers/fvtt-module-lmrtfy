@@ -236,12 +236,8 @@ class LMRTFY {
         const mod = game.pf2e.AbilityModifier.fromScore(ability, actor.data.data.abilities[ability].value);
         modifiers.push(mod);
 
-        const rules = actor.items
-            .reduce((rules, item) => rules.concat(game.pf2e.RuleElements.fromOwnedItem(item)), [])
-            .filter((rule) => !rule.ignored);
-
         [`${ability}-based`, 'ability-check', 'all'].forEach((key) => {
-            (actor.synthetics.statisticsModifier[key] || []).map((m) => duplicate(m)).forEach((m) => modifiers.push(m));
+            (actor.synthetics.statisticsModifier[key] || []).forEach((m) => modifiers.push(m.clone()));
         });
         
         return new game.pf2e.StatisticModifier(`${game.i18n.localize('LMRTFY.AbilityCheck')} ${game.i18n.localize(mod.label)}`, modifiers);
