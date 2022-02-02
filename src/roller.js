@@ -251,10 +251,10 @@ class LMRTFYRoller extends Application {
             try {
                 const rollData = actor.getRollData();
                 const roll = new Roll(formula, rollData);
+                const speaker = ChatMessage.getSpeaker({actor: actor});
                 const rollMessageData = await roll.toMessage({"flags.lmrtfy": messageFlag}, {rollMode: this.mode, create: false});
                 
-                const speaker = ChatMessage.getSpeaker({actor: actor});
-                const messageData = mergeObject(rollMessageData, {
+                const messageData = { ...(await roll.toMessage({"flags.lmrtfy": messageFlag}, {rollMode: this.mode, create: false})),
                     speaker: {
                         alias: speaker.alias,
                         scene: speaker.scene,
@@ -262,10 +262,11 @@ class LMRTFYRoller extends Application {
                         actor: speaker.actor,
                     },
                     flavor: this.message || defaultMessage,
-                });
+                }
 
                 chatMessages.push(messageData);
             } catch(err) {
+                console.error(err);
                 continue;
             }
         }
