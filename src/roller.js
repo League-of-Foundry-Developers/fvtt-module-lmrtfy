@@ -262,7 +262,7 @@ class LMRTFYRoller extends Application {
                         actor: speaker.actor,
                     },
                     flavor: this.message || defaultMessage,
-                }
+                };
 
                 chatMessages.push(messageData);
             } catch(err) {
