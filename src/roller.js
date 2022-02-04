@@ -16,7 +16,7 @@ class LMRTFYRoller extends Application {
         if (game.system.id === 'pf2e') {
             this.dc = data.dc;
             this.pf2Roll = '';
-        }        
+        }
 
         if (data.title) {
             this.options.title = data.title;
@@ -25,10 +25,10 @@ class LMRTFYRoller extends Application {
         this.pf2eRollFor = {
             ABILITY: "ability",
             SAVE: "save",
-            SKILL: "skill",        
+            SKILL: "skill",
             PERCEPTION: "perception",
         }
-    }    
+    }
 
     static get defaultOptions() {
         const options = super.defaultOptions;
@@ -84,7 +84,7 @@ class LMRTFYRoller extends Application {
             note = game.i18n.localize("LMRTFY.AdvantageNote");
         else if (this.advantage == -1)
             note = game.i18n.localize("LMRTFY.DisadvantageNote");
-        
+
         let abilities = {}
         let saves = {}
         let skills = {}
@@ -139,7 +139,7 @@ class LMRTFYRoller extends Application {
     async _makeRoll(event, rollMethod, ...args) {
         let fakeEvent = {}
         switch(this.advantage) {
-            case -1: 
+            case -1:
                 fakeEvent = LMRTFY.disadvantageRollEvent;
                 break;
             case 0:
@@ -148,7 +148,7 @@ class LMRTFYRoller extends Application {
             case 1:
                 fakeEvent = LMRTFY.advantageRollEvent;
                 break;
-            case 2: 
+            case 2:
                 fakeEvent = event;
                 break;
         }
@@ -190,10 +190,10 @@ class LMRTFYRoller extends Application {
                             actor.data.data.attributes.perception.roll({ event, precOptions, dc: this.dc });
                             break;
                     }
-                    
+
                     break;
                 }
-                
+
                 default: {
                     await actor[rollMethod].call(actor, ...args, { event: fakeEvent });
                 }
@@ -245,32 +245,37 @@ class LMRTFYRoller extends Application {
                 formula = formula.replace("1d20", "2d20kl1")
         }
 
-        const chatMessages = [];
         const messageFlag = {"message": this.data.message, "data": this.data.attach};
-        for (let actor of this.actors) {
-            try {
-                const rollData = actor.getRollData();
-                const roll = new Roll(formula, rollData);
-                const speaker = ChatMessage.getSpeaker({actor: actor});
-                const rollMessageData = await roll.toMessage({"flags.lmrtfy": messageFlag}, {rollMode: this.mode, create: false});
-                
-                const messageData = { ...(await roll.toMessage({"flags.lmrtfy": messageFlag}, {rollMode: this.mode, create: false})),
-                    speaker: {
-                        alias: speaker.alias,
-                        scene: speaker.scene,
-                        token: speaker.token,
-                        actor: speaker.actor,
-                    },
-                    flavor: this.message || defaultMessage,
-                };
 
-                chatMessages.push(messageData);
-            } catch(err) {
-                console.error(err);
-                continue;
-            }
-        }
-        ChatMessage.create(chatMessages);
+        const rollMessages = [];
+        const rollMessagePromises = this.actors.map(async (actor) => {
+            const speaker = ChatMessage.getSpeaker({actor: actor});
+
+            const rollData = actor.getRollData();
+            const roll = new Roll(formula, rollData);
+            const rollMessageData = await roll.toMessage(
+                {"flags.lmrtfy": messageFlag},
+                {rollMode: this.mode, create: false}
+            );
+
+            rollMessages.push(
+                mergeObject(
+                    rollMessageData,
+                    {
+                        speaker: {
+                            alias: speaker.alias,
+                            scene: speaker.scene,
+                            token: speaker.token,
+                            actor: speaker.actor,
+                        },
+                        flavor: this.message || defaultMessage,
+                    },
+                ),
+            );
+        })
+
+        await Promise.allSettled(rollMessagePromises);
+        await ChatMessage.create(rollMessages);
 
         event.currentTarget.disabled = true;
         this._checkClose();
@@ -296,10 +301,10 @@ class LMRTFYRoller extends Application {
                 rollTable.draw({ displayChat: false }).then((res) => {
                     count++;
                     const rollResults = res.results;
-    
+
                     const nr = rollResults.length > 1 ? `${rollResults.length} results` : "a result";
                     let content = "";
-                    
+
                     for (const rollResult of rollResults) {
                         const result = rollResult.data;
 
@@ -314,11 +319,11 @@ class LMRTFYRoller extends Application {
                             content += `<p><a class="entity-link" draggable="true" data-pack="${result.collection}" data-id="${result.resultId}">
                                 <i class="${icons[result.collection]}"></i> ${result.text}</a></p>`;
                         }
-                        
+
                     }
                     let chatData = {
                         user: game.user._id,
-                        speaker: ChatMessage.getSpeaker({actor}),                
+                        speaker: ChatMessage.getSpeaker({actor}),
                         flavor: `Draws ${nr} from the ${table} table.`,
                         content: content,
                         type: CONST.CHAT_MESSAGE_TYPES.OTHER,
@@ -326,23 +331,23 @@ class LMRTFYRoller extends Application {
 
                     if ( ["gmroll", "blindroll"].includes(this.mode) ) {
                         chatData.whisper = ChatMessage.getWhisperRecipients("GM");
-                    }              
+                    }
                     if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
                     if ( this.mode === "blindroll" ) chatData.blind = true;
 
                     setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach, "blind": chatData.blind});
-                    
+
                     chatMessages.push(chatData);
-    
+
                     if (count === this.actors.length) {
                         ChatMessage.create(chatMessages, {});
-    
+
                         event.currentTarget.disabled = true;
                         this._checkClose();
                     }
-                });                                 
+                });
             }
-        }        
+        }
     }
 
     _onAbilityCheck(event) {
