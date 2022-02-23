@@ -147,6 +147,24 @@ class LMRTFY {
                 LMRTFY.abilityModifiers = {};
                 break;
 
+            case 'ose':
+                LMRTFY.saveRollMethod = 'rollSave';
+                LMRTFY.abilityRollMethod = 'rollCheck';
+                LMRTFY.skillRollMethod = 'rollExploration';
+                LMRTFY.abilities = CONFIG.OSE.scores;
+                LMRTFY.abilityAbbreviations = CONFIG.OSE.scores_short;
+                LMRTFY.skills = CONFIG.OSE.exploration_skills;
+                LMRTFY.saves = CONFIG.OSE.saves_long;
+                LMRTFY.normalRollEvent = {};
+                LMRTFY.advantageRollEvent = {};
+                LMRTFY.disadvantageRollEvent = {};
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.specialRolls = {};
+                LMRTFY.modIdentifier = 'modifier';
+                LMRTFY.abilityModifiers = {};
+                break;
+
             default:
                 console.error('LMRFTY | Unsupported system detected');
 
