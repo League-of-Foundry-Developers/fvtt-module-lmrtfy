@@ -194,6 +194,29 @@ class LMRTFYRoller extends Application {
                     break;
                 }
 
+                case "foundry-chromatic-dungeons": {
+                    const key = args[0];
+                    const {attributes, attributeMods, saves} = actor.data.data;
+                    let label, formula, target;
+
+                    switch (rollMethod) {
+                        case 'attributeRoll':
+                            label = LMRTFY.abilities[key];
+                            formula = `1d20-${attributeMods[key]}`;
+                            target = attributes[key];
+                            break;
+                        case 'saveRoll':
+                            label = LMRTFY.saves[key];
+                            formula = `1d20+${saves.mods[key]}`;
+                            target = saves.targets[key];
+                            break;
+                    }
+
+                    actor[rollMethod](game.i18n.localize(label), formula, target);
+
+                    break;
+                }
+
                 default: {
                     await actor[rollMethod].call(actor, ...args, { event: fakeEvent });
                 }

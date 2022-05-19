@@ -164,6 +164,17 @@ class LMRTFY {
                 LMRTFY.modIdentifier = 'modifier';
                 LMRTFY.abilityModifiers = {};
                 break;
+            
+            case 'foundry-chromatic-dungeons':
+                LMRTFY.saveRollMethod = 'saveRoll';
+                LMRTFY.abilityRollMethod = 'attributeRoll';
+                LMRTFY.skillRollMethod = null;
+                LMRTFY.abilities = CONFIG.CHROMATIC.attributeLabels;
+                LMRTFY.abilityAbbreviations = CONFIG.CHROMATIC.attributeAbbreviations;
+                LMRTFY.skills = {};
+                LMRTFY.saves = CONFIG.CHROMATIC.saves;
+                LMRTFY.specialRolls = {};
+                break;    
 
             default:
                 console.error('LMRFTY | Unsupported system detected');
