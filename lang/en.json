@@ -52,5 +52,12 @@
     "LMRTFY.ChooseOneDM": "Player chooses one request to roll:",
     "LMRTFY.ChooseOne": "Pick one to roll:",
     "LMRTFY.Enabled": "Enabled",
-    "LMRTFY.DC": "DC"
+    "LMRTFY.DC": "DC",
+    "LMRTFY.UseTokenImageOnRequester": "Use the token's image on the requestor",
+    "LMRTFY.UseTokenImageOnRequesterHint": "When opening the roll requester, use the token's image instead of the actor portrait",
+    "LMRTFY.Selected": "Controlled token at time of macro run",
+    "LMRTFY.SelectedNotification": "The selected user can only be used with 'Save Request as Macro'",
+    "LMRTFY.Macros": "For Macros",
+    "LMRTFY.Users": "Users",
+    "LMRTFY.NoSelectedToken": "Token(s) needs to be selected before the macro can be run"
 }

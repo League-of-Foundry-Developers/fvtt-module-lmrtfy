@@ -57,7 +57,9 @@ class LMRTFYRequestor extends FormApplication {
         let tables = null;
         if (game.tables) {
             tables = [];
-            game.tables.forEach(t => tables.push(t.data.name));
+            game.tables.forEach(
+                t => tables.push(t.name)
+            );
         }
 
         return {
@@ -119,7 +121,7 @@ class LMRTFYRequestor extends FormApplication {
             const actor = game.actors.get(actorId);
             if (!actor) return;
             const gameUsers = game.users.entities || game.users.contents;
-            const user = userId === "character" ? gameUsers.find(u => u.character && u.character._id === actor._id) : null;
+            const user = userId === "character" ? gameUsers.find(u => u.character && u.character.id === actor.id) : null;
             const tooltip = document.createElement("SPAN");
             tooltip.classList.add("tooltip");
             tooltip.textContent = `${actor.name}${user ? ` (${user.name})` : ''}`;
@@ -133,7 +135,7 @@ class LMRTFYRequestor extends FormApplication {
             const gameUsers = game.users.entities || game.users.contents;
             actors = gameUsers.map(u => u.character?.id).filter(a => a)
         } else if (userId === "tokens") {
-            actors = Array.from(new Set(canvas.tokens.placeables.map(t => t.data.actorId))).filter(a => a);
+            actors = Array.from(new Set(canvas.tokens.controlled.map(t => t.actor.id))).filter(a => a);
         } else {
             const user = game.users.get(userId);
             if (user) {
@@ -148,6 +150,12 @@ class LMRTFYRequestor extends FormApplication {
         const userId = this.element.find("select[name=user]").val();
         const actors = this._getUserActorIds(userId)
         this.element.find(".lmrtfy-actor").hide().filter((i, e) => actors.includes(e.dataset.id)).show();
+
+        if (userId === 'selected') {
+            this.element.find(".lmrtfy-request-roll").hide();
+        } else {
+            this.element.find(".lmrtfy-request-roll").show();
+        }
     }
 
     diceLeftClick(event) {
@@ -296,10 +304,21 @@ class LMRTFYRequestor extends FormApplication {
         const tables = formData.table;
         const formula = formData.formula.trim();
         const { advantage, mode, title, message } = formData;
-        if (actors.length === 0 ||
-             (!message && abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
-                formula.length === 0 && !formData['extra-death-save'] && !formData['extra-initiative'] && !formData['extra-perception'] &&
-                    tables.length === 0)) {
+
+        if (formData.user === 'selected' && !saveAsMacro) {
+            ui.notifications.warn(game.i18n.localize("LMRTFY.SelectedNotification"));
+            return;
+        }
+
+        if ((actors.length === 0 && formData.user !== 'selected') ||
+             (
+                !message &&
+                abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
+                formula.length === 0 && 
+                !formData['extra-death-save'] && !formData['extra-initiative'] && !formData['extra-perception'] &&
+                tables.length === 0
+            )
+        ) {
             ui.notifications.warn(game.i18n.localize("LMRTFY.NothingNotification"));
             return;
         }
@@ -336,6 +355,18 @@ class LMRTFYRequestor extends FormApplication {
         }
         
         if (saveAsMacro) {
+            let selectedSection = '';
+            if (socketData.user === 'selected') {
+                selectedSection = `// Handle selected user\n` +
+                    `if (data.user === "selected") {\n` +
+                    `    if (!canvas.tokens?.controlled?.length) {\n` +
+                    `      ui.notifications.warn(game.i18n.localize("LMRTFY.NoSelectedToken"));\n` +
+                    `      return;\n` +
+                    `    }\n\n` +
+                    `    data.actors = canvas.tokens.controlled.map(t => t.actor.id);\n` +
+                    `    data.user = "tokens";\n` +
+                    `}\n\n`;
+            }
 
             const actorTargets = actors.map(a => game.actors.get(a)).filter(a => a).map(a => a.name).join(", ");
             const user = game.users.get(formData.user) || null;
@@ -346,6 +377,7 @@ class LMRTFYRequestor extends FormApplication {
                 `// Saves: ${saves.map(a => LMRTFY.saves[a]).filter(s => s).join(", ")}\n` +
                 `// Skills: ${skills.map(s => LMRTFY.skills[s]).filter(s => s).join(", ")}\n` +
                 `const data = ${JSON.stringify(socketData, null, 2)};\n\n` +
+                `${selectedSection}` +
                 `game.socket.emit('module.lmrtfy', data);\n`;
             const macro = await Macro.create({
                 name: "LMRTFY: " + (message || title),

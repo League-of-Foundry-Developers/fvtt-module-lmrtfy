@@ -181,6 +181,7 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-dice-tray-buttons {
     width: 75%;
     padding-left: 207px;
+    margin-left: 95px;
 }
 
 .lmrtfy-dice-tray-button {
@@ -244,6 +245,7 @@ form .form-group .lmrtfy-skill-checks {
 
 .lmrtfy-dice-tray-details {
     padding-top: 7px;
+    margin-left: -219px;
 }
 
 .lmrtfy-dice-tray-expander {
