@@ -177,7 +177,7 @@ class LMRTFYRoller extends Application {
 
                         case this.pf2eRollFor.SKILL:
                             // system specific roll handling
-                            const skill = actor.data.data.skills[args[0]];
+                            const skill = actor.system.data.skills[args[0]];
                             // roll lore skills only for actors who have them ...
                             if (!skill) continue;
 
@@ -187,7 +187,7 @@ class LMRTFYRoller extends Application {
 
                         case this.pf2eRollFor.PERCEPTION:
                             const precOptions = actor.getRollOptions(['all', 'wis-based', 'perception']);
-                            actor.data.data.attributes.perception.roll({ event, precOptions, dc: this.dc });
+                            actor.system.data.attributes.perception.roll({ event, precOptions, dc: this.dc });
                             break;
                     }
 
@@ -196,7 +196,7 @@ class LMRTFYRoller extends Application {
 
                 case "foundry-chromatic-dungeons": {
                     const key = args[0];
-                    const {attributes, attributeMods, saves} = actor.data.data;
+                    const {attributes, attributeMods, saves} = actor.system.data;
                     let label, formula, target;
 
                     switch (rollMethod) {
@@ -256,8 +256,7 @@ class LMRTFYRoller extends Application {
     }
 
     _tagMessage(candidate, data, options) {
-        let update = {flags: {lmrtfy: {"message": this.data.message, "data": this.data.attach}}};
-        candidate.data.update(update);
+        setProperty(candidate, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach, "blind": candidate.blind});
     }
 
     async _makeDiceRoll(event, formula, defaultMessage = null) {
@@ -278,7 +277,7 @@ class LMRTFYRoller extends Application {
             const roll = new Roll(formula, rollData);
             const rollMessageData = await roll.toMessage(
                 {"flags.lmrtfy": messageFlag},
-                {rollMode: this.mode, create: false}
+                {rollMode: this.mode, create: false},
             );
 
             rollMessages.push(
@@ -292,13 +291,14 @@ class LMRTFYRoller extends Application {
                             actor: speaker.actor,
                         },
                         flavor: this.message || defaultMessage,
+                        rollMode: this.mode,
                     },
                 ),
             );
         })
 
         await Promise.allSettled(rollMessagePromises);
-        await ChatMessage.create(rollMessages);
+        await ChatMessage.create(rollMessages, {rollMode: this.mode});
 
         event.currentTarget.disabled = true;
         this._checkClose();
@@ -329,23 +329,22 @@ class LMRTFYRoller extends Application {
                     let content = "";
 
                     for (const rollResult of rollResults) {
-                        const result = rollResult.data;
+                        const result = rollResult;
 
-                        if (!result.collection) {
+                        if (!result.documentCollection) {
                             content += `<p>${result.text}</p>`;
-                        } else if (['Actor', 'Item', 'Scene', 'JournalEntry', 'Macro'].includes(result.collection)) {
-                            content += `<p><a class="entity-link" draggable="true" data-entity="${result.collection}" data-id="${result.resultId}">
-                                <i class="${icons[result.collection]}"></i> ${result.text}</a></p>`;
-                        } else if (result.collection === 'Playlist') {
-                            content += `<p>@${result.collection}[${result.resultId}]{${result.text}}</p>`;
-                        } else if (result.collection) { // if not specific collection, then is compendium
-                            content += `<p><a class="entity-link" draggable="true" data-pack="${result.collection}" data-id="${result.resultId}">
-                                <i class="${icons[result.collection]}"></i> ${result.text}</a></p>`;
+                        } else if (['Actor', 'Item', 'Scene', 'JournalEntry', 'Macro'].includes(result.documentCollection)) {
+                            content += `<p><a class="content-link" draggable="true" data-entity="${result.documentCollection}" data-uuid="${result.documentCollection}.${result.documentId}">
+                                <i class="${icons[result.documentCollection]}"></i> ${result.text}</a></p>`;
+                        } else if (result.documentCollection === 'Playlist') {
+                            content += `<p>@${result.documentCollection}[${result.documentId}]{${result.text}}</p>`;
+                        } else if (result.documentCollection) { // if not specific collection, then is compendium
+                            content += `<p><a class="content-link" draggable="true" data-pack="${result.documentCollection}" data-uuid="${result.documentCollection}.${result.documentId}">
+                                <i class="${icons[result.documentCollection]}"></i> ${result.text}</a></p>`;
                         }
-
                     }
                     let chatData = {
-                        user: game.user._id,
+                        user: game.user.id,
                         speaker: ChatMessage.getSpeaker({actor}),
                         flavor: `Draws ${nr} from the ${table} table.`,
                         content: content,
@@ -355,7 +354,7 @@ class LMRTFYRoller extends Application {
                     if ( ["gmroll", "blindroll"].includes(this.mode) ) {
                         chatData.whisper = ChatMessage.getWhisperRecipients("GM");
                     }
-                    if ( this.mode === "selfroll" ) chatData.whisper = [game.user._id];
+                    if ( this.mode === "selfroll" ) chatData.whisper = [game.user.id];
                     if ( this.mode === "blindroll" ) chatData.blind = true;
 
                     setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach, "blind": chatData.blind});

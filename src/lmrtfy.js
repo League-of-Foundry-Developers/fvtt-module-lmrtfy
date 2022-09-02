@@ -18,11 +18,28 @@ class LMRTFY {
             default: false,
             onChange: () => window.location.reload()
         });
+        game.settings.register('lmrtfy', 'useTokenImageOnRequester', {
+            name: game.i18n.localize('LMRTFY.UseTokenImageOnRequester'),
+            hint: game.i18n.localize('LMRTFY.UseTokenImageOnRequesterHint'),
+            scope: 'world',
+            config: true,
+            type: Boolean,
+            default: false,
+            onChange: () => window.location.reload()
+        });
 
         Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
-            const activeToken = actor.getActiveTokens()[0];
-            if (activeToken) {
-                return activeToken._controlled;
+            const actorsControlledToken = canvas.tokens?.controlled.find(t => t.actor.id === actor.id);
+            if (actorsControlledToken) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        Handlebars.registerHelper('lmrtfy-showTokenImage', function (actor) {
+            if (game.settings.get('lmrtfy', 'useTokenImageOnRequester')) {
+                return true;
             } else {
                 return false;
             }
@@ -211,18 +228,26 @@ class LMRTFY {
     static onMessage(data) {
         //console.log("LMRTF got message: ", data)
         if (data.user === "character" &&
-            (!game.user.character || !data.actors.includes(game.user.character.id)))
+            (!game.user.character || !data.actors.includes(game.user.character.id))) {
             return;
-        else if (!["character", "tokens"].includes(data.user) && data.user !== game.user.id)
+        } else if (!["character", "tokens"].includes(data.user) && data.user !== game.user.id) {
             return;
+        }
+        
         let actors = [];
-        if (data.user === "character")
+        if (data.user === "character") {
             actors = [game.user.character];
-        else if (data.user === "tokens")
+        } else if (data.user === "tokens") {
             actors = canvas.tokens.controlled.map(t => t.actor).filter(a => data.actors.includes(a.id));
-        else
+        } else {
             actors = data.actors.map(aid => LMRTFY.fromUuid(aid));
+        }
         actors = actors.filter(a => a);
+        
+        // remove player characters from GM's requests
+        if (game.user.isGM) {
+            actors = actors.filter(a => !a.hasPlayerOwner);
+        }        
         if (actors.length === 0) return;
         new LMRTFYRoller(actors, data).render(true);
     }
@@ -312,6 +337,8 @@ class LMRTFY {
         return doc || undefined;
     }
 }
+
+globalThis.LMRTFYRequestRoll = LMRTFY.requestRoll;
 
 Hooks.once('init', LMRTFY.init);
 Hooks.on('ready', LMRTFY.ready);

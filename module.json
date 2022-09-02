@@ -1,10 +1,16 @@
 {
-    "type": "module",
+    "id": "lmrtfy",
     "name": "lmrtfy",
     "title": "Let Me Roll That For You!",
     "description": "Ask your players to make rolls for you.",
     "version": "1.23",
     "author": "KaKaRoTo, iotech, Limping Ninja, Rughalt, Calego, VTT Lair",
+    "authors": [
+        {
+          "name": "VTT Lair",
+          "url": "https://github.com/vtt-lair"
+        }
+    ],
     "scripts": [
         "./src/lmrtfy.js",
         "./src/requestor.js",
@@ -13,19 +19,12 @@
     "styles": [
         "/css/lmrtfy.css"
     ],
-    "systems": [
-        "dnd5e",
-        "dnd5eJP",
-        "pf1",
-        "pf2e",
-        "D35E",
-        "sw5e",
-        "cof",
-        "coc",
-        "demonlord",
-        "ose",
-        "foundry-chromatic-dungeons"
-    ],
+    "minimumCoreVersion": "10",
+    "compatibleCoreVersion": "10",
+    "compatibility": {
+        "minimum": "10",
+        "verified": "10"
+    },        
     "languages": [
         {
             "lang": "en",
@@ -73,27 +72,107 @@
             "path": "lang/it.json"
         }
     ],
-    "media": [
-        {
-            "type": "cover",
-            "link": "images/lmrtfy-roller.png"
-        },
-        {
-            "type": "screenshot",
-            "link": "images/screenshot.png"
-        },
-        {
-            "type": "screenshot",
-            "link": "images/lmrtfy-requestor.png"
-        }
+    "systems": [
+        "dnd5e",
+        "dnd5eJP",
+        "pf1",
+        "pf2e",
+        "D35E",
+        "sw5e",
+        "cof",
+        "coc",
+        "demonlord",
+        "ose",
+        "foundry-chromatic-dungeons"
     ],
+    "relationships": {
+        "systems": [
+            {
+                "id": "dnd5e",
+                "type": "system",
+                "manifest": "https://gitlab.com/asacolips-projects/foundry-mods/archmage/-/raw/2.0.2/system.json",
+                "compatibility": {
+                    "verified": "2.0.2"
+                }
+            },
+            {
+                "id": "dnd5eJP",
+                "type": "system"
+            },
+            {
+                "id": "pf1",
+                "type": "system",
+                "manifest": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1/-/releases/v0.82.1/downloads/system.json",
+                "compatibility": {
+                    "verified": "0.82.1"
+                }
+            },
+            {
+                "id": "pf2e",
+                "type": "system",
+                "manifest": "https://github.com/foundryvtt/pf2e/releases/download/3.13.6/system.json",
+                "compatibility": {
+                    "verified": "3.13.6"
+                }
+            },
+            {
+                "id": "D35E",
+                "type": "system",
+                "manifest": "https://github.com/Rughalt/D35E/blob/master/system.json",
+                "compatibility": {
+                    "verified": "0.99.1"
+                }
+            },
+            {
+                "id": "sw5e",
+                "type": "system"
+            },
+            {
+                "id": "cof",
+                "type": "system",
+                "manifest": "https://github.com/ZigmundKreud/cof/releases/download/9.269.3/system.json",
+                "compatibility": {
+                    "verified": "9.269.3"
+                }
+            },
+            {
+                "id": "coc",
+                "type": "system",
+                "manifest": "https://github.com/ZigmundKreud/coc/releases/download/9.269.4/system.json",
+                "compatibility": {
+                    "verified": "9.269.4"
+                }
+            },
+            {
+                "id": "demonlord",
+                "type": "system",
+                "manifest": "https://github.com/Xacus/demonlord/releases/download/2.2.1/system.json",
+                "compatibility": {
+                    "verified": "2.2.1"
+                }
+            },
+            {
+                "id": "ose",
+                "type": "system",
+                "manifest": "https://github.com/vttred/ose/releases/download/1.6.2/system.json",
+                "compatibility": {
+                    "verified": "1.6.2"
+                }
+            },
+            {
+                "id": "foundry-chromatic-dungeons",
+                "type": "system",
+                "manifest": "https://github.com/wyrmisis/foundry-chromatic-dungeons/releases/download/1.1.0/system.json",
+                "compatibility": {
+                    "verified": "1.1.0"
+                }
+            }
+        ]
+    },
     "socket": true,
     "url": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy",
     "manifest": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.json",
     "download": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/download/v1.23/module.zip",
     "changelog": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases",
-    "bugs": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/issues",
-    "minimumCoreVersion": "0.8.6",
-    "compatibleCoreVersion": "9",
-    "allowBugReporter": true
+    "bugs": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/issues"
 }
