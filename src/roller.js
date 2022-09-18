@@ -91,8 +91,15 @@ class LMRTFYRoller extends Application {
         this.abilities.forEach(a => abilities[a] = LMRTFY.abilities[a])
         this.saves.forEach(a => saves[a] = LMRTFY.saves[a])
         this.skills
-            .sort((a, b) => game.i18n.localize(LMRTFY.skills[a]).localeCompare(game.i18n.localize(LMRTFY.skills[b])))
-            .forEach(s => skills[s] = LMRTFY.skills[s]);
+            .sort((a, b) => {
+                const skillA = (LMRTFY.skills[a]?.label) ? LMRTFY.skills[a].label : LMRTFY.skills[a];
+                const skillB = (LMRTFY.skills[b]?.label) ? LMRTFY.skills[b].label : LMRTFY.skills[b];
+                game.i18n.localize(skillA).localeCompare(skillB)
+            })
+            .forEach(s => {
+                const skill = (LMRTFY.skills[s]?.label) ? LMRTFY.skills[s].label : LMRTFY.skills[s];
+                skills[s] = skill;
+            });
 
         const data = {
             actors: this.actors,
@@ -256,7 +263,7 @@ class LMRTFYRoller extends Application {
     }
 
     _tagMessage(candidate, data, options) {
-        setProperty(candidate, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach, "blind": candidate.blind});
+        candidate.updateSource({"flags.lmrtfy": {"message": this.data.message, "data": this.data.attach, "blind": candidate.blind}});
     }
 
     async _makeDiceRoll(event, formula, defaultMessage = null) {

@@ -48,9 +48,14 @@ class LMRTFYRequestor extends FormApplication {
         const abilityModifiers = LMRTFY.abilityModifiers;
 
         const skills = Object.keys(LMRTFY.skills)
-            .sort((a, b) => game.i18n.localize(LMRTFY.skills[a]).localeCompare(game.i18n.localize(LMRTFY.skills[b])))
+            .sort((a, b) => {
+                const skillA = (LMRTFY.skills[a]?.label) ? LMRTFY.skills[a].label : LMRTFY.skills[a];
+                const skillB = (LMRTFY.skills[b]?.label) ? LMRTFY.skills[b].label : LMRTFY.skills[b];
+                game.i18n.localize(skillA).localeCompare(skillB)
+            })
             .reduce((acc, skillKey) => {
-                acc[skillKey] = LMRTFY.skills[skillKey];
+                const skill = (LMRTFY.skills[skillKey]?.label) ? LMRTFY.skills[skillKey]?.label : LMRTFY.skills[skillKey];
+                acc[skillKey] = skill;
                 return acc;
             }, {});
 
