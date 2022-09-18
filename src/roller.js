@@ -263,7 +263,7 @@ class LMRTFYRoller extends Application {
     }
 
     _tagMessage(candidate, data, options) {
-        setProperty(candidate, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach, "blind": candidate.blind});
+        candidate.updateSource({"flags.lmrtfy": {"message": this.data.message, "data": this.data.attach, "blind": candidate.blind}});
     }
 
     async _makeDiceRoll(event, formula, defaultMessage = null) {
