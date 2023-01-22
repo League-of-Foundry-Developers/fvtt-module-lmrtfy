@@ -59,5 +59,9 @@
     "LMRTFY.SelectedNotification": "The selected user can only be used with 'Save Request as Macro'",
     "LMRTFY.Macros": "For Macros",
     "LMRTFY.Users": "Users",
-    "LMRTFY.NoSelectedToken": "Token(s) needs to be selected before the macro can be run"
+    "LMRTFY.NoSelectedToken": "Token(s) needs to be selected before the macro can be run",
+    "LMRTFY.SavingThrowFail": "FAIL Saving Throw: ",
+    "LMRTFY.AbilityCheckFail": "FAIL Ability Check: ",
+    "LMRTFY.SkillCheckFail": "FAIL Skill Check: ",
+    "LMRTFY.EnableChooseFail": "Enable Fail Button"
 }

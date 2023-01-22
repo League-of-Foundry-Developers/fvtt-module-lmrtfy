@@ -28,16 +28,22 @@
     <div>
         <button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>{{localize "LMRTFY.AbilityCheck"}} {{localize name}}</button>
     </div>
+        {{#canFailAbilityChecks name ability}}
+        {{/canFailAbilityChecks}}
     {{/each}}
     {{#each saves as |name ability|}}
     <div>
         <button type="button" class="lmrtfy-ability-save" data-ability="{{ability}}">{{localize "LMRTFY.SavingThrow"}} {{localize name}}</button>
     </div>
+        {{#canFailSaveChecks name ability}}
+        {{/canFailSaveChecks}}
     {{/each}}
     {{#each skills as |name skill|}}
     <div>
         <button type="button" class="lmrtfy-skill-check" data-skill="{{skill}}">{{localize "LMRTFY.SkillCheck"}} {{localize name}}</button>
     </div>
+        {{#canFailSkillChecks name skill}}
+        {{/canFailSkillChecks}}
     {{/each}}
     {{#if customFormula}}
     <div>
@@ -65,5 +71,5 @@
         <button type="button" class="lmrtfy-roll-table" data-table="{{table}}">{{localize "LMRTFY.RollTables"}} {{table}}</button>
     </div>
     {{/each}}
-    {{/if}}
+    {{/if}}    
 </div>
