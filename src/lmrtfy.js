@@ -66,6 +66,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.DND5E.abilityAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.canFailChecks = true;
                 break;
 
             case 'pf1':
@@ -82,6 +83,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.PF1.abilitiesShort;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
                 break;
 
             case 'pf2e':
@@ -98,6 +100,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.PF2E.abilities;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
                 break;
 
             case 'D35E':
@@ -114,6 +117,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.D35E.abilityAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
                 break;
 
             case 'cof':
@@ -129,6 +133,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.COF.statAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
                 break;
 
             case 'coc':
@@ -144,6 +149,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.COC.statAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
             break;
 
             case 'demonlord':
@@ -162,6 +168,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = abilities;
                 LMRTFY.modIdentifier = 'modifier';
                 LMRTFY.abilityModifiers = {};
+                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
                 break;
 
             case 'ose':
@@ -180,6 +187,7 @@ class LMRTFY {
                 LMRTFY.specialRolls = {};
                 LMRTFY.modIdentifier = 'modifier';
                 LMRTFY.abilityModifiers = {};
+                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
                 break;
             
             case 'foundry-chromatic-dungeons':
@@ -191,12 +199,30 @@ class LMRTFY {
                 LMRTFY.skills = {};
                 LMRTFY.saves = CONFIG.CHROMATIC.saves;
                 LMRTFY.specialRolls = {};
+                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
                 break;    
 
             default:
                 console.error('LMRFTY | Unsupported system detected');
 
         }
+
+        LMRTFY.d20Svg = '<svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+            'viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">' +
+            '<g transform="translate(-246.69456,-375.66745)">' +
+                '<path d="M278.2,382.1c-0.1,0-0.2,0-0.3,0.1L264.8,398c-0.2,0.3-0.2,0.3,0.1,0.3l26.4-0.1c0.4,0,0.4,0,0.1-0.3l-13-15.8' +
+                'C278.4,382.1,278.3,382.1,278.2,382.1L278.2,382.1z M280.7,383.5l11.9,14.5c0.2,0.2,0.2,0.2,0.5,0.1l6.3-2.9' +
+                'c0.4-0.2,0.4-0.2,0.1-0.4L280.7,383.5z M275.2,384c0,0-0.1,0.1-0.3,0.2l-17.3,11.4l5.4,2.5c0.3,0.1,0.4,0.1,0.5-0.1l11.4-13.6' +
+                'C275.1,384.1,275.2,384,275.2,384L275.2,384z M300.3,395.8c-0.1,0-0.1,0-0.3,0.1l-6.4,2.9c-0.2,0.1-0.2,0.2-0.1,0.4l7.5,19' +
+                'l-0.5-22.1C300.4,395.9,300.4,395.8,300.3,395.8L300.3,395.8z M257.1,396.4l-0.7,21.5l6.3-18.6c0.1-0.3,0.1-0.3-0.1-0.4' +
+                'L257.1,396.4L257.1,396.4z M291.6,399.2l-27,0.1c-0.4,0-0.4,0-0.2,0.3l13.7,23.1c0.2,0.4,0.2,0.3,0.4,0l13.2-23.2' +
+                'C291.9,399.3,291.9,399.2,291.6,399.2L291.6,399.2z M292.7,399.8c0,0-0.1,0.1-0.1,0.2l-13.3,23.3c-0.1,0.2-0.2,0.3,0.2,0.3' +
+                'l21.1-2.9c0.3-0.1,0.3-0.2,0.2-0.5l-7.9-20.2C292.7,399.9,292.7,399.8,292.7,399.8L292.7,399.8z M263.6,400c0,0,0,0.1-0.1,0.3' +
+                'l-6.7,19.8c-0.1,0.4-0.1,0.6,0.3,0.7l20.1,2.9c0.4,0.1,0.3-0.1,0.2-0.3l-13.7-23.1C263.6,400,263.6,400,263.6,400L263.6,400z' +
+                'M258.3,421.9l19.7,11.2c0.3,0.2,0.3,0.1,0.3-0.2l-0.4-7.9c0-0.3,0-0.4-0.3-0.4L258.3,421.9L258.3,421.9z M299.1,421.9l-20,2.8' +
+                'c-0.3,0-0.2,0.2-0.2,0.4l0.4,8c0,0.2,0,0.3,0.3,0.2L299.1,421.9z"/>' +
+            '</g>' +
+        '</svg>'
 
         if (game.settings.get('lmrtfy', 'deselectOnRequestorRender')) {
             Hooks.on("renderLMRTFYRequestor", () => {

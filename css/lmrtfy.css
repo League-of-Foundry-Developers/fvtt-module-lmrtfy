@@ -130,8 +130,11 @@ form .form-group .lmrtfy-skill-checks {
 }
 
 .lmrtfy-ability-check,
+.lmrtfy-ability-check-fail,
 .lmrtfy-ability-save,
+.lmrtfy-ability-save-fail,
 .lmrtfy-skill-check,
+.lmrtfy-skill-check-fail,
 .lmrtfy-custom-formula,
 .lmrtfy-initiative,
 .lmrtfy-death-save,
@@ -142,8 +145,11 @@ form .form-group .lmrtfy-skill-checks {
 	margin-top: 4px;
 }
 .lmrtfy-parchment .lmrtfy-ability-check,
+.lmrtfy-parchment .lmrtfy-ability-check-fail,
 .lmrtfy-parchment .lmrtfy-ability-save,
+.lmrtfy-parchment .lmrtfy-ability-save-fail,
 .lmrtfy-parchment .lmrtfy-skill-check,
+.lmrtfy-parchment .lmrtfy-skill-check-fail,
 .lmrtfy-parchment .lmrtfy-custom-formula,
 .lmrtfy-parchment .lmrtfy-initiative,
 .lmrtfy-parchment .lmrtfy-death-save,
@@ -154,6 +160,15 @@ form .form-group .lmrtfy-skill-checks {
 	background-size: 100% 100%;
 	color: black;
 	height: 78px;
+}
+
+.enable-lmrtfy-ability-check-fail,
+.enable-lmrtfy-ability-save-fail,
+.enable-lmrtfy-skill-check-fail {
+    width: 10%;
+    position: absolute !important;
+    margin-top: -57px !important;
+    right: 27px;    
 }
 
 .lmrtfy-roller button:disabled {
@@ -210,7 +225,8 @@ form .form-group .lmrtfy-skill-checks {
     transition: all ease-in-out 0.25s;
     position: relative;
     margin: 6px;
-    border-radius: 5px
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .lmrtfy-bonus-button  {
@@ -395,4 +411,15 @@ form .form-group .lmrtfy-skill-checks {
 
 .system-pf1 form .form-group .lmrtfy-skill-checks {
 	max-height: 600px;
+}
+
+.disabled-button {
+    cursor: default !important;
+    filter: opacity(0.5) !important;
+}
+
+.disabled-button:hover {
+    color: #000 !important;
+    border-color: #000 !important;
+    box-shadow: 0 0 6px inset #8d9ea7 !important;
 }

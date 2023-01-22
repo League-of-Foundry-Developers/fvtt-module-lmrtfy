@@ -28,6 +28,45 @@ class LMRTFYRoller extends Application {
             SKILL: "skill",
             PERCEPTION: "perception",
         }
+
+        Handlebars.registerHelper('canFailAbilityChecks', function (name, ability) {
+            if (LMRTFY.canFailChecks) {
+                return `<div>` +
+                        `<button type="button" class="lmrtfy-ability-check-fail" data-ability="${ability}" disabled>${game.i18n.localize('LMRTFY.AbilityCheckFail')} ${game.i18n.localize(name)}</button>` +
+                        `<div class="lmrtfy-dice-tray-button enable-lmrtfy-ability-check-fail" data-ability="${ability}" title="${game.i18n.localize('LMRTFY.EnableChooseFail')}">` +            
+                            `${LMRTFY.d20Svg}` +
+                        `</div>` +
+                    `</div>`;
+            } else {
+                return '';
+            }
+        });
+
+        Handlebars.registerHelper('canFailSaveChecks', function (name, ability) {
+            if (LMRTFY.canFailChecks) {
+                return `<div>` +
+                        `<button type="button" class="lmrtfy-ability-save-fail" data-ability="${ability}" disabled>${game.i18n.localize('LMRTFY.SavingThrowFail')} ${game.i18n.localize(name)}</button>` +
+                        `<div class="lmrtfy-dice-tray-button enable-lmrtfy-ability-save-fail" data-ability="${ability}" title="${game.i18n.localize('LMRTFY.EnableChooseFail')}">` +            
+                            `${LMRTFY.d20Svg}` +
+                        `</div>` +
+                    `</div>`;
+            } else {
+                return '';
+            }
+        });
+
+        Handlebars.registerHelper('canFailSkillChecks', function (name, skill) {
+            if (LMRTFY.canFailChecks) {
+                return `<div>` +
+                        `<button type="button" class="lmrtfy-skill-check-fail" data-skill="${skill}" disabled>${game.i18n.localize('LMRTFY.SkillCheckFail')} ${game.i18n.localize(name)}</button>` +
+                        `<div class="lmrtfy-dice-tray-button enable-lmrtfy-skill-check-fail" data-skill="${skill}" title="${game.i18n.localize('LMRTFY.EnableChooseFail')}">` +            
+                            `${LMRTFY.d20Svg}` +
+                        `</div>` +
+                    `</div>`;
+            } else {
+                return '';
+            }
+        });
     }
 
     static get defaultOptions() {
@@ -135,6 +174,15 @@ class LMRTFYRoller extends Application {
         if(LMRTFY.specialRolls['perception']) {
             this.element.find(".lmrtfy-perception").click(this._onPerception.bind(this))
         }
+
+        this.element.find(".enable-lmrtfy-ability-check-fail").click(this._onToggleFailAbilityRoll.bind(this));
+        this.element.find(".lmrtfy-ability-check-fail").click(this._onFailAbilityCheck.bind(this));        
+        
+        this.element.find(".enable-lmrtfy-ability-save-fail").click(this._onToggleFailSaveRoll.bind(this));
+        this.element.find(".lmrtfy-ability-save-fail").click(this._onFailAbilitySave.bind(this));    
+
+        this.element.find(".enable-lmrtfy-skill-check-fail").click(this._onToggleFailSkillRoll.bind(this));
+        this.element.find(".lmrtfy-skill-check-fail").click(this._onFailSkillCheck.bind(this));    
     }
 
     _checkClose() {
@@ -143,7 +191,41 @@ class LMRTFYRoller extends Application {
         }
     }
 
-    async _makeRoll(event, rollMethod, ...args) {
+    _disableButtons(event) {
+        event.currentTarget.disabled = true;
+
+        if (LMRTFY.canFailChecks) {
+            const buttonSelector = `${event.currentTarget.className}`;
+            let oppositeSelector = "";
+            let dataSelector = "";
+
+            if (
+                event.currentTarget.className.indexOf('ability-check') > 0 || 
+                event.currentTarget.className.indexOf('ability-save') > 0
+            ) {
+                dataSelector = `[data-ability *= '${event?.currentTarget?.dataset?.ability}']`;
+            } else {
+                dataSelector = `[data-skill *= '${event?.currentTarget?.dataset?.skill}']`;
+            }
+
+            if (event.currentTarget.className.indexOf('fail') > 0) {
+                oppositeSelector = event.currentTarget.className.substring(0, event.currentTarget.className.indexOf('fail') - 1);
+            } else {
+                oppositeSelector = `${event.currentTarget.className}-fail`;            
+            }
+
+            const enableButton = document.querySelector(`.enable-${buttonSelector}${dataSelector}`);
+            if (enableButton) {
+                enableButton.disabled = true;
+                enableButton.classList.add('disabled-button');
+            }
+
+            const oppositeButton = document.querySelector(`.${oppositeSelector}${dataSelector}`);
+            if (oppositeButton) oppositeButton.disabled = true;
+        }
+    }
+
+    async _makeRoll(event, rollMethod, failRoll, ...args) {
         let fakeEvent = {}
         switch(this.advantage) {
             case -1:
@@ -184,7 +266,7 @@ class LMRTFYRoller extends Application {
 
                         case this.pf2eRollFor.SKILL:
                             // system specific roll handling
-                            const skill = actor.system.data.skills[args[0]];
+                            const skill = actor.system.skills[args[0]];
                             // roll lore skills only for actors who have them ...
                             if (!skill) continue;
 
@@ -194,7 +276,7 @@ class LMRTFYRoller extends Application {
 
                         case this.pf2eRollFor.PERCEPTION:
                             const precOptions = actor.getRollOptions(['all', 'wis-based', 'perception']);
-                            actor.system.data.attributes.perception.roll({ event, precOptions, dc: this.dc });
+                            actor.perception.roll({ event, precOptions, dc: this.dc });
                             break;
                     }
 
@@ -225,14 +307,20 @@ class LMRTFYRoller extends Application {
                 }
 
                 default: {
-                    await actor[rollMethod].call(actor, ...args, { event: fakeEvent });
+                    const options = {
+                        event: fakeEvent,                        
+                    }
+                    if (failRoll) {
+                        options["parts"] = [-100];
+                    }
+                    await actor[rollMethod].call(actor, ...args, options);
                 }
             }
         }
 
         game.settings.set("core", "rollMode", rollMode);
-        event.currentTarget.disabled = true;
 
+        this._disableButtons(event);
         this._checkClose();
     }
 
@@ -383,21 +471,42 @@ class LMRTFYRoller extends Application {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
-        this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
+        this._makeRoll(event, LMRTFY.abilityRollMethod, false, ability);
+    }
+
+    _onFailAbilityCheck(event) {
+        event.preventDefault();
+        const ability = event.currentTarget.dataset.ability;
+        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
+        this._makeRoll(event, LMRTFY.abilityRollMethod, true, ability);
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
         const saves = event.currentTarget.dataset.ability;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
-        this._makeRoll(event, LMRTFY.saveRollMethod, saves);
+        this._makeRoll(event, LMRTFY.saveRollMethod, false, saves);
+    }
+
+    _onFailAbilitySave(event) {
+        event.preventDefault();
+        const saves = event.currentTarget.dataset.ability;
+        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
+        this._makeRoll(event, LMRTFY.saveRollMethod, true, saves);
     }
 
     _onSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
-        this._makeRoll(event, LMRTFY.skillRollMethod, skill);
+        this._makeRoll(event, LMRTFY.skillRollMethod, false, skill);
+    }
+
+    _onFailSkillCheck(event) {
+        event.preventDefault();
+        const skill = event.currentTarget.dataset.skill;
+        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
+        this._makeRoll(event, LMRTFY.skillRollMethod, true, skill);
     }
 
     async _onCustomFormula(event) {
@@ -454,4 +563,36 @@ class LMRTFYRoller extends Application {
         this._drawTable(event, table);
     }
 
+    _onToggleFailAbilityRoll(event) {
+        event.preventDefault();
+        if (event.currentTarget.classList.contains('disabled-button')) return;
+
+        const failButton = document.querySelector(`.lmrtfy-ability-check-fail[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        if (failButton) failButton.disabled = !failButton.disabled;
+
+        const normalButton = document.querySelector(`.lmrtfy-ability-check[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        if (normalButton) normalButton.disabled = !normalButton.disabled;
+    }
+
+    _onToggleFailSaveRoll(event) {
+        event.preventDefault();
+        if (event.currentTarget.classList.contains('disabled-button')) return;
+
+        const failButton = document.querySelector(`.lmrtfy-ability-save-fail[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        if (failButton) failButton.disabled = !failButton.disabled;
+
+        const normalButton = document.querySelector(`.lmrtfy-ability-save[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        if (normalButton) normalButton.disabled = !normalButton.disabled;
+    }
+
+    _onToggleFailSkillRoll(event) {
+        event.preventDefault();
+        if (event.currentTarget.classList.contains('disabled-button')) return;
+
+        const failButton = document.querySelector(`.lmrtfy-skill-check-fail[data-skill *= '${event?.currentTarget?.dataset?.skill}']`);
+        if (failButton) failButton.disabled = !failButton.disabled;
+
+        const normalButton = document.querySelector(`.lmrtfy-skill-check[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        if (normalButton) normalButton.disabled = !normalButton.disabled;
+    }
 }

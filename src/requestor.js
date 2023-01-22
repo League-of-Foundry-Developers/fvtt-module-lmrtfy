@@ -330,9 +330,9 @@ class LMRTFYRequestor extends FormApplication {
 
         let dc = undefined;
         if (game.system.id === 'pf2e') {
-            if (Number.isInteger(formData.dc)) {
+            if (Number.isInteger(parseInt(formData.dc))) {
                 dc = {
-                    value: formData.dc,
+                    value: parseInt(formData.dc),
                     visibility: formData.visibility
                 }
             }
@@ -354,6 +354,7 @@ class LMRTFYRequestor extends FormApplication {
             perception: formData['extra-perception'],
             tables: tables,
             chooseOne: formData['choose-one'],
+            canFailChecks: LMRTFY.canFailChecks,
         }
         if (game.system.id === 'pf2e' && dc) {
             socketData['dc'] = dc;
