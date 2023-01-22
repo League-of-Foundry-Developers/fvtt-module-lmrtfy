@@ -222,7 +222,12 @@ class LMRTFY {
                 'M258.3,421.9l19.7,11.2c0.3,0.2,0.3,0.1,0.3-0.2l-0.4-7.9c0-0.3,0-0.4-0.3-0.4L258.3,421.9L258.3,421.9z M299.1,421.9l-20,2.8' +
                 'c-0.3,0-0.2,0.2-0.2,0.4l0.4,8c0,0.2,0,0.3,0.3,0.2L299.1,421.9z"/>' +
             '</g>' +
-        '</svg>'
+        '</svg>';
+
+        // for now we don't allow can fails until midi-qol has update patching.js
+        if (game.modules.get('midi-qol')) {
+            LMRTFY.canFailChecks = false;
+        }
 
         if (game.settings.get('lmrtfy', 'deselectOnRequestorRender')) {
             Hooks.on("renderLMRTFYRequestor", () => {
