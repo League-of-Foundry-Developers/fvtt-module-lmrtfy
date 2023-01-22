@@ -194,33 +194,35 @@ class LMRTFYRoller extends Application {
     _disableButtons(event) {
         event.currentTarget.disabled = true;
 
-        const buttonSelector = `${event.currentTarget.className}`;
-        let oppositeSelector = "";
-        let dataSelector = "";
+        if (LMRTFY.canFailChecks) {
+            const buttonSelector = `${event.currentTarget.className}`;
+            let oppositeSelector = "";
+            let dataSelector = "";
 
-        if (
-            event.currentTarget.className.indexOf('ability-check') > 0 || 
-            event.currentTarget.className.indexOf('ability-save') > 0
-        ) {
-            dataSelector = `[data-ability *= '${event?.currentTarget?.dataset?.ability}']`;
-        } else {
-            dataSelector = `[data-skill *= '${event?.currentTarget?.dataset?.skill}']`;
+            if (
+                event.currentTarget.className.indexOf('ability-check') > 0 || 
+                event.currentTarget.className.indexOf('ability-save') > 0
+            ) {
+                dataSelector = `[data-ability *= '${event?.currentTarget?.dataset?.ability}']`;
+            } else {
+                dataSelector = `[data-skill *= '${event?.currentTarget?.dataset?.skill}']`;
+            }
+
+            if (event.currentTarget.className.indexOf('fail') > 0) {
+                oppositeSelector = event.currentTarget.className.substring(0, event.currentTarget.className.indexOf('fail') - 1);
+            } else {
+                oppositeSelector = `${event.currentTarget.className}-fail`;            
+            }
+
+            const enableButton = document.querySelector(`.enable-${buttonSelector}${dataSelector}`);
+            if (enableButton) {
+                enableButton.disabled = true;
+                enableButton.classList.add('disabled-button');
+            }
+
+            const oppositeButton = document.querySelector(`.${oppositeSelector}${dataSelector}`);
+            if (oppositeButton) oppositeButton.disabled = true;
         }
-
-        if (event.currentTarget.className.indexOf('fail') > 0) {
-            oppositeSelector = event.currentTarget.className.substring(0, event.currentTarget.className.indexOf('fail') - 1);
-        } else {
-            oppositeSelector = `${event.currentTarget.className}-fail`;            
-        }
-
-        const enableButton = document.querySelector(`.enable-${buttonSelector}${dataSelector}`);
-        if (enableButton) {
-            enableButton.disabled = true;
-            enableButton.classList.add('disabled-button');
-        }
-
-        const oppositeButton = document.querySelector(`.${oppositeSelector}${dataSelector}`);
-        if (oppositeButton) oppositeButton.disabled = true;
     }
 
     async _makeRoll(event, rollMethod, failRoll, ...args) {
