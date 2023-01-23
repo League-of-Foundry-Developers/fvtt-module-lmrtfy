@@ -207,6 +207,13 @@ class LMRTFY {
 
         }
 
+        // overwrite for the dnd5e system, unsure if other 5e systems does this too
+        if (game.system.id === "dnd5e") {
+            LMRTFY.normalRollEvent = { fastForward: true };
+            LMRTFY.advantageRollEvent = { advantage: true, fastForward: true };
+            LMRTFY.disadvantageRollEvent = { disadvantage: true, fastForward: true };
+        }
+
         LMRTFY.d20Svg = '<svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
             'viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">' +
             '<g transform="translate(-246.69456,-375.66745)">' +
@@ -225,7 +232,7 @@ class LMRTFY {
         '</svg>';
 
         // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.get('midi-qol')) {
+        if (game.modules.getName("midi-qol")?.active && !isNewerVersion(game.modules.getName("midi-qol")?.version, "10.0.26")) {
             LMRTFY.canFailChecks = false;
         }
 
