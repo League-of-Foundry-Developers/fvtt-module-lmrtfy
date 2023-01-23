@@ -29,6 +29,9 @@ class LMRTFYRoller extends Application {
             PERCEPTION: "perception",
         }
 
+        this.hasMidi = game.modules.getName("midi-qol")?.active;
+        this.midiUseNewRoller = isNewerVersion(game.modules.getName("midi-qol")?.version, "10.0.26");
+
         Handlebars.registerHelper('canFailAbilityChecks', function (name, ability) {
             if (LMRTFY.canFailChecks) {
                 return `<div>` +
@@ -225,22 +228,32 @@ class LMRTFYRoller extends Application {
         }
     }
 
-    async _makeRoll(event, rollMethod, failRoll, ...args) {
-        let fakeEvent = {}
+    _getRollOptions(event, failRoll) {
+        let options;
         switch(this.advantage) {
             case -1:
-                fakeEvent = LMRTFY.disadvantageRollEvent;
+                options = {... LMRTFY.disadvantageRollEvent };
                 break;
             case 0:
-                fakeEvent = LMRTFY.normalRollEvent;
+                options = {... LMRTFY.normalRollEvent };
                 break;
             case 1:
-                fakeEvent = LMRTFY.advantageRollEvent;
+                options = {... LMRTFY.advantageRollEvent };
                 break;
             case 2:
-                fakeEvent = event;
+                options = event;
                 break;
         }
+
+        if (failRoll) {
+            options["parts"] = [-100];
+        }
+
+        return options;
+    }
+
+    async _makeRoll(event, rollMethod, failRoll, ...args) {
+        let options = this._getRollOptions(event, failRoll);                
 
         // save the current roll mode to reset it after this roll
         const rollMode = game.settings.get("core", "rollMode");
@@ -302,17 +315,10 @@ class LMRTFYRoller extends Application {
                     }
 
                     actor[rollMethod](game.i18n.localize(label), formula, target);
-
                     break;
                 }
 
                 default: {
-                    const options = {
-                        event: fakeEvent,                        
-                    }
-                    if (failRoll) {
-                        options["parts"] = [-100];
-                    }
                     await actor[rollMethod].call(actor, ...args, options);
                 }
             }
@@ -472,11 +478,13 @@ class LMRTFYRoller extends Application {
         const ability = event.currentTarget.dataset.ability;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
         
-        // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.get('midi-qol')) {
-            this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
-        } else {
+        // until patching has been removed
+        if (!this.hasMidi) {
             this._makeRoll(event, LMRTFY.abilityRollMethod, false, ability);
+        } else if (this.midiUseNewRoller) {
+            this._makeRoll(event, LMRTFY.abilityRollMethod, false, ability);
+        } else {
+            this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
         }
     }
 
@@ -485,12 +493,14 @@ class LMRTFYRoller extends Application {
         const ability = event.currentTarget.dataset.ability;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
 
-        // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.get('midi-qol')) {
-            this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
-        } else {
+        // until patching has been removed
+        if (!this.hasMidi) {
             this._makeRoll(event, LMRTFY.abilityRollMethod, true, ability);
-        }        
+        } else if (this.midiUseNewRoller) {
+            this._makeRoll(event, LMRTFY.abilityRollMethod, true, ability);
+        } else {
+            this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
+        }
     }
 
     _onAbilitySave(event) {
@@ -498,13 +508,15 @@ class LMRTFYRoller extends Application {
         const saves = event.currentTarget.dataset.ability;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
         this._makeRoll(event, LMRTFY.saveRollMethod, false, saves);
-
-        // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.get('midi-qol')) {
-            this._makeRoll(event, LMRTFY.saveRollMethod, saves);
-        } else {
+        
+        // until patching has been removed
+        if (!this.hasMidi) {
             this._makeRoll(event, LMRTFY.saveRollMethod, false, saves);
-        } 
+        } else if (this.midiUseNewRoller) {
+            this._makeRoll(event, LMRTFY.saveRollMethod, false, saves);
+        } else {
+            this._makeRoll(event, LMRTFY.saveRollMethod, saves);
+        }
     }
 
     _onFailAbilitySave(event) {
@@ -512,11 +524,13 @@ class LMRTFYRoller extends Application {
         const saves = event.currentTarget.dataset.ability;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
 
-        // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.get('midi-qol')) {
-            this._makeRoll(event, LMRTFY.saveRollMethod, saves);
-        } else {
+        // until patching has been removed
+        if (!this.hasMidi) {
             this._makeRoll(event, LMRTFY.saveRollMethod, true, saves);
+        } else if (this.midiUseNewRoller) {
+            this._makeRoll(event, LMRTFY.saveRollMethod, true, saves);
+        } else {
+            this._makeRoll(event, LMRTFY.saveRollMethod, saves);
         }
     }
 
@@ -525,11 +539,13 @@ class LMRTFYRoller extends Application {
         const skill = event.currentTarget.dataset.skill;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
 
-        // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.get('midi-qol')) {
-            this._makeRoll(event, LMRTFY.skillRollMethod, skill);
-        } else {
+        // until patching has been removed
+        if (!this.hasMidi) {
             this._makeRoll(event, LMRTFY.skillRollMethod, false, skill);
+        } else if (this.midiUseNewRoller) {
+            this._makeRoll(event, LMRTFY.skillRollMethod, false, skill);
+        } else {
+            this._makeRoll(event, LMRTFY.skillRollMethod, skill);
         }
     }
 
@@ -538,11 +554,13 @@ class LMRTFYRoller extends Application {
         const skill = event.currentTarget.dataset.skill;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
 
-        // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.get('midi-qol')) {
-            this._makeRoll(event, LMRTFY.skillRollMethod, skill);
-        } else {
+        // until patching has been removed
+        if (!this.hasMidi) {
             this._makeRoll(event, LMRTFY.skillRollMethod, true, skill);
+        } else if (this.midiUseNewRoller) {
+            this._makeRoll(event, LMRTFY.skillRollMethod, true, skill);
+        } else {
+            this._makeRoll(event, LMRTFY.skillRollMethod, skill);
         }
     }
 
