@@ -241,7 +241,7 @@ class LMRTFYRoller extends Application {
                 options = {... LMRTFY.advantageRollEvent };
                 break;
             case 2:
-                options = event;
+                options = { event: event };
                 break;
         }
 
