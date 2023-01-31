@@ -321,7 +321,7 @@ class LMRTFYRequestor extends FormApplication {
                 abilities.length === 0 && saves.length === 0 && skills.length === 0 &&
                 formula.length === 0 && 
                 !formData['extra-death-save'] && !formData['extra-initiative'] && !formData['extra-perception'] &&
-                tables.length === 0
+                tables?.length === 0
             )
         ) {
             ui.notifications.warn(game.i18n.localize("LMRTFY.NothingNotification"));
