@@ -232,7 +232,7 @@ class LMRTFY {
         '</svg>';
 
         // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.getName("midi-qol")?.active && !isNewerVersion(game.modules.getName("midi-qol")?.version, "10.0.26")) {
+        if (game.modules.get("midi-qol")?.active && !isNewerVersion(game.modules.get("midi-qol")?.version, "10.0.26")) {
             LMRTFY.canFailChecks = false;
         }
 
