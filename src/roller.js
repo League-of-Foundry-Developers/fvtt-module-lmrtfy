@@ -29,8 +29,8 @@ class LMRTFYRoller extends Application {
             PERCEPTION: "perception",
         }
 
-        this.hasMidi = game.modules.getName("midi-qol")?.active;
-        this.midiUseNewRoller = isNewerVersion(game.modules.getName("midi-qol")?.version, "10.0.26");
+        this.hasMidi = game.modules.get("midi-qol")?.active;
+        this.midiUseNewRoller = isNewerVersion(game.modules.get("midi-qol")?.version, "10.0.26");
 
         Handlebars.registerHelper('canFailAbilityChecks', function (name, ability) {
             if (LMRTFY.canFailChecks) {
@@ -479,9 +479,7 @@ class LMRTFYRoller extends Application {
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
         
         // until patching has been removed
-        if (!this.hasMidi) {
-            this._makeRoll(event, LMRTFY.abilityRollMethod, false, ability);
-        } else if (this.midiUseNewRoller) {
+        if (!this.hasMidi || this.midiUseNewRoller) {
             this._makeRoll(event, LMRTFY.abilityRollMethod, false, ability);
         } else {
             this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
@@ -494,9 +492,7 @@ class LMRTFYRoller extends Application {
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
 
         // until patching has been removed
-        if (!this.hasMidi) {
-            this._makeRoll(event, LMRTFY.abilityRollMethod, true, ability);
-        } else if (this.midiUseNewRoller) {
+        if (!this.hasMidi || this.midiUseNewRoller) {
             this._makeRoll(event, LMRTFY.abilityRollMethod, true, ability);
         } else {
             this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
@@ -507,12 +503,9 @@ class LMRTFYRoller extends Application {
         event.preventDefault();
         const saves = event.currentTarget.dataset.ability;
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
-        this._makeRoll(event, LMRTFY.saveRollMethod, false, saves);
         
         // until patching has been removed
-        if (!this.hasMidi) {
-            this._makeRoll(event, LMRTFY.saveRollMethod, false, saves);
-        } else if (this.midiUseNewRoller) {
+        if (!this.hasMidi || this.midiUseNewRoller) {
             this._makeRoll(event, LMRTFY.saveRollMethod, false, saves);
         } else {
             this._makeRoll(event, LMRTFY.saveRollMethod, saves);
@@ -525,9 +518,7 @@ class LMRTFYRoller extends Application {
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
 
         // until patching has been removed
-        if (!this.hasMidi) {
-            this._makeRoll(event, LMRTFY.saveRollMethod, true, saves);
-        } else if (this.midiUseNewRoller) {
+        if (!this.hasMidi || this.midiUseNewRoller) {
             this._makeRoll(event, LMRTFY.saveRollMethod, true, saves);
         } else {
             this._makeRoll(event, LMRTFY.saveRollMethod, saves);
@@ -540,9 +531,7 @@ class LMRTFYRoller extends Application {
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
 
         // until patching has been removed
-        if (!this.hasMidi) {
-            this._makeRoll(event, LMRTFY.skillRollMethod, false, skill);
-        } else if (this.midiUseNewRoller) {
+        if (!this.hasMidi || this.midiUseNewRoller) {
             this._makeRoll(event, LMRTFY.skillRollMethod, false, skill);
         } else {
             this._makeRoll(event, LMRTFY.skillRollMethod, skill);
@@ -555,9 +544,7 @@ class LMRTFYRoller extends Application {
         if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
 
         // until patching has been removed
-        if (!this.hasMidi) {
-            this._makeRoll(event, LMRTFY.skillRollMethod, true, skill);
-        } else if (this.midiUseNewRoller) {
+        if (!this.hasMidi || this.midiUseNewRoller) {
             this._makeRoll(event, LMRTFY.skillRollMethod, true, skill);
         } else {
             this._makeRoll(event, LMRTFY.skillRollMethod, skill);
