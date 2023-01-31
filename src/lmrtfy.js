@@ -28,6 +28,20 @@ class LMRTFY {
             onChange: () => window.location.reload()
         });
 
+        var showFailButtonSetting = false;
+        if (game.system.id === 'dnd5e') {
+            showFailButtonSetting = true;
+        }
+        game.settings.register('lmrtfy', 'showFailButtons', {
+            name: game.i18n.localize('LMRTFY.ShowFailButtons'),
+            hint: game.i18n.localize('LMRTFY.ShowFailButtonsHint'),
+            scope: 'world',
+            config: showFailButtonSetting,
+            type: Boolean,
+            default: showFailButtonSetting, // if it's DnD 5e default to true
+            onChange: () => window.location.reload()
+        });
+
         Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
             const actorsControlledToken = canvas.tokens?.controlled.find(t => t.actor.id === actor.id);
             if (actorsControlledToken) {
@@ -66,7 +80,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.DND5E.abilityAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = true;
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons');
                 break;
 
             case 'pf1':
@@ -83,7 +97,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.PF1.abilitiesShort;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;
 
             case 'pf2e':
@@ -100,7 +114,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.PF2E.abilities;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;
 
             case 'D35E':
@@ -117,7 +131,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.D35E.abilityAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;
 
             case 'cof':
@@ -133,7 +147,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.COF.statAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;
 
             case 'coc':
@@ -149,7 +163,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = CONFIG.COC.statAbbreviations;
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
             break;
 
             case 'demonlord':
@@ -168,7 +182,7 @@ class LMRTFY {
                 LMRTFY.abilityAbbreviations = abilities;
                 LMRTFY.modIdentifier = 'modifier';
                 LMRTFY.abilityModifiers = {};
-                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;
 
             case 'ose':
@@ -187,7 +201,7 @@ class LMRTFY {
                 LMRTFY.specialRolls = {};
                 LMRTFY.modIdentifier = 'modifier';
                 LMRTFY.abilityModifiers = {};
-                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;
             
             case 'foundry-chromatic-dungeons':
@@ -199,7 +213,7 @@ class LMRTFY {
                 LMRTFY.skills = {};
                 LMRTFY.saves = CONFIG.CHROMATIC.saves;
                 LMRTFY.specialRolls = {};
-                LMRTFY.canFailChecks = false; // unsure if how and if system could handle this
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;    
 
             default:

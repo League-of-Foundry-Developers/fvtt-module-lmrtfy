@@ -63,5 +63,7 @@
     "LMRTFY.SavingThrowFail": "FAIL Saving Throw: ",
     "LMRTFY.AbilityCheckFail": "FAIL Ability Check: ",
     "LMRTFY.SkillCheckFail": "FAIL Skill Check: ",
-    "LMRTFY.EnableChooseFail": "Enable Fail Button"
+    "LMRTFY.EnableChooseFail": "Enable Fail Button",
+    "LMRTFY.ShowFailButtons": "Show Fail Button",
+    "LMRTFY.ShowFailButtonsHint": "Show fail buttons for ability checks, ability saves and skill the requested roll form"
 }
