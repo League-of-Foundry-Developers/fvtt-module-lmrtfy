@@ -23,10 +23,21 @@ class LMRTFYRequestor extends FormApplication {
     }
 
     static get defaultOptions() {
+
+        let template;
+        switch (game.system.id) {
+            case "degenesis":
+                template = "modules/lmrtfy/templates/degenesis-request-rolls.html";
+                break;
+            default:
+                template = "modules/lmrtfy/templates/request-rolls.html";
+                break;
+        }
+
         const options = super.defaultOptions;
         options.title = game.i18n.localize("LMRTFY.Title");
         options.id = "lmrtfy";
-        options.template = "modules/lmrtfy/templates/request-rolls.html";
+        options.template = template;
         options.closeOnSubmit = false;
         options.popOut = true;
         options.width = 600;
