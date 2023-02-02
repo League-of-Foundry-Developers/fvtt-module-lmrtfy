@@ -318,6 +318,12 @@ class LMRTFYRoller extends Application {
                     break;
                 }
 
+                case "degenesis": {
+                    const key = args[0];
+                    actor[rollMethod].call(actor, key, false)
+                    break;
+                }
+
                 default: {
                     await actor[rollMethod].call(actor, ...args, options);
                 }

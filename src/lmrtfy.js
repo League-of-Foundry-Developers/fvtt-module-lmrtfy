@@ -214,7 +214,21 @@ class LMRTFY {
                 LMRTFY.saves = CONFIG.CHROMATIC.saves;
                 LMRTFY.specialRolls = {};
                 LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;    
+                break;
+                
+            case 'degenesis':
+                LMRTFY.skillRollMethod = 'rollSkill';
+
+                let skills = game.actors.contents[0].skills;
+                for (const [key, value] of Object.entries(skills)) {
+                    skills[key]["label"] = key;
+                    skills[key]["ability"] = value.attribute;
+                }
+                LMRTFY.skills = skills;
+
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
+                break;
 
             default:
                 console.error('LMRFTY | Unsupported system detected');
