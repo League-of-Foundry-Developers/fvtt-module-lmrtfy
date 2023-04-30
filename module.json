@@ -84,7 +84,8 @@
         "demonlord",
         "ose",
         "foundry-chromatic-dungeons",
-        "degenesis"
+        "degenesis",
+        "ffd20"
     ],
     "relationships": {
         "systems": [
@@ -174,6 +175,14 @@
                 "manifest": "https://github.com/greedyj4ck/DEGENESIS-FoundryVTT/releases/latest/download/system.json",
                 "compatibility": {
                     "verified": "0.5.1"
+                }
+            },
+            {
+                "id": "ffd20",
+                "type": "system",
+                "manifest": "https://github.com/Ritsuna/Foundry_FFD20/blob/master/system.json",
+                "compatibility": {
+                    "verified": "10.1.7"
                 }
             }
         ]

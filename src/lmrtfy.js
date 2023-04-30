@@ -229,6 +229,21 @@ class LMRTFY {
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;
+                
+            case 'ffd20':
+                LMRTFY.saveRollMethod = 'rollSavingThrow';
+                LMRTFY.abilityRollMethod = 'rollAbilityTest';
+                LMRTFY.skillRollMethod = 'rollSkill';
+                LMRTFY.abilities = CONFIG.FFD20.abilities;
+                LMRTFY.skills = CONFIG.FFD20.skills;
+                LMRTFY.saves = CONFIG.FFD20.savingThrows;
+                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
+                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': false };
+                LMRTFY.abilityAbbreviations = CONFIG.abilitiesShort;
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
+                break;
 
             default:
                 console.error('LMRFTY | Unsupported system detected');
