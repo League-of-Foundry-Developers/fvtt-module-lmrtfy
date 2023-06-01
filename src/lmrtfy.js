@@ -70,14 +70,14 @@ class LMRTFY {
                 LMRTFY.saveRollMethod = 'rollAbilitySave';
                 LMRTFY.abilityRollMethod = 'rollAbilityTest';
                 LMRTFY.skillRollMethod = 'rollSkill';
-                LMRTFY.abilities = CONFIG.DND5E.abilities;
+                LMRTFY.abilities = LMRTFY.create5eAbilities();
                 LMRTFY.skills = CONFIG.DND5E.skills;
-                LMRTFY.saves = CONFIG.DND5E.abilities;
+                LMRTFY.saves = LMRTFY.create5eAbilities();
                 LMRTFY.normalRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
                 LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
                 LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
                 LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
-                LMRTFY.abilityAbbreviations = CONFIG.DND5E.abilityAbbreviations;
+                LMRTFY.abilityAbbreviations = LMRTFY.create5eAbilities();
                 LMRTFY.modIdentifier = 'mod';
                 LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
                 LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons');
@@ -304,6 +304,18 @@ class LMRTFY {
         }
 
         return abilityMods;
+    }
+    
+    static create5eAbilities() {
+        let abbr = {};
+        
+        for (let key in CONFIG.DND5E.abilities) { 
+            let abb = game.i18n.localize(CONFIG.DND5E.abilities[key].abbreviation);
+            let upperFirstLetter = abb.charAt(0).toUpperCase() + abb.slice(1);
+            abbr[`${abb}`] = `DND5E.Ability${upperFirstLetter}`;
+        }
+
+        return abbr;
     }
 
     static onMessage(data) {
