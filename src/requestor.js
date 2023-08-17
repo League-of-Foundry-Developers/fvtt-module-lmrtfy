@@ -24,16 +24,7 @@ class LMRTFYRequestor extends FormApplication {
 
     static get defaultOptions() {
 
-        let template;
-        switch (game.system.id) {
-            case "degenesis":
-                template = "modules/lmrtfy/templates/degenesis-request-rolls.html";
-                break;
-            default:
-                template = "modules/lmrtfy/templates/request-rolls.html";
-                break;
-        }
-
+        let template = LMRTFY.currentRollProvider.requestRollTemplate();
         const options = super.defaultOptions;
         options.title = game.i18n.localize("LMRTFY.Title");
         options.id = "lmrtfy";
@@ -54,18 +45,18 @@ class LMRTFYRequestor extends FormApplication {
         const actors = game.actors.entities || game.actors.contents;
         const users = game.users.entities || game.users.contents;
         // Note: Maybe these work better at a global level, but keeping things simple
-        const abilities = LMRTFY.abilities;
-        const saves = LMRTFY.saves;
-        const abilityModifiers = LMRTFY.abilityModifiers;
+        const abilities = LMRTFY.currentRollProvider.abilities();
+        const saves = LMRTFY.currentRollProvider.saves();
+        const abilityModifiers = LMRTFY.currentRollProvider.abilityModifiers();
 
-        const skills = Object.keys(LMRTFY.skills)
+        const skills = Object.keys(LMRTFY.currentRollProvider.skills())
             .sort((a, b) => {
-                const skillA = (LMRTFY.skills[a]?.label) ? LMRTFY.skills[a].label : LMRTFY.skills[a];
-                const skillB = (LMRTFY.skills[b]?.label) ? LMRTFY.skills[b].label : LMRTFY.skills[b];
+                const skillA = (LMRTFY.currentRollProvider.skills()[a]?.label) ? LMRTFY.currentRollProvider.skills()[a].label : LMRTFY.currentRollProvider.skills()[a];
+                const skillB = (LMRTFY.currentRollProvider.skills()[b]?.label) ? LMRTFY.currentRollProvider.skills()[b].label : LMRTFY.currentRollProvider.skills()[b];
                 game.i18n.localize(skillA).localeCompare(skillB)
             })
             .reduce((acc, skillKey) => {
-                const skill = (LMRTFY.skills[skillKey]?.label) ? LMRTFY.skills[skillKey]?.label : LMRTFY.skills[skillKey];
+                const skill = (LMRTFY.currentRollProvider.skills()[skillKey]?.label) ? LMRTFY.currentRollProvider.skills()[skillKey]?.label : LMRTFY.currentRollProvider.skills()[skillKey];
                 acc[skillKey] = skill;
                 return acc;
             }, {});
@@ -85,9 +76,9 @@ class LMRTFYRequestor extends FormApplication {
             saves,
             skills,
             tables,
-            specialRolls: LMRTFY.specialRolls,
+            specialRolls: LMRTFY.currentRollProvider.specialRolls(),
             rollModes: CONFIG.Dice.rollModes,
-            showDC: (game.system.id === 'pf2e') ? true : false,
+            showDC: LMRTFY.currentRollProvider.useDC(),
             abilityModifiers,
         };
     }
@@ -340,14 +331,12 @@ class LMRTFYRequestor extends FormApplication {
         }
 
         let dc = undefined;
-        if (game.system.id === 'pf2e') {
-            if (Number.isInteger(parseInt(formData.dc))) {
-                dc = {
-                    value: parseInt(formData.dc),
-                    visibility: formData.visibility
-                }
-            }
-        }
+		if (LMRTFY.currentRollProvider.useDC() && Number.isInteger(parseInt(formData.dc))) {
+			dc = {
+				value: parseInt(formData.dc),
+				visibility: formData.visibility
+			};
+		}
 
         const socketData = {
             user: formData.user,
@@ -365,7 +354,7 @@ class LMRTFYRequestor extends FormApplication {
             perception: formData['extra-perception'],
             tables: tables,
             chooseOne: formData['choose-one'],
-            canFailChecks: LMRTFY.canFailChecks,
+            canFailChecks: LMRTFY.currentRollProvider.canFailChecks(),
         }
         if (game.system.id === 'pf2e' && dc) {
             socketData['dc'] = dc;
@@ -390,9 +379,9 @@ class LMRTFYRequestor extends FormApplication {
             const target = user ? user.name : actorTargets;
             const scriptContent = `// ${title} ${message ? " -- " + message : ""}\n` +
                 `// Request rolls from ${target}\n` +
-                `// Abilities: ${abilities.map(a => LMRTFY.abilities[a]).filter(s => s).join(", ")}\n` +
-                `// Saves: ${saves.map(a => LMRTFY.saves[a]).filter(s => s).join(", ")}\n` +
-                `// Skills: ${skills.map(s => LMRTFY.skills[s]).filter(s => s).join(", ")}\n` +
+                `// Abilities: ${abilities.map(a => LMRTFY.currentRollProvider.abilities()[a]).filter(s => s).join(", ")}\n` +
+                `// Saves: ${saves.map(a => LMRTFY.currentRollProvider.saves()[a]).filter(s => s).join(", ")}\n` +
+                `// Skills: ${skills.map(s => LMRTFY.currentRollProvider.skills()[s]).filter(s => s).join(", ")}\n` +
                 `const data = ${JSON.stringify(socketData, null, 2)};\n\n` +
                 `${selectedSection}` +
                 `game.socket.emit('module.lmrtfy', data);\n`;

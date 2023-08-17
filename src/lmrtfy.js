@@ -62,199 +62,32 @@ class LMRTFY {
 
     static ready() {
         game.socket.on('module.lmrtfy', LMRTFY.onMessage);
-
-        switch (game.system.id) {
-            case 'dnd5eJP':
-            case 'dnd5e':
-            case 'sw5e':
-                LMRTFY.saveRollMethod = 'rollAbilitySave';
-                LMRTFY.abilityRollMethod = 'rollAbilityTest';
-                LMRTFY.skillRollMethod = 'rollSkill';
-                LMRTFY.abilities = LMRTFY.create5eAbilities();
-                LMRTFY.skills = CONFIG.DND5E.skills;
-                LMRTFY.saves = LMRTFY.create5eAbilities();
-                LMRTFY.normalRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
-                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
-                LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
-                LMRTFY.abilityAbbreviations = LMRTFY.create5eAbilities();
-                LMRTFY.modIdentifier = 'mod';
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons');
+        
+        var externalRollProviders = [
+            new lmrtfy_RollProvider_cd(),
+            new lmrtfy_RollProvider_coc(),
+            new lmrtfy_RollProvider_cof(),
+            new lmrtfy_RollProvider_degenesis(),
+            new lmrtfy_RollProvider_dnd5e(),
+            new lmrtfy_RollProvider_dnd5eJP(),
+            new lmrtfy_RollProvider_dnd35(),
+            new lmrtfy_RollProvider_ffd20(),
+            new lmrtfy_RollProvider_ose(),
+            new lmrtfy_RollProvider_pf1(),
+            new lmrtfy_RollProvider_pf2e(),
+            new lmrtfy_RollProvider_sf1e(),
+            new lmrtfy_RollProvider_sw5e()
+        ];
+        
+        for (var i = 0; i < externalRollProviders.length; i++) {
+            if (externalRollProviders[i].systemIdentifiers() == game.system.id) {
+                LMRTFY.currentRollProvider = externalRollProviders[i];
                 break;
-
-            case 'pf1':
-                LMRTFY.saveRollMethod = 'rollSavingThrow';
-                LMRTFY.abilityRollMethod = 'rollAbility';
-                LMRTFY.skillRollMethod = 'rollSkill';
-                LMRTFY.abilities = CONFIG.PF1.abilities;
-                LMRTFY.skills = CONFIG.PF1.skills;
-                LMRTFY.saves = CONFIG.PF1.savingThrows;
-                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
-                LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': false };
-                LMRTFY.abilityAbbreviations = CONFIG.PF1.abilitiesShort;
-                LMRTFY.modIdentifier = 'mod';
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-
-            case 'pf2e':
-                LMRTFY.saveRollMethod = 'rollSave';
-                LMRTFY.abilityRollMethod = 'rollAbility';
-                LMRTFY.skillRollMethod = 'rollSkill';
-                LMRTFY.abilities = CONFIG.PF2E.abilities;
-                LMRTFY.skills = CONFIG.PF2E.skills;
-                LMRTFY.saves = CONFIG.PF2E.saves;
-                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
-                LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true, 'perception': true };
-                LMRTFY.abilityAbbreviations = CONFIG.PF2E.abilities;
-                LMRTFY.modIdentifier = 'mod';
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-
-            case 'D35E':
-                LMRTFY.saveRollMethod = 'rollSave';
-                LMRTFY.abilityRollMethod = 'rollAbility';
-                LMRTFY.skillRollMethod = 'rollSkill';
-                LMRTFY.abilities = CONFIG.D35E.abilities;
-                LMRTFY.skills = CONFIG.D35E.skills;
-                LMRTFY.saves = CONFIG.D35E.savingThrows;
-                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
-                LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': true };
-                LMRTFY.abilityAbbreviations = CONFIG.D35E.abilityAbbreviations;
-                LMRTFY.modIdentifier = 'mod';
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-
-            case 'cof':
-                LMRTFY.saveRollMethod = 'rollStat';
-                LMRTFY.abilityRollMethod = 'rollStat';
-                LMRTFY.skillRollMethod = 'rollStat';
-                LMRTFY.abilities = CONFIG.COF.stats;
-                LMRTFY.skills = CONFIG.COF.skills;
-                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.specialRolls = {};
-                LMRTFY.abilityAbbreviations = CONFIG.COF.statAbbreviations;
-                LMRTFY.modIdentifier = 'mod';
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-
-            case 'coc':
-                LMRTFY.saveRollMethod = 'rollStat';
-                LMRTFY.abilityRollMethod = 'rollStat';
-                LMRTFY.skillRollMethod = 'rollStat';
-                LMRTFY.abilities = CONFIG.COC.stats;
-                LMRTFY.skills = CONFIG.COC.skills;
-                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.specialRolls = {};
-                LMRTFY.abilityAbbreviations = CONFIG.COC.statAbbreviations;
-                LMRTFY.modIdentifier = 'mod';
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-            break;
-
-            case 'demonlord':
-                const abilities = duplicate(CONFIG.DL.attributes);
-                delete abilities.defense;
-                LMRTFY.saveRollMethod = 'rollChallenge';
-                LMRTFY.abilityRollMethod = 'rollChallenge';
-                LMRTFY.skillRollMethod = 'rollChallenge';
-                LMRTFY.abilities = abilities;
-                LMRTFY.skills = {};
-                LMRTFY.saves = {};
-                LMRTFY.normalRollEvent = {};
-                LMRTFY.advantageRollEvent = {};
-                LMRTFY.disadvantageRollEvent = {};
-                LMRTFY.specialRolls = {};
-                LMRTFY.abilityAbbreviations = abilities;
-                LMRTFY.modIdentifier = 'modifier';
-                LMRTFY.abilityModifiers = {};
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-
-            case 'ose':
-                LMRTFY.saveRollMethod = 'rollSave';
-                LMRTFY.abilityRollMethod = 'rollCheck';
-                LMRTFY.skillRollMethod = 'rollExploration';
-                LMRTFY.abilities = CONFIG.OSE.scores;
-                LMRTFY.abilityAbbreviations = CONFIG.OSE.scores_short;
-                LMRTFY.skills = CONFIG.OSE.exploration_skills;
-                LMRTFY.saves = CONFIG.OSE.saves_long;
-                LMRTFY.normalRollEvent = {};
-                LMRTFY.advantageRollEvent = {};
-                LMRTFY.disadvantageRollEvent = {};
-                LMRTFY.modIdentifier = 'mod';
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.specialRolls = {};
-                LMRTFY.modIdentifier = 'modifier';
-                LMRTFY.abilityModifiers = {};
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-            
-            case 'foundry-chromatic-dungeons':
-                LMRTFY.saveRollMethod = 'saveRoll';
-                LMRTFY.abilityRollMethod = 'attributeRoll';
-                LMRTFY.skillRollMethod = null;
-                LMRTFY.abilities = CONFIG.CHROMATIC.attributeLabels;
-                LMRTFY.abilityAbbreviations = CONFIG.CHROMATIC.attributeAbbreviations;
-                LMRTFY.skills = {};
-                LMRTFY.saves = CONFIG.CHROMATIC.saves;
-                LMRTFY.specialRolls = {};
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-                
-            case 'degenesis':
-                LMRTFY.skillRollMethod = 'rollSkill';
-
-                let skills = game.actors.contents[0].skills;
-                for (const [key, value] of Object.entries(skills)) {
-                    skills[key]["label"] = key;
-                    skills[key]["ability"] = value.attribute;
-                }
-                LMRTFY.skills = skills;
-
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-                
-            case 'ffd20':
-                LMRTFY.saveRollMethod = 'rollSavingThrow';
-                LMRTFY.abilityRollMethod = 'rollAbilityTest';
-                LMRTFY.skillRollMethod = 'rollSkill';
-                LMRTFY.abilities = CONFIG.FFD20.abilities;
-                LMRTFY.skills = CONFIG.FFD20.skills;
-                LMRTFY.saves = CONFIG.FFD20.savingThrows;
-                LMRTFY.normalRollEvent = { shiftKey: false, altKey: false, ctrlKey: false };
-                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': false };
-                LMRTFY.abilityAbbreviations = CONFIG.abilitiesShort;
-                LMRTFY.modIdentifier = 'mod';
-                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-                LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
-                break;
-
-            default:
-                console.error('LMRFTY | Unsupported system detected');
-
+            }
         }
 
-        // overwrite for the dnd5e system, unsure if other 5e systems does this too
-        if (game.system.id === "dnd5e") {
-            LMRTFY.normalRollEvent = { fastForward: true };
-            LMRTFY.advantageRollEvent = { advantage: true, fastForward: true };
-            LMRTFY.disadvantageRollEvent = { disadvantage: true, fastForward: true };
+        if (!LMRTFY.currentRollProvider) {
+            console.error('LMRFTY | Unsupported system detected');
         }
 
         LMRTFY.d20Svg = '<svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
@@ -276,7 +109,7 @@ class LMRTFY {
 
         // for now we don't allow can fails until midi-qol has update patching.js
         if (game.modules.get("midi-qol")?.active && !isNewerVersion(game.modules.get("midi-qol")?.version, "10.0.26")) {
-            LMRTFY.canFailChecks = false;
+            LMRTFY.currentRollProvider.overrideFailChecks(false);
         }
 
         if (game.settings.get('lmrtfy', 'deselectOnRequestorRender')) {
@@ -285,38 +118,7 @@ class LMRTFY {
             })
         }
     }
-
-    static parseAbilityModifiers() {
-        let abilityMods = {};
-
-        for (let key in LMRTFY.abilities) {
-            if (LMRTFY.abilityAbbreviations?.hasOwnProperty(key)) {
-                abilityMods[`abilities.${game.i18n.localize(LMRTFY.abilityAbbreviations[key])}.${LMRTFY.modIdentifier}`] = game.i18n.localize(LMRTFY.abilities[key]);
-            }
-        }
-
-        if (
-            game.system.id === 'dnd5eJP' ||
-            game.system.id === 'dnd5e' ||
-            game.system.id === 'sw5e'
-        ) {
-            abilityMods['attributes.prof'] = 'DND5E.Proficiency';
-        }
-
-        return abilityMods;
-    }
-    
-    static create5eAbilities() {
-        let abbr = {};
-        
-        for (let key in CONFIG.DND5E.abilities) { 
-            let abb = game.i18n.localize(CONFIG.DND5E.abilities[key].abbreviation);
-            let upperFirstLetter = abb.charAt(0).toUpperCase() + abb.slice(1);
-            abbr[`${abb}`] = `DND5E.Ability${upperFirstLetter}`;
-        }
-
-        return abbr;
-    }
+   
 
     static onMessage(data) {
         //console.log("LMRTF got message: ", data)
@@ -375,19 +177,6 @@ class LMRTFY {
                 button: true
             });
         }
-    }
-
-    static buildAbilityModifier(actor, ability) {
-        const modifiers = [];
-
-        const mod = game.pf2e.AbilityModifier.fromScore(ability, actor.data.data.abilities[ability].value);
-        modifiers.push(mod);
-
-        [`${ability}-based`, 'ability-check', 'all'].forEach((key) => {
-            (actor.synthetics.statisticsModifier[key] || []).forEach((m) => modifiers.push(m.clone()));
-        });
-        
-        return new game.pf2e.StatisticModifier(`${game.i18n.localize('LMRTFY.AbilityCheck')} ${game.i18n.localize(mod.label)}`, modifiers);
     }
 
     static async hideBlind(app, html, msg) {

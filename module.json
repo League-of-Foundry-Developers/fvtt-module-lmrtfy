@@ -1,196 +1,217 @@
 {
-    "id": "lmrtfy",
-    "name": "lmrtfy",
-    "title": "Let Me Roll That For You!",
-    "description": "Ask your players to make rolls for you.",
-    "version": "3.00",
-    "author": "KaKaRoTo, iotech, Limping Ninja, Rughalt, Calego, VTT Lair",
-    "authors": [
-        {
-          "name": "VTT Lair",
-          "url": "https://github.com/vtt-lair"
-        }
-    ],
-    "scripts": [
-        "./src/lmrtfy.js",
-        "./src/requestor.js",
-        "./src/roller.js"
-    ],
-    "styles": [
-        "/css/lmrtfy.css"
-    ],
-    "minimumCoreVersion": "10",
-    "compatibleCoreVersion": "10",
-    "compatibility": {
-        "minimum": "10",
-        "verified": "10"
-    },        
-    "languages": [
-        {
-            "lang": "en",
-            "name": "English",
-            "path": "lang/en.json"
-        },
-        {
-            "lang": "ja",
-            "name": "日本語 (Japanese)",
-            "path": "lang/ja.json"
-        },
-        {
-            "lang": "de",
-            "name": "German",
-            "path": "lang/de.json"
-        },
-        {
-            "lang": "pt-BR",
-            "name": "Português (Brasil)",
-            "path": "lang/pt-BR.json"
-        },
-        {
-            "lang": "es",
-            "name": "Español",
-            "path": "lang/es.json"
-        },
-        {
-            "lang": "fr",
-            "name": "Français",
-            "path": "lang/fr.json"
-        },
-        {
-            "lang": "cn",
-            "name": "中文",
-            "path": "lang/cn.json"
-        },
-        {
-            "lang": "zh-tw",
-            "name": "正體中文",
-            "path": "lang/zh-tw.json"
-        },
-        {
-            "lang": "it",
-            "name": "Italiana",
-            "path": "lang/it.json"
-        }
-    ],
-    "systems": [
-        "dnd5e",
-        "dnd5eJP",
-        "pf1",
-        "pf2e",
-        "D35E",
-        "sw5e",
-        "cof",
-        "coc",
-        "demonlord",
-        "ose",
-        "foundry-chromatic-dungeons",
-        "degenesis",
-        "ffd20"
-    ],
-    "relationships": {
-        "systems": [
-            {
-                "id": "dnd5e",
-                "type": "system",
-                "manifest": "https://gitlab.com/asacolips-projects/foundry-mods/archmage/-/raw/2.0.2/system.json",
-                "compatibility": {
-                    "verified": "2.0.2"
-                }
-            },
-            {
-                "id": "dnd5eJP",
-                "type": "system"
-            },
-            {
-                "id": "pf1",
-                "type": "system",
-                "manifest": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1/-/releases/v0.82.1/downloads/system.json",
-                "compatibility": {
-                    "verified": "0.82.1"
-                }
-            },
-            {
-                "id": "pf2e",
-                "type": "system",
-                "manifest": "https://github.com/foundryvtt/pf2e/releases/download/3.13.6/system.json",
-                "compatibility": {
-                    "verified": "3.13.6"
-                }
-            },
-            {
-                "id": "D35E",
-                "type": "system",
-                "manifest": "https://github.com/Rughalt/D35E/blob/master/system.json",
-                "compatibility": {
-                    "verified": "0.99.1"
-                }
-            },
-            {
-                "id": "sw5e",
-                "type": "system"
-            },
-            {
-                "id": "cof",
-                "type": "system",
-                "manifest": "https://github.com/ZigmundKreud/cof/releases/download/9.269.3/system.json",
-                "compatibility": {
-                    "verified": "9.269.3"
-                }
-            },
-            {
-                "id": "coc",
-                "type": "system",
-                "manifest": "https://github.com/ZigmundKreud/coc/releases/download/9.269.4/system.json",
-                "compatibility": {
-                    "verified": "9.269.4"
-                }
-            },
-            {
-                "id": "demonlord",
-                "type": "system",
-                "manifest": "https://github.com/Xacus/demonlord/releases/download/2.2.1/system.json",
-                "compatibility": {
-                    "verified": "2.2.1"
-                }
-            },
-            {
-                "id": "ose",
-                "type": "system",
-                "manifest": "https://github.com/vttred/ose/releases/download/1.6.2/system.json",
-                "compatibility": {
-                    "verified": "1.6.2"
-                }
-            },
-            {
-                "id": "foundry-chromatic-dungeons",
-                "type": "system",
-                "manifest": "https://github.com/wyrmisis/foundry-chromatic-dungeons/releases/download/1.1.0/system.json",
-                "compatibility": {
-                    "verified": "1.1.0"
-                }
-            },
-            {
-                "id": "degenesis",
-                "type": "system",
-                "manifest": "https://github.com/greedyj4ck/DEGENESIS-FoundryVTT/releases/latest/download/system.json",
-                "compatibility": {
-                    "verified": "0.5.1"
-                }
-            },
-            {
-                "id": "ffd20",
-                "type": "system",
-                "manifest": "https://github.com/Ritsuna/Foundry_FFD20/blob/master/system.json",
-                "compatibility": {
-                    "verified": "10.1.7"
-                }
-            }
-        ]
-    },
-    "socket": true,
-    "url": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy",
-    "manifest": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.json",
-    "download": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/download/v3.00/module.zip",
-    "changelog": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases",
-    "bugs": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/issues"
+	"id": "lmrtfy",
+	"name": "lmrtfy",
+	"title": "Let Me Roll That For You!",
+	"description": "Ask your players to make rolls for you.",
+	"version": "3.00",
+	"author": "KaKaRoTo, iotech, Limping Ninja, Rughalt, Calego, VTT Lair, Imper1um",
+	"authors": [{
+		"name": "VTT Lair",
+		"url": "https://github.com/vtt-lair"
+	}],
+	"scripts": [
+		"./src/lmrtfy_RollProvider.js",
+		"./src/lmrtfy_RollEvent.js",
+		"./src/lmrtfy_RollProvider_cof.js",
+		"./src/lmrtfy_RollProvider_coc.js",
+		"./src/lmrtfy_RollProvider_dnd5e.js",
+		"./src/lmrtfy_RollProvider_cd.js",
+		"./src/lmrtfy_RollProvider_degenesis.js",
+		"./src/lmrtfy_RollProvider_dnd5eJP.js",
+		"./src/lmrtfy_RollProvider_dnd35.js",
+		"./src/lmrtfy_RollProvider_ffd20.js",
+		"./src/lmrtfy_RollProvider_ose.js",
+		"./src/lmrtfy_RollProvider_pf1.js",
+		"./src/lmrtfy_RollProvider_pf2e.js",
+		"./src/lmrtfy_RollProvider_sf1e.js",
+		"./src/lmrtfy_RollProvider_sw5e.js",
+
+		"./src/lmrtfy.js",
+		"./src/requestor.js",
+		"./src/roller.js"
+	],
+	"styles": [
+		"/css/lmrtfy.css"
+	],
+	"minimumCoreVersion": "10",
+	"compatibleCoreVersion": "11",
+	"compatibility": {
+		"minimum": "10",
+		"verified": "11"
+	},
+	"languages": [{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		},
+		{
+			"lang": "ja",
+			"name": "日本語 (Japanese)",
+			"path": "lang/ja.json"
+		},
+		{
+			"lang": "de",
+			"name": "German",
+			"path": "lang/de.json"
+		},
+		{
+			"lang": "pt-BR",
+			"name": "Português (Brasil)",
+			"path": "lang/pt-BR.json"
+		},
+		{
+			"lang": "es",
+			"name": "Español",
+			"path": "lang/es.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "lang/fr.json"
+		},
+		{
+			"lang": "cn",
+			"name": "中文",
+			"path": "lang/cn.json"
+		},
+		{
+			"lang": "zh-tw",
+			"name": "正體中文",
+			"path": "lang/zh-tw.json"
+		},
+		{
+			"lang": "it",
+			"name": "Italiana",
+			"path": "lang/it.json"
+		}
+	],
+	"systems": [
+		"dnd5e",
+		"dnd5eJP",
+		"pf1",
+		"pf2e",
+		"D35E",
+		"sw5e",
+		"cof",
+		"coc",
+		"demonlord",
+		"ose",
+		"foundry-chromatic-dungeons",
+		"degenesis",
+		"ffd20",
+		"sf1e"
+	],
+	"relationships": {
+		"systems": [{
+				"id": "dnd5e",
+				"type": "system",
+				"manifest": "https://gitlab.com/asacolips-projects/foundry-mods/archmage/-/raw/2.0.2/system.json",
+				"compatibility": {
+					"verified": "2.0.2"
+				}
+			},
+			{
+				"id": "dnd5eJP",
+				"type": "system"
+			},
+			{
+				"id": "pf1",
+				"type": "system",
+				"manifest": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1/-/releases/v0.82.1/downloads/system.json",
+				"compatibility": {
+					"verified": "0.82.1"
+				}
+			},
+			{
+				"id": "pf2e",
+				"type": "system",
+				"manifest": "https://github.com/foundryvtt/pf2e/releases/download/3.13.6/system.json",
+				"compatibility": {
+					"verified": "3.13.6"
+				}
+			},
+			{
+				"id": "D35E",
+				"type": "system",
+				"manifest": "https://github.com/Rughalt/D35E/blob/master/system.json",
+				"compatibility": {
+					"verified": "0.99.1"
+				}
+			},
+			{
+				"id": "sw5e",
+				"type": "system"
+			},
+			{
+				"id": "cof",
+				"type": "system",
+				"manifest": "https://github.com/ZigmundKreud/cof/releases/download/9.269.3/system.json",
+				"compatibility": {
+					"verified": "9.269.3"
+				}
+			},
+			{
+				"id": "coc",
+				"type": "system",
+				"manifest": "https://github.com/ZigmundKreud/coc/releases/download/9.269.4/system.json",
+				"compatibility": {
+					"verified": "9.269.4"
+				}
+			},
+			{
+				"id": "demonlord",
+				"type": "system",
+				"manifest": "https://github.com/Xacus/demonlord/releases/download/2.2.1/system.json",
+				"compatibility": {
+					"verified": "2.2.1"
+				}
+			},
+			{
+				"id": "ose",
+				"type": "system",
+				"manifest": "https://github.com/vttred/ose/releases/download/1.6.2/system.json",
+				"compatibility": {
+					"verified": "1.6.2"
+				}
+			},
+			{
+				"id": "foundry-chromatic-dungeons",
+				"type": "system",
+				"manifest": "https://github.com/wyrmisis/foundry-chromatic-dungeons/releases/download/1.1.0/system.json",
+				"compatibility": {
+					"verified": "1.1.0"
+				}
+			},
+			{
+				"id": "degenesis",
+				"type": "system",
+				"manifest": "https://github.com/greedyj4ck/DEGENESIS-FoundryVTT/releases/latest/download/system.json",
+				"compatibility": {
+					"verified": "0.5.1"
+				}
+			},
+			{
+				"id": "ffd20",
+				"type": "system",
+				"manifest": "https://github.com/Ritsuna/Foundry_FFD20/blob/master/system.json",
+				"compatibility": {
+					"verified": "10.1.7"
+				}
+			},
+			{
+				"id": "sfrpg",
+				"type": "system",
+				"manifest": "https://github.com/foundryvtt-starfinder/foundryvtt-starfinder/blob/v0.24.2/src/system.json",
+				"compatibility": {
+					"verified": "0.24.2"
+				}
+			}
+		]
+	},
+	"socket": true,
+	"url": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy",
+	"manifest": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.json",
+	"download": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/download/v3.00/module.zip",
+	"changelog": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases",
+	"bugs": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/issues"
 }
