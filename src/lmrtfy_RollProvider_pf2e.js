@@ -62,16 +62,18 @@ class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider {
         for (let actor of actors) {
             const initiative = actor.data.data.attributes.initiative;
             const rollNames = ['all', 'initiative'];
-            if (initiative.ability === 'perception') {
+			let initiativeRoll = actor.perception ?? actor.attributes.perception;
+            if (initiative.statistic === 'perception') {
                 rollNames.push('wis-based');
                 rollNames.push('perception');
             } else {
-                const skill = actor.data.data.skills[initiative.ability];
+                const skill = actor.data.data.skills[initiative.statistic];
                 rollNames.push(`${skill.ability}-based`);
                 rollNames.push(skill.name);
+				initiativeRoll = actor[`{skill.name}`] ?? actor.attributes.[`{skill.name}`];
             }
             const options = actor.getRollOptions(rollNames);
-            initiative.roll({ event, options });
+            initiativeRoll.roll({ event, options });
         }
 
         game.settings.set("core", "rollMode", rollMode);
