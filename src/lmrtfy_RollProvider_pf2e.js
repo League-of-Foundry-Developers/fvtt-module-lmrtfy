@@ -1,4 +1,4 @@
-class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider_pf1 {
+class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider {
 	systemIdentifiers() {
 		return 'pf2e';
 	}
@@ -25,30 +25,30 @@ class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider_pf1 {
 	
 	handleCustomRoll(actor, event, rollMethod, rolledType, failRoll, dc, ...args) {
 		switch (rolledType) {
-			case roller.rollTypes().ABILITY:
+			case LMRTFYRoller.rollTypes().ABILITY:
 				const modifier = this.buildAbilityModifier(actor, args[0]);
-				game.pf2e.Check.roll(modifier, { type: 'skill-check', dc: this.dc, actor }, event);
+				game.pf2e.Check.roll(modifier, { type: 'skill-check', dc: dc, actor }, event);
 				break;
 
-			case this.rollTypes().SAVE:
+			case LMRTFYRoller.rollTypes().SAVE:
 				const save = actor.saves[args[0]].check;
 				const saveOptions = actor.getRollOptions(['all', `${save.ability}-based`, 'saving-throw', save.name]);
-				save.roll({ event, saveOptions, dc: this.dc });
+				save.roll({ event, saveOptions, dc: dc });
 				break;
 
-			case this.rollTypes().SKILL:
+			case LMRTFYRoller.rollTypes().SKILL:
 				// system specific roll handling
 				const skill = actor.system.skills[args[0]];
 				// roll lore skills only for actors who have them ...
-				if (!skill) continue;
+				if (!skill) { return true; }
 
 				const skillOptions = actor.getRollOptions(['all', `${skill.ability ?? 'int'}-based`, 'skill-check', skill.name]);
-				skill.roll({ event, skillOptions, dc: this.dc });
+				skill.roll({ event, skillOptions, dc: dc });
 				break;
 
-			case this.rollTypes().PERCEPTION:
+			case LMRTFYRoller.rollTypes().PERCEPTION:
 				const precOptions = actor.getRollOptions(['all', 'wis-based', 'perception']);
-				actor.perception.roll({ event, precOptions, dc: this.dc });
+				actor.perception.roll({ event, precOptions, dc: dc });
 				break;
 		}
 		return true;
