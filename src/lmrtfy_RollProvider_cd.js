@@ -32,7 +32,7 @@ class lmrtfy_RollProvider_cd extends lmrtfy_RollProvider {
 	 * @return array Of Ability Modifiers
 	 */
 	abilityModifiers() {
-		return parseAbilityModifiers();
+		return this.parseAbilityModifiers();
 	}
 
 	/**
@@ -64,7 +64,7 @@ class lmrtfy_RollProvider_cd extends lmrtfy_RollProvider {
 
 	handleCustomRoll(actor, event, rollMethod, rolledType, failRoll, dc, ...args) {
 		const key = args[0];
-		const {attributes, attributeMods, saves} = actor.system.data;
+		const {attributes, attributeMods, saves} = actor.system;
 		let label, formula, target;
 
 		switch (rollMethod) {
@@ -80,7 +80,8 @@ class lmrtfy_RollProvider_cd extends lmrtfy_RollProvider {
 				break;
 		}
 
-		actor[rollMethod](game.i18n.localize(label), formula, target);
+		//This needs to be fixed, but I'm not sure on how CD does rolls with the new version.
+		actor[rollMethod](game.i18n.localize(label));
 		
 		return true;
 	}
