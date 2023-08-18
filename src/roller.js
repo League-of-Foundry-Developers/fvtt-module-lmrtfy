@@ -424,9 +424,9 @@ class LMRTFYRoller extends Application {
         
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.currentRollProvider.abilityRollMethod(), roller.rollTypes().ABILITY, false, ability);
+            this._makeRoll(event, LMRTFY.currentRollProvider.abilityRollMethod(), LMRTFYRoller.rollTypes().ABILITY, false, ability);
         } else {
-            this._makeRoll(event, LMRTFY.currentRollProvider.abilityRollMethod(), roller.rollTypes().ABILITY, ability);
+            this._makeRoll(event, LMRTFY.currentRollProvider.abilityRollMethod(), LMRTFYRoller.rollTypes().ABILITY, ability);
         }
     }
 
@@ -436,9 +436,9 @@ class LMRTFYRoller extends Application {
 
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.currentRollProvider.abilityRollMethod(), roller.rollTypes().ABILITY, true, ability);
+            this._makeRoll(event, LMRTFY.currentRollProvider.abilityRollMethod(), LMRTFYRoller.rollTypes().ABILITY, true, ability);
         } else {
-            this._makeRoll(event, LMRTFY.currentRollProvider.abilityRollMethod(), roller.rollTypes().ABILITY, ability);
+            this._makeRoll(event, LMRTFY.currentRollProvider.abilityRollMethod(), LMRTFYRoller.rollTypes().ABILITY, ability);
         }
     }
 
@@ -448,9 +448,9 @@ class LMRTFYRoller extends Application {
         
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.currentRollProvider.saveRollMethod(), roller.rollTypes().SAVE, false, saves);
+            this._makeRoll(event, LMRTFY.currentRollProvider.saveRollMethod(), LMRTFYRoller.rollTypes().SAVE, false, saves);
         } else {
-            this._makeRoll(event, LMRTFY.currentRollProvider.saveRollMethod(), roller.rollTypes().SAVE, saves);
+            this._makeRoll(event, LMRTFY.currentRollProvider.saveRollMethod(), LMRTFYRoller.rollTypes().SAVE, saves);
         }
     }
 
@@ -460,9 +460,9 @@ class LMRTFYRoller extends Application {
 
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.currentRollProvider.saveRollMethod(), roller.rollTypes().SAVE, true, saves);
+            this._makeRoll(event, LMRTFY.currentRollProvider.saveRollMethod(), LMRTFYRoller.rollTypes().SAVE, true, saves);
         } else {
-            this._makeRoll(event, LMRTFY.currentRollProvider.saveRollMethod(), roller.rollTypes().SAVE, saves);
+            this._makeRoll(event, LMRTFY.currentRollProvider.saveRollMethod(), LMRTFYRoller.rollTypes().SAVE, saves);
         }
     }
 
@@ -472,9 +472,9 @@ class LMRTFYRoller extends Application {
 
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.currentRollProvider.skillRollMethod(), roller.rollTypes().SKILL, false, skill);
+            this._makeRoll(event, LMRTFY.currentRollProvider.skillRollMethod(), LMRTFYRoller.rollTypes().SKILL, false, skill);
         } else {
-            this._makeRoll(event, LMRTFY.currentRollProvider.skillRollMethod(), roller.rollTypes().SKILL, skill);
+            this._makeRoll(event, LMRTFY.currentRollProvider.skillRollMethod(), LMRTFYRoller.rollTypes().SKILL, skill);
         }
     }
 
@@ -484,9 +484,9 @@ class LMRTFYRoller extends Application {
 
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.currentRollProvider.skillRollMethod(), roller.rollTypes().SKILL, true, skill);
+            this._makeRoll(event, LMRTFY.currentRollProvider.skillRollMethod(), LMRTFYRoller.rollTypes().SKILL, true, skill);
         } else {
-            this._makeRoll(event, LMRTFY.currentRollProvider.skillRollMethod(), roller.rollTypes().SKILL, skill);
+            this._makeRoll(event, LMRTFY.currentRollProvider.skillRollMethod(), LMRTFYRoller.rollTypes().SKILL, skill);
         }
     }
 
