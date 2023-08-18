@@ -16,7 +16,6 @@ Writing this module was the idea of iotech, based on the Fantasy Grounds "[Roll 
 ![screenshot](images/screenshot.png)
 
 ## Currently Supported Systems:
-- Chromatic Dungeons (foundry-chromatic-Dungeons)
 - Chroniques Oubliées Fantasy (cof)
 - Chroniques Oubliées Contemporain (coc)
 - Dungeons and Dragons - 5th Edition (dnd5e)
@@ -27,12 +26,17 @@ Writing this module was the idea of iotech, based on the Fantasy Grounds "[Roll 
 - Pathfinder - 1st Edition (pf1e)
 - Shadow of the Demon Lord (demonlord)
 - Starfinder - 1st Edition (sfrpg)
+- Star Wars - 5th Edition (sw5e)
 
 Your favorite system not on this list? Adding compatibility is easy! Have a look at [CONTRIBUTING.md](/CONTRIBUTING.md) and open a PR!
 
 ## Old, Unconfirmed Versions
 The following systems have support on this module, but do not support Foundry v11 and could not be confirmed if they operate with this module's latest version.
 - Final Fantasy RPG (ffd20)
+
+## No longer Working Versions
+The following systems are no longer supported by this module, and need to be fixed in order to work again.
+- Chromatic Dungeons (foundry-chromatic-Dungeons)
 
 ## Installation
 

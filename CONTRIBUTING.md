@@ -4,51 +4,27 @@ LMRTFY operates by providing GMs a list of abilities, skills, and saves, and the
 
 Note that this was originally designed with only dnd5e in mind and some of its core assumptions still show that.
 
+Before you begin, you will need to grab the id of the system you wish to implement. You can always find this in the `system.json` which is located at the root source for every Foundry system.
+
 ### 1. Add your system to the module.json
 
-`module.json` has a `systems` field which will need your system added to it before LMRTFY can be activated on a world with that system running.
+`module.json` has a `systems` field which will need your system id added to it before LMRTFY can be activated on a world with that system running.
 
-### 2. Add system definitions to `LMRTFY#ready`
+### 2. Create a new lmrtfy_RollProvider in the src folder
+You will need to create a new `lmrtfy_RollProvider_???.js` in the `src` folder. Make sure it `extends lmrtfy_RollProvider`.
 
-Fill out `lmrtfy.js`'s `LMRTFY#ready` method's switch statement with your new system definitions.
+You must override `systemIdentifiers()` with the id name of your system. You can find this id in the `system.json` for your specific system.
+Override any of the other methods that are in `lmrtfy_RollProvider` that are necessary to your system's implementation. At the very least you must implement one of the following:
+ - `abilities`
+ - `saves`
+ - `skills`
+You must also override the corresponding method names (`rollAbility` for `abilities`).
 
-```js
-case 'dnd5e':
-    // which method on the Actor class can roll the appropriate check?
-    LMRTFY.saveRollMethod = 'rollAbilitySave';
-    LMRTFY.abilityRollMethod = 'rollAbilityTest';
-    LMRTFY.skillRollMethod = 'rollSkill';
+Most other methods are not needing an override unless its specific to your specific system.
 
-    // where are the abilities, skills, and saves defined?
-    LMRTFY.abilities = CONFIG.DND5E.abilities;
-    LMRTFY.skills = CONFIG.DND5E.skills;
-    LMRTFY.saves = CONFIG.DND5E.abilities;
+### 3. Add your RollProvider to the LMRTFY#ready
 
-    // is there any special keybinding the system might expect for these kinds of rolls
-    LMRTFY.normalRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
-    LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
-    LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-
-    // does your system support initiative rolls or deathsaves (as dnd5e understands them)?
-    LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
-
-    // does you system use ability modifiers. this is for the dice and modifier buttons under custom formula
-    LMRTFY.abilityAbbreviations = CONFIG.DND5E.abilityAbbreviations;
-    LMRTFY.modIdentifier = 'mod';
-    LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-    break;
-```
-
-### 3. (Maybe Optional) Check `LMRTFYRoller#_makeRoll` signature
-
-There is one other place that system specific code might be needed: `roller.js`'s `LMRTFYRoller#_makeRoll` might need tweaks if your system's methods expect a different call signature than the default.
-
-```js
-actor[rollMethod].call(actor, ...args, { event: fakeEvent });
-```
-
-> `fakeEvent` is one of `normalRollEvent`, `advantageRollEvent`, or `disadvantageRollEvent` as defined above
-
+Add your system as another roll provider under `var externalRollProviders`.
 
 ### 4. Open a PR
 
