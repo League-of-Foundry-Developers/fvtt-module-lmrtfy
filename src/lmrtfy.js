@@ -178,7 +178,7 @@ class LMRTFY {
                 LMRTFY.normalRollEvent = {};
                 LMRTFY.advantageRollEvent = {};
                 LMRTFY.disadvantageRollEvent = {};
-                LMRTFY.specialRolls = {};
+                LMRTFY.specialRolls = { 'initiative': true };
                 LMRTFY.abilityAbbreviations = abilities;
                 LMRTFY.modIdentifier = 'modifier';
                 LMRTFY.abilityModifiers = {};

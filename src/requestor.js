@@ -29,6 +29,9 @@ class LMRTFYRequestor extends FormApplication {
             case "degenesis":
                 template = "modules/lmrtfy/templates/degenesis-request-rolls.html";
                 break;
+            case "demonlord":
+                template = "modules/lmrtfy/templates/demonlord-request-rolls.html";
+                break;                
             default:
                 template = "modules/lmrtfy/templates/request-rolls.html";
                 break;
@@ -349,6 +352,11 @@ class LMRTFYRequestor extends FormApplication {
             }
         }
 
+        let BBDice = undefined;
+        if (game.system.id === 'demonlord') {
+            BBDice = formData.BBDice;
+        }
+    
         const socketData = {
             user: formData.user,
             actors,
@@ -369,6 +377,9 @@ class LMRTFYRequestor extends FormApplication {
         }
         if (game.system.id === 'pf2e' && dc) {
             socketData['dc'] = dc;
+        }
+        if (game.system.id === 'demonlord') {
+            socketData['BBDice'] = BBDice;
         }
         
         if (saveAsMacro) {

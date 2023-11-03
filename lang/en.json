@@ -65,5 +65,12 @@
     "LMRTFY.SkillCheckFail": "FAIL Skill Check: ",
     "LMRTFY.EnableChooseFail": "Enable Fail Button",
     "LMRTFY.ShowFailButtons": "Show Fail Button",
-    "LMRTFY.ShowFailButtonsHint": "Show fail buttons for ability checks, ability saves and skill the requested roll form"
+    "LMRTFY.ShowFailButtonsHint": "Show fail buttons for ability checks, ability saves and skill the requested roll form",
+    "LMRTFY.DemonLordChallengeRoll": "Challenge Roll:",
+    "LMRTFY.DemonLordRollWithBanes": "Roll with Banes",
+    "LMRTFY.DemonLordRollWithBoons": "Roll with Boons",
+    "LMRTFY.DemonLordCustomFormulaPlaceholder": "1d20 + @attributes.strength.modifier + 1",
+    "LMRTFY.DemonLordNrOfBBDice": "Boons/Banes:",
+    "LMRTFY.DemonLordBoonsNote": "These rolls will be made with boons.",
+    "LMRTFY.DemonLordBanesNote": "These rolls will be made with banes."
 }

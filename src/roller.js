@@ -18,6 +18,10 @@ class LMRTFYRoller extends Application {
             this.pf2Roll = '';
         }
 
+        if (game.system.id === 'demonlord') {
+            this.BBDice = data.BBDice;
+        }
+
         if (data.title) {
             this.options.title = data.title;
         }
@@ -73,9 +77,20 @@ class LMRTFYRoller extends Application {
     }
 
     static get defaultOptions() {
+
+        let template;
+        switch (game.system.id) {
+            case "demonlord":
+                template = "modules/lmrtfy/templates/demonlord-roller.html";
+                break;                
+            default:
+                template = "modules/lmrtfy/templates/roller.html";
+                break;
+        }
+
         const options = super.defaultOptions;
         options.title = game.i18n.localize("LMRTFY.Title");
-        options.template = "modules/lmrtfy/templates/roller.html";
+        options.template = template;
         options.popOut = true;
         options.width = 400;
         options.height = "auto";
@@ -123,9 +138,9 @@ class LMRTFYRoller extends Application {
     async getData() {
         let note = ""
         if (this.advantage == 1)
-            note = game.i18n.localize("LMRTFY.AdvantageNote");
+            note = (game.system.id === 'demonlord') ? game.i18n.localize("LMRTFY.DemonLordBoonsNote") : game.i18n.localize("LMRTFY.AdvantageNote");
         else if (this.advantage == -1)
-            note = game.i18n.localize("LMRTFY.DisadvantageNote");
+            note = (game.system.id === 'demonlord') ? game.i18n.localize("LMRTFY.DemonLordBanesNote") : game.i18n.localize("LMRTFY.DisadvantageNote");
 
         let abilities = {}
         let saves = {}
@@ -324,6 +339,25 @@ class LMRTFYRoller extends Application {
                     break;
                 }
 
+                case "demonlord": {
+                    const key = args[0];
+                    switch(this.advantage) {
+                      case 0:
+                        await actor.rollAttribute(actor.getAttribute(key), 0, 0)
+                        break;
+                      case 1:
+                        await actor.rollAttribute(actor.getAttribute(key), this.BBDice, 0)
+                        break;
+                      case -1:
+                        await actor.rollAttribute(actor.getAttribute(key), (this.BBDice)*-1, 0)
+                        break;
+                      case 2:
+                        await actor[rollMethod].call(actor, ...args, options);
+                        break;
+                    }			
+					break;
+                }
+
                 default: {
                     await actor[rollMethod].call(actor, ...args, options);
                 }
@@ -364,6 +398,33 @@ class LMRTFYRoller extends Application {
 
     _tagMessage(candidate, data, options) {
         candidate.updateSource({"flags.lmrtfy": {"message": this.data.message, "data": this.data.attach, "blind": candidate.blind}});
+    }
+
+    _makeDemonLordInitiativeRoll(event) {
+        // save the current roll mode to reset it after this roll
+        const rollMode = game.settings.get("core", "rollMode");
+        game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
+
+        if (game.combat?.combatants !== undefined)
+        {
+            let combatantFound
+            for (let actor of this.actors) {
+                combatantFound = null
+                for (const combatant of game.combat.combatants) {
+                    if (combatant.actor?._id === actor._id) {
+                        combatantFound = combatant
+                    }
+                }      
+                if (combatantFound) {
+                    game.combat.rollInitiative(combatantFound._id)
+                }      
+            }
+        }
+
+        game.settings.set("core", "rollMode", rollMode);
+
+        event.currentTarget.disabled = true;
+        this._checkClose();
     }
 
     async _makeDiceRoll(event, formula, defaultMessage = null) {
@@ -565,19 +626,25 @@ class LMRTFYRoller extends Application {
     _onInitiative(event) {
         event.preventDefault();
 
-        if (game.system.id === 'pf2e') {
-            this._makePF2EInitiativeRoll(event);
-        } else {
-            if (this.data.initiative) {
-                for (let actor of this.actors) {
-                    actor.rollInitiative();
+        switch (game.system.id) {
+            case 'pf2e': 
+                this._makePF2EInitiativeRoll(event);
+                break;
+            case 'demonlord': 
+                this._makeDemonLordInitiativeRoll(event);
+                break;                
+            default:
+                if (this.data.initiative) {
+                    for (let actor of this.actors) {
+                        actor.rollInitiative();
+                    }
+                    event.currentTarget.disabled = true;
+                    this._checkClose();
+                } else {
+                    const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
+                    this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
                 }
-                event.currentTarget.disabled = true;
-                this._checkClose();
-            } else {
-                const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
-                this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
-            }
+                break;
         }
     }
 
