@@ -20,6 +20,7 @@ class LMRTFYRoller extends Application {
 
         if (game.system.id === 'demonlord') {
             this.BBDice = data.BBDice;
+            this.AddMod = data.AddMod;
         }
 
         if (data.title) {
@@ -346,10 +347,10 @@ class LMRTFYRoller extends Application {
                         await actor.rollAttribute(actor.getAttribute(key), 0, 0)
                         break;
                       case 1:
-                        await actor.rollAttribute(actor.getAttribute(key), this.BBDice, 0)
+                        await actor.rollAttribute(actor.getAttribute(key), this.BBDice, this.AddMod)
                         break;
                       case -1:
-                        await actor.rollAttribute(actor.getAttribute(key), (this.BBDice)*-1, 0)
+                        await actor.rollAttribute(actor.getAttribute(key), (this.BBDice)*-1, this.AddMod)
                         break;
                       case 2:
                         await actor[rollMethod].call(actor, ...args, options);
@@ -419,6 +420,10 @@ class LMRTFYRoller extends Application {
                     game.combat.rollInitiative(combatantFound._id)
                 }      
             }
+        }
+        else
+        {
+            ui.notifications.warn(game.i18n.localize("LMRTFY.DemonLordNoCombat"));
         }
 
         game.settings.set("core", "rollMode", rollMode);

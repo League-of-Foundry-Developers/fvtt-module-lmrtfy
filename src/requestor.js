@@ -353,8 +353,10 @@ class LMRTFYRequestor extends FormApplication {
         }
 
         let BBDice = undefined;
+        let AddMod = undefined;
         if (game.system.id === 'demonlord') {
             BBDice = formData.BBDice;
+            AddMod = formData.AddMod;
         }
     
         const socketData = {
@@ -380,6 +382,7 @@ class LMRTFYRequestor extends FormApplication {
         }
         if (game.system.id === 'demonlord') {
             socketData['BBDice'] = BBDice;
+            socketData['AddMod'] = AddMod;            
         }
         
         if (saveAsMacro) {

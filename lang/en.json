@@ -72,5 +72,7 @@
     "LMRTFY.DemonLordCustomFormulaPlaceholder": "1d20 + @attributes.strength.modifier + 1",
     "LMRTFY.DemonLordNrOfBBDice": "Boons/Banes:",
     "LMRTFY.DemonLordBoonsNote": "These rolls will be made with boons.",
-    "LMRTFY.DemonLordBanesNote": "These rolls will be made with banes."
+    "LMRTFY.DemonLordBanesNote": "These rolls will be made with banes.",
+    "LMRTFY.DemonLordAddMod": "Additional modifier:",
+    "LMRTFY.DemonLordNoCombat": "You are not in combat!"
 }
