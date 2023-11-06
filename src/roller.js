@@ -78,20 +78,9 @@ class LMRTFYRoller extends Application {
     }
 
     static get defaultOptions() {
-
-        let template;
-        switch (game.system.id) {
-            case "demonlord":
-                template = "modules/lmrtfy/templates/demonlord-roller.html";
-                break;                
-            default:
-                template = "modules/lmrtfy/templates/roller.html";
-                break;
-        }
-
         const options = super.defaultOptions;
         options.title = game.i18n.localize("LMRTFY.Title");
-        options.template = template;
+        options.template = "modules/lmrtfy/templates/roller.html";
         options.popOut = true;
         options.width = 400;
         options.height = "auto";

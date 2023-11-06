@@ -58,6 +58,15 @@ class LMRTFY {
                 return false;
             }
         });
+
+        Handlebars.registerHelper('lmrtfy-isdemonlord', function (actor) {
+            if (game.system.id === 'demonlord') {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
     }
 
     static ready() {
