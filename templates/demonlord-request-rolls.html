@@ -1,0 +1,236 @@
+
+<form autocomplete="off" onsubmit="event.preventDefault();">
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.SelectUser"}}</label>
+
+            <select name="user" data-dtype="String">
+                <option value="tokens" selected>{{localize "LMRTFY.ControlledTokens"}}</option>
+                <option value="character">{{localize "LMRTFY.AssignedCharacters"}}</option>
+                <optgroup label="{{localize "LMRTFY.Macros"}}">
+                    <option value="selected">{{localize "LMRTFY.Selected"}}</option>
+                </optgroup>
+                <optgroup label="{{localize "LMRTFY.Users"}}">
+                    {{#each users}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </optgroup>                
+            </select>
+        </div>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.SelectCharacters"}}</label>
+            <button type="button" class="select-all"><i class="fas fa-check-square"></i>{{localize "LMRTFY.SelectAll"}}</button>
+            <button type="button" class="deselect-all"><i class="fas fa-square"></i>{{localize "LMRTFY.SelectNone"}}</button>
+        </div>
+        <div class="form-group lmrtfy-actor-avatars">
+        {{#each actors}}
+            <div class="lmrtfy-actor" data-id="{{this.id}}">
+                <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" {{#if (lmrtfy-controlledToken this)}}checked{{/if}} />
+                <label for="lmrtf-actor-{{this.id}}">                
+                {{#if (lmrtfy-showTokenImage this)}}<img src="{{this.prototypeToken.texture.src}}" />{{else}}<img src="{{this.img}}" />{{/if}}
+                </label>
+            </div>
+        {{/each}}
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.Modifiers"}}</label>
+            
+            <select name="advantage" data-dtype="Number">
+                <option value="0">{{localize "LMRTFY.NormalRoll"}}</option>
+                <option value="1">{{localize "LMRTFY.DemonLordRollWithBoons"}}</option>
+                <option value="-1">{{localize "LMRTFY.DemonLordRollWithBanes"}}</option>
+                <option value="2">{{localize "LMRTFY.QueryRoll"}}</option>
+            </select>
+
+            <select name="mode" data-dtype="String">
+                {{#each rollModes as |name mode|}}
+                <option value="{{mode}}">{{localize name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.WindowTitle"}}</label>
+            <input type="text" name="title" value='{{localize "LMRTFY.WindowTitleValue"}}' placeholder='{{localize "LMRTFY.WindowTitlePlaceholder"}}' data-dtype="String"/>
+        </div>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.Message"}}</label>
+            <input type="text" name="message" value='' placeholder='{{localize "LMRTFY.MessagePlaceholder"}}' data-dtype="String"/>
+        </div>
+
+            <div class="form-group">
+                <label>{{localize "LMRTFY.DemonLordNrOfBBDice"}}</label>
+                <select name="BBDice" data-dtype="Number">
+                    <option value="0">No Boons/Banes</option>
+                    <option value="1">1d6</option>
+                    <option value="2">2d6</option>
+                    <option value="3">3d6</option>
+                    <option value="4">4d6</option>                    
+                    <option value="5">5d6</option>                    
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>{{localize "LMRTFY.DemonLordAddMod"}}</label>
+                <select name="AddMod" data-dtype="Number">
+                    <option value="-5">-5</option>                      
+                    <option value="-4">-4</option>                      
+                    <option value="-3">-3</option>                      
+                    <option value="-2">-2</option>                      
+                    <option value="-1">-1</option>                    
+                    <option value="0" selected>0</option>
+                    <option value="1">+1</option>
+                    <option value="2">+2</option>
+                    <option value="3">+3</option>
+                    <option value="4">+4</option>                    
+                    <option value="5">+5</option>                    
+                </select>
+            </div>            
+
+        <div class="form-group">
+            <label>{{localize "LMRTFY.ChooseOneDM"}}</label>
+            <div class="lmrtfy-extra-perception">
+                <input type="checkbox" name="choose-one" id="lmrtf-choose-one" data-dtype="Boolean" />
+                <label for="lmrtf-choose-one">{{localize "LMRTFY.Enabled"}}</label>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.Extras"}}</label>
+                
+            <div class="lmrtfy-extras">
+                {{#if specialRolls.initiative}}
+                <div class="lmrtfy-extra-initiative">
+                    <input type="checkbox" name="extra-initiative" id="lmrtf-extra-initiative" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-initiative">{{localize "LMRTFY.Initiative"}}</label>
+                    
+                </div>
+                {{/if}}
+                {{#if specialRolls.deathsave}}
+                <div class="lmrtfy-extra-death-save">
+                    <input type="checkbox" name="extra-death-save" id="lmrtf-extra-death-save" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-death-save">{{localize "LMRTFY.DeathSave"}}</label>
+                </div>
+                {{/if}}
+                {{#if specialRolls.perception}}
+                <div class="lmrtfy-extra-perception">
+                    <input type="checkbox" name="extra-perception" id="lmrtf-extra-perception" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-perception">{{localize "LMRTFY.Perception"}}</label>
+                </div>
+                {{/if}}
+            </div>
+        </div>        
+    </fieldset>
+
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.CustomFormula"}}</label>
+            <input type="text" class="custom-formula" name="formula" value='' placeholder='{{localize "LMRTFY.DemonLordCustomFormulaPlaceholder"}}' data-dtype="String"/>
+        </div>
+        <details class="lmrtfy-dice-tray-details">
+            <summary class="lmrtfy-dice-tray-expander">{{localize "LMRTFY.Selectors"}}</summary>
+            <div>
+                <div class="lmrtfy-dice-tray-buttons flexrow lmrtfy-dice-row-flexrow">
+                    <!-- d3 -->
+                    <div class="lmrtfy-dice-tray-button" data-value="d3">
+                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <g transform="matrix(3.7795603,0,0,3.7714103,-15.409119,-285.41643)">
+                              <path
+                              d="m 7.1064188,78.052082 c -0.3704167,0 -0.6614577,0.291042 -0.6614577,0.661459 v 10.847916 c 0,0.370417 0.291041,0.66125 0.6614577,0.714169 H 17.954334 c 0.396875,0 0.687813,-0.317397 0.687813,-0.687814 V 78.739896 c 0,-0.396875 -0.317397,-0.687814 -0.687813,-0.687814 z m 0.4563027,2.938839 h 3.0659615 v 0.471289 h -0.373104 c -0.130344,0 -0.240307,0.0325 -0.3291787,0.09767 -0.08295,0.06517 -0.12454,0.225311 -0.12454,0.480076 v 4.2478 c 0,0.254765 0.04159,0.414904 0.12454,0.480076 0.08887,0.06517 0.1988347,0.09767 0.3291787,0.09767 h 0.373104 v 0.471289 H 7.5627215 v -0.471289 h 0.3731037 c 0.130345,0 0.236931,-0.0325 0.319877,-0.09767 0.08887,-0.06518 0.133325,-0.225314 0.133325,-0.480076 v -4.2478 c 0,-0.254765 -0.04445,-0.414904 -0.133325,-0.480076 -0.08295,-0.06517 -0.189532,-0.09767 -0.319877,-0.09767 H 7.5627215 Z m 3.4478505,0 h 3.065962 v 0.471289 h -0.373103 c -0.130344,0 -0.239791,0.0325 -0.328663,0.09767 -0.08295,0.06517 -0.12454,0.225311 -0.12454,0.480076 v 4.2478 c 0,0.254765 0.04159,0.414904 0.12454,0.480076 0.08887,0.06517 0.198319,0.09767 0.328663,0.09767 h 0.373103 v 0.471289 h -3.065962 v -0.471289 h 0.37362 c 0.130344,0 0.236931,-0.0325 0.319877,-0.09767 0.08887,-0.06518 0.133326,-0.225314 0.133326,-0.480076 v -4.2478 c 0,-0.254765 -0.04445,-0.414904 -0.133326,-0.480076 -0.08295,-0.06517 -0.189533,-0.09767 -0.319877,-0.09767 h -0.37362 z m 3.448368,0 h 3.065963 v 0.471289 h -0.373104 c -0.130344,0 -0.240308,0.0325 -0.329179,0.09767 -0.08295,0.06517 -0.124023,0.225311 -0.124023,0.480076 v 4.2478 c 0,0.254765 0.04108,0.414904 0.124023,0.480076 0.08887,0.06517 0.198835,0.09767 0.329179,0.09767 h 0.373104 v 0.471289 H 14.45894 v -0.471289 h 0.373104 c 0.130345,0 0.236931,-0.0325 0.319877,-0.09767 0.08887,-0.06518 0.133325,-0.225314 0.133325,-0.480076 v -4.2478 c 0,-0.254765 -0.04445,-0.414904 -0.133325,-0.480076 -0.08295,-0.06517 -0.189532,-0.09767 -0.319877,-0.09767 H 14.45894 Z"/>
+                            </g>                            
+                        </svg>
+                    </div>                    
+                    <!-- d6 -->
+                    <div class="lmrtfy-dice-tray-button" data-value="d6">
+                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <g>
+                                <path d="M11.5,9h41c1.4,0,2.6,1.1,2.6,2.6v41c0,1.4-1.1,2.6-2.6,2.6h-41C10.1,55,9,53.9,9,52.5v-41C9,10.1,10.1,9,11.5,9z"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <!-- d20 -->
+                    <div class="lmrtfy-dice-tray-button" data-value="d20">                
+                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <g transform="translate(-246.69456,-375.66745)">
+                                <path d="M278.2,382.1c-0.1,0-0.2,0-0.3,0.1L264.8,398c-0.2,0.3-0.2,0.3,0.1,0.3l26.4-0.1c0.4,0,0.4,0,0.1-0.3l-13-15.8
+                                C278.4,382.1,278.3,382.1,278.2,382.1L278.2,382.1z M280.7,383.5l11.9,14.5c0.2,0.2,0.2,0.2,0.5,0.1l6.3-2.9
+                                c0.4-0.2,0.4-0.2,0.1-0.4L280.7,383.5z M275.2,384c0,0-0.1,0.1-0.3,0.2l-17.3,11.4l5.4,2.5c0.3,0.1,0.4,0.1,0.5-0.1l11.4-13.6
+                                C275.1,384.1,275.2,384,275.2,384L275.2,384z M300.3,395.8c-0.1,0-0.1,0-0.3,0.1l-6.4,2.9c-0.2,0.1-0.2,0.2-0.1,0.4l7.5,19
+                                l-0.5-22.1C300.4,395.9,300.4,395.8,300.3,395.8L300.3,395.8z M257.1,396.4l-0.7,21.5l6.3-18.6c0.1-0.3,0.1-0.3-0.1-0.4
+                                L257.1,396.4L257.1,396.4z M291.6,399.2l-27,0.1c-0.4,0-0.4,0-0.2,0.3l13.7,23.1c0.2,0.4,0.2,0.3,0.4,0l13.2-23.2
+                                C291.9,399.3,291.9,399.2,291.6,399.2L291.6,399.2z M292.7,399.8c0,0-0.1,0.1-0.1,0.2l-13.3,23.3c-0.1,0.2-0.2,0.3,0.2,0.3
+                                l21.1-2.9c0.3-0.1,0.3-0.2,0.2-0.5l-7.9-20.2C292.7,399.9,292.7,399.8,292.7,399.8L292.7,399.8z M263.6,400c0,0,0,0.1-0.1,0.3
+                                l-6.7,19.8c-0.1,0.4-0.1,0.6,0.3,0.7l20.1,2.9c0.4,0.1,0.3-0.1,0.2-0.3l-13.7-23.1C263.6,400,263.6,400,263.6,400L263.6,400z
+                                M258.3,421.9l19.7,11.2c0.3,0.2,0.3,0.1,0.3-0.2l-0.4-7.9c0-0.3,0-0.4-0.3-0.4L258.3,421.9L258.3,421.9z M299.1,421.9l-20,2.8
+                                c-0.3,0-0.2,0.2-0.2,0.4l0.4,8c0,0.2,0,0.3,0.3,0.2L299.1,421.9z"/>
+                            </g>
+                        </svg>
+                    </div>                    
+                </div>
+                <div class="lmrtfy-dice-tray-buttons flexrow lmrtfy-dice-row-flexrow">
+                    <div class="lmrtfy-dice-tray-button lmrtfy-bonus-button" data-value="-1">
+                        -
+                    </div>
+                    <div class="lmrtfy-dice-tray-button lmrtfy-bonus-button" data-value="+1">
+                        +
+                    </div>
+                </div>
+                <div class="form-group lmrtfy-dice-tray-checks">
+                    <div class="lmrtfy-ability-checks">
+                        {{#each abilityModifiers as |name key|}}
+                        <div class="lmrtfy-ability">
+                            <input type="checkbox" class="lmrtfy-formula-ability" name="lmrtfy-formula-{{key}}" id="lmrtfy-formula-{{key}}" data-value="{{key}}" />
+                            <label for="lmrtfy-formula-{{key}}">{{localize name}}</label>                
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="lmrtfy-clear-button-area">
+                    <button type="button" class="lmrtfy-clear-formula" name="lmrtfy-clear-custom" value="1"><i class="fas fa-pump-soap"></i>{{localize "LMRTFY.ClearCustomFormula"}}</button>
+                </div>
+            </div>
+        </details>        
+    </fieldset>
+ 
+    <fieldset>
+    <div class="form-group">
+        <label>{{localize "LMRTFY.DemonLordChallengeRoll"}}</label>
+        
+        <div class="lmrtfy-ability-checks">
+            {{#each abilities as |name key|}}
+            <div class="lmrtfy-ability">
+                <input type="checkbox" name="check-{{key}}" id="lmrtf-check-{{key}}" data-dtype="Boolean" />
+                <label for="lmrtf-check-{{key}}">{{localize name}}</label>
+                
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    </fieldset>
+
+    {{#if tables}}
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.RollTables"}}</label>
+
+            <select name="table" class="lmrtfy-roll-table-list" data-dtype="String" multiple="multiple">
+                {{#each tables as |name|}}
+                    <option value="{{name}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </fieldset>
+    {{/if}}
+
+    <div class="lmrtfy-submit">
+        <button type="submit" class="lmrtfy-request-roll" name="submit" value="1"><i class="fas fa-dice"></i>{{localize "LMRTFY.RequestRolls"}}</button>
+        <button type="button" class="lmrtfy-save-roll" name="submit" value="1"><i class="fas fa-download"></i>{{localize "LMRTFY.SaveRequest"}}</button>
+    </div>
+</form>
