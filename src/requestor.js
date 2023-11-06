@@ -8,6 +8,7 @@ class LMRTFYRequestor extends FormApplication {
         this.selectedDice = [];
         this.selectedModifiers = [];
         this.dice = [
+            'd3',
             'd4',
             'd6',
             'd8',
@@ -29,6 +30,9 @@ class LMRTFYRequestor extends FormApplication {
             case "degenesis":
                 template = "modules/lmrtfy/templates/degenesis-request-rolls.html";
                 break;
+            case "demonlord":
+                template = "modules/lmrtfy/templates/demonlord-request-rolls.html";
+                break;                
             default:
                 template = "modules/lmrtfy/templates/request-rolls.html";
                 break;
@@ -349,6 +353,13 @@ class LMRTFYRequestor extends FormApplication {
             }
         }
 
+        let BBDice = undefined;
+        let AddMod = undefined;
+        if (game.system.id === 'demonlord') {
+            BBDice = formData.BBDice;
+            AddMod = formData.AddMod;
+        }
+    
         const socketData = {
             user: formData.user,
             actors,
@@ -369,6 +380,10 @@ class LMRTFYRequestor extends FormApplication {
         }
         if (game.system.id === 'pf2e' && dc) {
             socketData['dc'] = dc;
+        }
+        if (game.system.id === 'demonlord') {
+            socketData['BBDice'] = BBDice;
+            socketData['AddMod'] = AddMod;            
         }
         
         if (saveAsMacro) {
