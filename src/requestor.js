@@ -117,6 +117,7 @@ class LMRTFYRequestor extends FormApplication {
         this.element.find(".lmrtfy-bonus-button").click(this.bonusClick.bind(this));
         this.element.find(".lmrtfy-formula-ability").click(this.modifierClick.bind(this));
         this.element.find(".lmrtfy-clear-formula").click(this.clearCustomFormula.bind(this));        
+        if ((game.system.id) === "demonlord") this.element.find(".demonlord").change(this.clearDemonLordSettings.bind(this));        
         this._onUserChange();
     }
 
@@ -294,6 +295,18 @@ class LMRTFYRequestor extends FormApplication {
         this.element.find(".lmrtfy-formula-ability").prop('checked', false);
 
         this.combineFormula();
+    }
+
+    clearDemonLordSettings() {
+        if (($("#advantage").val() === "-1") || ($("#advantage").val() === "1")) {
+            $("#BBDice").prop('disabled', false);
+            $("#AddMod").prop('disabled', false);
+        } else {
+            $("#AddMod").val("0");
+            $("#BBDice").val("0");
+            $("#BBDice").prop('disabled', true);
+            $("#AddMod").prop('disabled', true);
+        }
     }
 
     async _updateObject(event, formData) {
