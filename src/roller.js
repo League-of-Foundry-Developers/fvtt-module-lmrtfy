@@ -395,8 +395,7 @@ class LMRTFYRoller extends Application {
         const rollMode = game.settings.get("core", "rollMode");
         game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
 
-        if (game.combat?.combatants !== undefined)
-        {
+        if (game.combat?.combatants !== undefined) {
             let combatantFound
             for (let actor of this.actors) {
                 combatantFound = null
@@ -404,14 +403,14 @@ class LMRTFYRoller extends Application {
                     if (combatant.actor?._id === actor._id) {
                         combatantFound = combatant
                     }
-                }      
+                }
                 if (combatantFound) {
                     game.combat.rollInitiative(combatantFound._id)
-                }      
+                } else {
+                    ui.notifications.warn(game.i18n.localize("LMRTFY.DemonLordNoCombat"));
+                }
             }
-        }
-        else
-        {
+        } else {
             ui.notifications.warn(game.i18n.localize("LMRTFY.DemonLordNoCombat"));
         }
 
