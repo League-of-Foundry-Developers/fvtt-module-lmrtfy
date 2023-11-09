@@ -8,6 +8,7 @@ class LMRTFYRequestor extends FormApplication {
         this.selectedDice = [];
         this.selectedModifiers = [];
         this.dice = [
+            'd3',
             'd4',
             'd6',
             'd8',
@@ -29,6 +30,9 @@ class LMRTFYRequestor extends FormApplication {
             case "degenesis":
                 template = "modules/lmrtfy/templates/degenesis-request-rolls.html";
                 break;
+            case "demonlord":
+                template = "modules/lmrtfy/templates/demonlord-request-rolls.html";
+                break;                
             default:
                 template = "modules/lmrtfy/templates/request-rolls.html";
                 break;
@@ -113,6 +117,7 @@ class LMRTFYRequestor extends FormApplication {
         this.element.find(".lmrtfy-bonus-button").click(this.bonusClick.bind(this));
         this.element.find(".lmrtfy-formula-ability").click(this.modifierClick.bind(this));
         this.element.find(".lmrtfy-clear-formula").click(this.clearCustomFormula.bind(this));        
+        if ((game.system.id) === "demonlord") this.element.find(".demonlord").change(this.clearDemonLordSettings.bind(this));        
         this._onUserChange();
     }
 
@@ -292,6 +297,18 @@ class LMRTFYRequestor extends FormApplication {
         this.combineFormula();
     }
 
+    clearDemonLordSettings() {
+        if (($("#advantage").val() === "-1") || ($("#advantage").val() === "1")) {
+            $("#BBDice").prop('disabled', false);
+            $("#AddMod").prop('disabled', false);
+        } else {
+            $("#AddMod").val("0");
+            $("#BBDice").val("0");
+            $("#BBDice").prop('disabled', true);
+            $("#AddMod").prop('disabled', true);
+        }
+    }
+
     async _updateObject(event, formData) {
         //console.log("LMRTFY submit: ", formData)
         const saveAsMacro = $(event.currentTarget).hasClass("lmrtfy-save-roll")
@@ -349,6 +366,13 @@ class LMRTFYRequestor extends FormApplication {
             }
         }
 
+        let BBDice = undefined;
+        let AddMod = undefined;
+        if (game.system.id === 'demonlord') {
+            BBDice = formData.BBDice;
+            AddMod = formData.AddMod;
+        }
+    
         const socketData = {
             user: formData.user,
             actors,
@@ -369,6 +393,10 @@ class LMRTFYRequestor extends FormApplication {
         }
         if (game.system.id === 'pf2e' && dc) {
             socketData['dc'] = dc;
+        }
+        if (game.system.id === 'demonlord') {
+            socketData['BBDice'] = BBDice;
+            socketData['AddMod'] = AddMod;            
         }
         
         if (saveAsMacro) {

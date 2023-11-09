@@ -58,6 +58,15 @@ class LMRTFY {
                 return false;
             }
         });
+
+        Handlebars.registerHelper('lmrtfy-isdemonlord', function (actor) {
+            if (game.system.id === 'demonlord') {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
     }
 
     static ready() {
@@ -178,7 +187,7 @@ class LMRTFY {
                 LMRTFY.normalRollEvent = {};
                 LMRTFY.advantageRollEvent = {};
                 LMRTFY.disadvantageRollEvent = {};
-                LMRTFY.specialRolls = {};
+                LMRTFY.specialRolls = { 'initiative': true };
                 LMRTFY.abilityAbbreviations = abilities;
                 LMRTFY.modIdentifier = 'modifier';
                 LMRTFY.abilityModifiers = {};

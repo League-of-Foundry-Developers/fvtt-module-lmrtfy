@@ -1,0 +1,246 @@
+
+<form autocomplete="off" onsubmit="event.preventDefault();">
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.SelectUser"}}</label>
+
+            <select name="user" data-dtype="String">
+                <option value="tokens" selected>{{localize "LMRTFY.ControlledTokens"}}</option>
+                <option value="character">{{localize "LMRTFY.AssignedCharacters"}}</option>
+                <optgroup label="{{localize "LMRTFY.Macros"}}">
+                    <option value="selected">{{localize "LMRTFY.Selected"}}</option>
+                </optgroup>
+                <optgroup label="{{localize "LMRTFY.Users"}}">
+                    {{#each users}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </optgroup>                
+            </select>
+        </div>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.SelectCharacters"}}</label>
+            <button type="button" class="select-all"><i class="fas fa-check-square"></i>{{localize "LMRTFY.SelectAll"}}</button>
+            <button type="button" class="deselect-all"><i class="fas fa-square"></i>{{localize "LMRTFY.SelectNone"}}</button>
+        </div>
+        <div class="form-group lmrtfy-actor-avatars">
+        {{#each actors}}
+            <div class="lmrtfy-actor" data-id="{{this.id}}">
+                <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" {{#if (lmrtfy-controlledToken this)}}checked{{/if}} />
+                <label for="lmrtf-actor-{{this.id}}">                
+                {{#if (lmrtfy-showTokenImage this)}}<img src="{{this.prototypeToken.texture.src}}" />{{else}}<img src="{{this.img}}" />{{/if}}
+                </label>
+            </div>
+        {{/each}}
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="form-group demonlord">
+            <label>{{localize "LMRTFY.Modifiers"}}</label>
+            
+            <select name="advantage" data-dtype="Number" id="advantage">
+                <option value="0">{{localize "LMRTFY.NormalRoll"}}</option>
+                <option value="1">{{localize "LMRTFY.DemonLordRollWithBoons"}}</option>
+                <option value="-1">{{localize "LMRTFY.DemonLordRollWithBanes"}}</option>
+                <option value="2">{{localize "LMRTFY.QueryRoll"}}</option>
+            </select>
+
+            <select name="mode" data-dtype="String">
+                {{#each rollModes as |name mode|}}
+                <option value="{{mode}}">{{localize name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.WindowTitle"}}</label>
+            <input type="text" name="title" value='{{localize "LMRTFY.WindowTitleValue"}}' placeholder='{{localize "LMRTFY.WindowTitlePlaceholder"}}' data-dtype="String"/>
+        </div>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.Message"}}</label>
+            <input type="text" name="message" value='' placeholder='{{localize "LMRTFY.MessagePlaceholder"}}' data-dtype="String"/>
+        </div>
+
+            <div class="form-group">
+                <label>{{localize "LMRTFY.DemonLordNrOfBBDice"}}</label>
+                <select name="BBDice" data-dtype="Number" id="BBDice" disabled>
+                    <option value="0">{{localize "LMRTFY.DemonLordNoBoonsBanes"}}</option>
+                    <option value="1">1d6</option>
+                    <option value="2">2d6</option>
+                    <option value="3">3d6</option>
+                    <option value="4">4d6</option>                    
+                    <option value="5">5d6</option>                    
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>{{localize "LMRTFY.DemonLordAddMod"}}</label>
+                <select name="AddMod" data-dtype="Number" id="AddMod" disabled>
+                    <option value="-5">-5</option>                      
+                    <option value="-4">-4</option>                      
+                    <option value="-3">-3</option>                      
+                    <option value="-2">-2</option>                      
+                    <option value="-1">-1</option>                    
+                    <option value="0" selected>0</option>
+                    <option value="1">+1</option>
+                    <option value="2">+2</option>
+                    <option value="3">+3</option>
+                    <option value="4">+4</option>                    
+                    <option value="5">+5</option>                    
+                </select>
+            </div>            
+
+        <div class="form-group">
+            <label>{{localize "LMRTFY.ChooseOneDM"}}</label>
+            <div class="lmrtfy-extra-perception">
+                <input type="checkbox" name="choose-one" id="lmrtf-choose-one" data-dtype="Boolean" />
+                <label for="lmrtf-choose-one">{{localize "LMRTFY.Enabled"}}</label>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.Extras"}}</label>
+                
+            <div class="lmrtfy-extras">
+                {{#if specialRolls.initiative}}
+                <div class="lmrtfy-extra-initiative">
+                    <input type="checkbox" name="extra-initiative" id="lmrtf-extra-initiative" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-initiative">{{localize "LMRTFY.Initiative"}}</label>
+                    
+                </div>
+                {{/if}}
+                {{#if specialRolls.deathsave}}
+                <div class="lmrtfy-extra-death-save">
+                    <input type="checkbox" name="extra-death-save" id="lmrtf-extra-death-save" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-death-save">{{localize "LMRTFY.DeathSave"}}</label>
+                </div>
+                {{/if}}
+                {{#if specialRolls.perception}}
+                <div class="lmrtfy-extra-perception">
+                    <input type="checkbox" name="extra-perception" id="lmrtf-extra-perception" data-dtype="Boolean" />
+                    <label for="lmrtf-extra-perception">{{localize "LMRTFY.Perception"}}</label>
+                </div>
+                {{/if}}
+            </div>
+        </div>        
+    </fieldset>
+
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.CustomFormula"}}</label>
+            <input type="text" class="custom-formula" name="formula" value='' placeholder='{{localize "LMRTFY.DemonLordCustomFormulaPlaceholder"}}' data-dtype="String"/>
+        </div>
+        <details class="lmrtfy-dice-tray-details">
+            <summary class="lmrtfy-dice-tray-expander">{{localize "LMRTFY.Selectors"}}</summary>
+            <div>
+                <div class="lmrtfy-dice-tray-buttons flexrow lmrtfy-dice-row-flexrow">
+                    <!-- d3 -->
+                    <div class="lmrtfy-dice-tray-button" data-value="d3">                        
+                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <g
+                            class=""
+                            transform="matrix(0.101,0,0,0.101,6.1382935,6.4717817)"
+                            id="g25">
+                           <path
+                              d="m 255.76,44.764 c -6.176,0 -12.353,1.384 -17.137,4.152 L 85.87,137.276 c -9.57,5.536 -9.57,14.29 0,19.826 l 152.753,88.36 c 9.57,5.536 24.703,5.536 34.272,0 l 152.753,-88.36 c 9.57,-5.535 9.57,-14.29 0,-19.825 L 272.895,48.917 c -4.785,-2.77 -10.96,-4.153 -17.135,-4.153 z m 0.926,82.855 a 31.953,18.96 0 0 1 22.127,32.362 31.953,18.96 0 1 1 -45.188,-26.812 31.953,18.96 0 0 1 23.06,-5.55 z M 75.67,173.84 c -5.753,-0.155 -9.664,4.336 -9.664,12.28 v 157.696 c 0,11.052 7.57,24.163 17.14,29.69 l 146.93,84.848 c 9.57,5.526 17.14,1.156 17.14,-9.895 V 290.76 c 0,-11.052 -7.57,-24.16 -17.14,-29.688 L 83.146,176.225 c -2.69,-1.555 -5.225,-2.327 -7.476,-2.387 z m 360.773,0.002 c -2.25,0.06 -4.783,0.83 -7.474,2.385 l -146.935,84.847 c -9.57,5.527 -17.14,18.638 -17.14,29.69 v 157.7 c 0,11.05 7.57,15.418 17.14,9.89 L 428.97,373.51 c 9.57,-5.527 17.137,-18.636 17.137,-29.688 v -157.7 c 0,-7.942 -3.91,-12.432 -9.664,-12.278 z M 89.297,195.77 a 31.236,18.008 58.094 0 1 33.818,41.183 31.236,18.008 58.094 1 1 -45,-25.98 31.236,18.008 58.094 0 1 11.182,-15.203 z m 221.52,64.664 a 18.008,31.236 31.906 0 1 11.183,15.203 18.008,31.236 31.906 0 1 -45,25.98 18.008,31.236 31.906 0 1 33.818,-41.183 z M 145.296,289.1 a 31.236,18.008 58.094 0 1 33.818,41.183 31.236,18.008 58.094 0 1 -45,-25.98 31.236,18.008 58.094 0 1 11.182,-15.203 z m 277.523,29.38 a 18.008,31.236 31.906 0 1 11.181,15.204 18.008,31.236 31.906 0 1 -45,25.98 18.008,31.236 31.906 0 1 33.818,-41.184 z m -221.52,64.663 a 31.236,18.008 58.094 0 1 33.817,41.183 31.236,18.008 58.094 1 1 -45,-25.98 31.236,18.008 58.094 0 1 11.182,-15.203 z"
+                              fill="#000000"
+                              fill-opacity="1"
+                              id="path23" />
+                         </g>               
+                        </svg>
+                    </div>
+                    <!-- d6 -->
+                    <div class="lmrtfy-dice-tray-button" data-value="d6">
+                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <g
+                            class=""
+                            transform="matrix(0.101,0,0,0.101,6.144,6.144)"
+                            id="g25">
+                           <path
+                              d="m 255.76,44.764 c -6.176,0 -12.353,1.384 -17.137,4.152 L 85.87,137.276 c -9.57,5.536 -9.57,14.29 0,19.826 l 152.753,88.36 c 9.57,5.536 24.703,5.536 34.272,0 l 152.753,-88.36 c 9.57,-5.535 9.57,-14.29 0,-19.825 L 272.895,48.917 c -4.785,-2.77 -10.96,-4.153 -17.135,-4.153 z m 1.86,12.423 a 31.953,18.96 0 0 1 21.194,5.536 31.953,18.96 0 0 1 -45.187,26.812 31.953,18.96 0 0 1 23.992,-32.347 z m 58.43,35.208 a 31.953,18.96 0 0 1 22.13,32.363 31.953286,18.96017 0 0 1 -45.19,-26.813 31.953,18.96 0 0 1 23.06,-5.55 z m -177.603,34.98 a 31.953,18.96 0 0 1 0.002,0 31.953,18.96 0 0 1 21.195,5.535 31.953286,18.96017 0 0 1 -45.19,26.813 31.953,18.96 0 0 1 23.992,-32.348 z m 237.903,0.26 a 31.953,18.96 0 0 1 0.002,0 31.953,18.96 0 0 1 21.195,5.535 31.953,18.96 0 0 1 -45.19,26.812 31.953,18.96 0 0 1 23.993,-32.347 z m -179.03,35.21 a 31.953,18.96 0 0 1 22.127,32.362 31.953,18.96 0 1 1 -45.187,-26.812 31.953,18.96 0 0 1 23.06,-5.55 z M 75.67,173.84 c -5.753,-0.155 -9.664,4.336 -9.664,12.28 v 157.696 c 0,11.052 7.57,24.163 17.14,29.69 l 146.93,84.848 c 9.57,5.526 17.14,1.156 17.14,-9.895 V 290.76 c 0,-11.052 -7.57,-24.16 -17.14,-29.688 L 83.146,176.225 c -2.69,-1.555 -5.225,-2.327 -7.476,-2.387 z m 360.773,0.002 c -2.25,0.06 -4.783,0.83 -7.474,2.385 l -146.935,84.847 c -9.57,5.527 -17.14,18.638 -17.14,29.69 v 157.7 c 0,11.05 7.57,15.418 17.14,9.89 L 428.97,373.51 c 9.57,-5.527 17.137,-18.636 17.137,-29.688 v -157.7 c 0,-7.942 -3.91,-12.432 -9.664,-12.278 z M 89.297,195.77 a 31.236,18.008 58.094 0 1 33.818,41.183 31.236,18.008 58.094 1 1 -45,-25.98 31.236,18.008 58.094 0 1 11.182,-15.203 z m 333.52,0 a 18.008,31.236 31.906 0 1 11.183,15.203 18.008,31.236 31.906 0 1 -45,25.98 18.008,31.236 31.906 0 1 33.818,-41.183 z m -165.198,2.314 a 31.953,18.96 0 0 1 21.194,5.535 31.953,18.96 0 0 1 -45.187,26.812 31.953,18.96 0 0 1 23.992,-32.348 z m -56.323,62.35 a 31.236,18.008 58.094 0 1 33.818,41.183 31.236,18.008 58.094 1 1 -45,-25.98 31.236,18.008 58.094 0 1 11.182,-15.203 z m 109.52,0 a 18.008,31.236 31.906 0 1 11.184,15.203 18.008,31.236 31.906 0 1 -45,25.98 18.008,31.236 31.906 0 1 33.818,-41.183 z M 145.296,289.1 a 31.236,18.008 58.094 0 1 33.818,41.183 31.236,18.008 58.094 0 1 -45,-25.98 31.236,18.008 58.094 0 1 11.182,-15.203 z m -55.998,29.38 a 31.236,18.008 58.094 0 1 33.818,41.184 31.236,18.008 58.094 1 1 -45,-25.98 31.236,18.008 58.094 0 1 11.182,-15.204 z m 333.52,0 a 18.008,31.236 31.906 0 1 11.182,15.204 18.008,31.236 31.906 0 1 -45,25.98 18.008,31.236 31.906 0 1 33.818,-41.184 z m -221.52,64.663 a 31.236,18.008 58.094 0 1 33.818,41.183 31.236,18.008 58.094 1 1 -45,-25.98 31.236,18.008 58.094 0 1 11.182,-15.203 z m 109.52,0 a 18.008,31.236 31.906 0 1 11.182,15.203 18.008,31.236 31.906 0 1 -45,25.98 18.008,31.236 31.906 0 1 33.818,-41.183 z"
+                              fill="#000000"
+                              fill-opacity="1"
+                              id="path23" />
+                         </g>
+                        </svg>
+                    </div>
+                    <!-- d20 -->
+                    <div class="lmrtfy-dice-tray-button" data-value="d20">                
+                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <g
+                            class=""
+                            transform="matrix(0.101,0,0,0.101,6.144,6.144)"
+                            id="g18">
+                           <path
+                              d="M 248,20.3 72.33,132.6 248,128.8 Z m 16,0 v 108.5 l 175.7,3.8 z m 51.4,58.9 c 6.1,3.5 8.2,7.2 15.1,4.2 10.7,0.8 22.3,5.8 27.6,15.7 4.7,4.5 1.5,12.6 -5.2,12.6 -9.7,0.1 -19.7,-6.1 -14.6,-8.3 4.7,-2 14.7,0.9 10,-5.5 -3.6,-4.5 -11,-7.8 -16.3,-5.9 -1.6,6.8 -9.4,4 -12,-0.7 -2.3,-5.8 -9.1,-8.2 -15,-7.9 -6.1,2.7 1.6,8.8 5.3,9.9 7.9,2.2 0.2,7.5 -4.1,5.1 -4.2,-2.4 -15,-9.6 -13.5,-18.3 5.8,-7.39 15.8,-4.62 22.7,-0.9 z M 206.9,75.7 c 5.5,0.5 12.3,3 10.2,9.9 -4.3,7 -9.8,13.1 -18.1,14.8 -6.5,3.4 -14.9,4.4 -21.6,1.9 -3.7,-2.3 -13.5,-9.3 -14.9,-3.4 -2.1,14.8 0.7,13.1 -11.1,17.8 V 92.3 c 9.9,-3.9 21.1,-4.5 30.3,1.3 8,4.2 19.4,1.5 24.2,-5.7 1.4,-6.5 -8.1,-4.6 -12.2,-3.4 -2.7,-8.2 7.9,-7.5 13.2,-8.8 z m 35,69.2 -186.51,4.1 71.21,192.9 z m 28.2,0 115.3,197 L 456.6,149 Z M 256,152.4 138.9,352.6 h 234.2 z m 133.3,21.1 c 13.9,8.3 21.5,26.2 22.1,43 -1.3,13.6 -0.7,19.8 -15.2,21.4 -14.5,1.6 -23.9,-19.2 -29.7,-32.6 -3.4,-9.9 -5.8,-24 1.7,-31.3 6.1,-4.8 15,-4.1 21.1,-0.5 z m -223.7,16.1 c 2.1,4 -0.5,11.4 -4.8,12.1 -4.9,0.7 -3.8,-9.3 -9.4,-11.6 -6.9,-2.3 -13.6,5.6 -15,11.6 10.4,-4 20.3,7.1 20.3,17 -0.4,11.7 -7.9,24.8 -19.7,28.1 h -5.6 c -12.7,-0.7 -18.3,-15.8 -14.2,-26.6 4.4,-15.8 10.8,-33.9 27.2,-40.6 8.5,-3.9 19,3.2 21.2,10 z m 213.9,-8.4 c -7.1,-0.1 -4.4,10 -3.3,14.5 3.5,11.5 7.3,26.6 18.9,30 6.8,-1.2 4.4,-12.8 3.7,-16.5 -4.7,-10.9 -7.1,-23.3 -19.3,-28 z M 52,186 v 173.2 l 61.9,-5.7 z m 408,0 -61.9,167.5 61.9,5.7 z m -117.9,0.7 28.5,63.5 -10,4.4 -20,-43.3 c -6.1,3 -13,8.9 -14.6,-1.4 -1.3,-3.9 8.5,-5.1 8.1,-11.9 -0.3,-6.9 2.2,-12.2 8,-11.3 z m -212,27.4 c -2.4,5.1 -4.1,10.3 -2.7,15.9 1.7,8.8 13.5,6.4 15.6,-0.8 2.7,-5 3.9,-11.7 -0.5,-15.7 -4.1,-3.4 -8.9,-2.8 -12.4,0.6 z m 328.4,41.6 c -0.1,18.6 1.1,39.2 -9.7,55.3 -0.9,1.2 -2.2,1.9 -3.7,2.5 -5.8,-4.1 -3,-11.3 1.2,-15.5 1,7.3 5.5,-2.9 6.6,-5.6 1.3,-3.2 3.6,-17.7 -1,-10.2 0.7,4 -6.8,13.1 -9.3,8.1 -5,-14.4 0,-30.5 7,-43.5 5.7,-6.2 9.9,4.4 8.9,8.9 z M 59.93,245.5 c 0.59,0.1 1.34,1 2.48,3.6 v 61.1 c -7.3,-7 -4.47,-18 -4.45,-26.4 0,-8.4 1.65,-16.3 -1.28,-23.2 -4.62,-1.7 -5.79,-17 -3.17,-12.7 4.41,4.8 4.66,-2.7 6.42,-2.4 z m 178.77,7.6 c 8.1,4.5 13.8,14.4 10.8,23.6 -2.1,15.2 -27,21.1 -30.4,29.7 -1.2,3 25.4,1.6 30.2,1.6 0.5,4 1.5,10.7 -3.8,11.7 -14.5,-1.2 -29.9,-0.6 -45.1,-0.6 0.4,-11.2 7.4,-21.3 17,-26.8 6.9,-4.9 15.4,-9.3 18.1,-17.9 1.8,-4.5 -0.6,-9.3 -4.6,-11.5 -4.2,-2.9 -11,-2.3 -13.2,2.7 -2,3.8 -4.4,9.1 -8.7,9.6 -2.9,0.4 -9,0.5 -7.2,-4.9 1.4,-5.6 3.4,-11.5 8.2,-15.2 8.8,-6.3 19.9,-6.7 28.7,-2 z m 53.3,-1.4 c 6.8,2.2 12,7.9 14.3,14.6 6.1,14.7 5.5,33.1 -4.4,45.9 -4.5,4.8 -10.2,9.1 -17,9.1 -12.5,-0.1 -22.4,-11.1 -24.8,-22.8 -3.1,-13.4 -1.8,-28.7 6.9,-39.8 6.8,-7.6 16,-10.3 25,-7 z m 156.1,8.1 c -1.6,5.9 -3.3,13.4 -0.7,19.3 5.1,-2 5.4,-9.6 6.6,-14.5 0.9,-6.1 -3.5,-12.6 -5.9,-4.8 z m -176.2,21.1 c 0.6,10.5 1.7,22.8 9.7,28.2 4.9,1.8 9.7,-2.2 11.1,-6.7 1.9,-6.3 2.3,-12.9 2.4,-19.4 -0.2,-7.1 -1.5,-15 -6.7,-20.1 -12.2,-4.4 -15.3,10.9 -16.5,18 z M 434,266.8 V 328 l -4.4,6.7 v -42.3 c -4.6,7.5 -9.1,9.1 -6.1,-0.9 6.1,-7.1 4.8,-17.4 10.5,-24.7 z M 83.85,279 c 0.8,3.6 5.12,17.8 2.04,14.8 -1.97,-1.3 -3.62,-4.9 -3.41,-6.1 -1.55,-3 -2.96,-6.1 -4.21,-9.2 -2.95,4 -3.96,8.3 -3.14,13.4 0.2,-1.6 1.18,-2.3 3.39,-0.7 7.84,12.6 12.17,29.1 7.29,43.5 l -2.22,1.1 c -10.36,-5.8 -11.4,-19.4 -13.43,-30 -1.55,-12.3 -0.79,-24.7 2.3,-36.7 5.2,-3.8 9.16,5.4 11.39,9.9 z m -7.05,20.2 c -4.06,4.7 -2.26,12.8 -0.38,18.4 1.11,5.5 6.92,10.2 6.06,1.6 0.69,-11.1 -2.33,-12.7 -5.68,-20 z M 143.2,368.6 256,491.7 368.8,368.6 Z m -21.4,0.3 -53.84,4.9 64.24,41.1 c -2.6,-2.7 -4.9,-5.7 -7.1,-8.8 -5.2,-6.9 -10.5,-13.6 -18.9,-16.6 -8.75,-6.5 -4.2,-5.3 2.9,-2.6 -1,-1.8 -0.7,-2.6 0.1,-2.6 2.2,-0.2 8.4,4.2 9.8,6.3 l 24.7,31.6 65.1,41.7 z m 268.4,0 -42.4,46.3 c 6.4,-3.1 11.3,-8.5 17,-12.4 2.4,-1.4 3.7,-1.9 4.3,-1.9 2.1,0 -5.4,7.1 -7.7,10.3 -9.4,9.8 -16,23 -28.6,29.1 l 18.9,-24.5 c -2.3,1.3 -6,3.2 -8.2,4.1 l -40.3,44 74.5,-47.6 c 5.4,-6.7 1.9,-5.6 -5.7,-0.9 l -11.4,6 c 11.4,-13.7 30.8,-28.3 40,-35.6 9.2,-7.3 15.9,-9.8 8.2,-1.5 l -12.6,16 c 10,-7.6 0.9,3.9 -4.5,5.5 -0.7,1 -1.4,2 -2.2,2.9 L 444,373.8 Z M 236,385.8 v 43.4 h -13.4 v -30 c -5,-1.4 -10.4,1.7 -15.3,-0.3 -3.8,-2.9 1,-6.8 4.5,-5.9 3.3,-0.1 7.6,0.2 9.3,-3.2 4.4,-4.5 9.6,-4.4 14.9,-4 z m 29,0.5 c 12.1,1.2 24.2,0.6 36.6,0.6 1.5,3 0.8,7.8 -3.3,7.9 -7.7,0.3 -21,-1.6 -25.9,0.6 -8.2,10.5 5.7,3.8 11.4,5.2 7,1.1 15,2.9 19.1,9.2 2.1,3.1 2.7,7.3 0.7,10.7 -5.8,6.8 -17,11.5 -25.3,10.9 -7.3,-0.6 -15.6,-1.1 -20.6,-7.1 -6.4,-10.6 10.5,-6.7 12.2,-3.2 6,5.3 20.3,1.9 20.7,-4.7 0.6,-4.2 -2.1,-6.3 -6.9,-7.8 -4.8,-1.5 -12.6,1 -17.3,1.8 -4.7,0.8 -9.6,0.5 -9,-4.4 0.8,-4.2 2.7,-8.1 2.7,-12.5 0.1,-3 1.7,-7 4.9,-7.2 z m 133.5,5 c -0.2,-0.2 -7,5.8 -9.9,8.1 l -15.8,13.1 c 10.6,-6.5 19.3,-12 25.7,-21.2 z m -247,14.2 c 2.4,0 7.5,4.6 9.4,7 l 26.1,31.1 c -7.7,-2.1 -13.3,-7.1 -17.6,-13.7 -6.5,-7.3 -11.3,-16.6 -21.2,-19.6 -9,-5 -5.2,-6.4 2.1,-2.2 -0.3,-1.9 0.2,-2.6 1.2,-2.6 z"
+                              fill="#000000"
+                              fill-opacity="1"
+                              id="path16" />
+                         </g>
+                        </svg>
+                    </div>                    
+                </div>
+                <div class="lmrtfy-dice-tray-buttons flexrow lmrtfy-dice-row-flexrow">
+                    <div class="lmrtfy-dice-tray-button lmrtfy-bonus-button" data-value="-1">
+                        -
+                    </div>
+                    <div class="lmrtfy-dice-tray-button lmrtfy-bonus-button" data-value="+1">
+                        +
+                    </div>
+                </div>
+                <div class="form-group lmrtfy-dice-tray-checks">
+                    <div class="lmrtfy-ability-checks">
+                        {{#each abilityModifiers as |name key|}}
+                        <div class="lmrtfy-ability">
+                            <input type="checkbox" class="lmrtfy-formula-ability" name="lmrtfy-formula-{{key}}" id="lmrtfy-formula-{{key}}" data-value="{{key}}" />
+                            <label for="lmrtfy-formula-{{key}}">{{localize name}}</label>                
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="lmrtfy-clear-button-area">
+                    <button type="button" class="lmrtfy-clear-formula" name="lmrtfy-clear-custom" value="1"><i class="fas fa-pump-soap"></i>{{localize "LMRTFY.ClearCustomFormula"}}</button>
+                </div>
+            </div>
+        </details>        
+    </fieldset>
+ 
+    <fieldset>
+    <div class="form-group">
+        <label>{{localize "LMRTFY.DemonLordChallengeRoll"}}</label>
+        
+        <div class="lmrtfy-ability-checks">
+            {{#each abilities as |name key|}}
+            <div class="lmrtfy-ability">
+                <input type="checkbox" name="check-{{key}}" id="lmrtf-check-{{key}}" data-dtype="Boolean" />
+                <label for="lmrtf-check-{{key}}">{{localize name}}</label>
+                
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    </fieldset>
+
+    {{#if tables}}
+    <fieldset>
+        <div class="form-group">
+            <label>{{localize "LMRTFY.RollTables"}}</label>
+
+            <select name="table" class="lmrtfy-roll-table-list" data-dtype="String" multiple="multiple">
+                {{#each tables as |name|}}
+                    <option value="{{name}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </fieldset>
+    {{/if}}
+
+    <div class="lmrtfy-submit">
+        <button type="submit" class="lmrtfy-request-roll" name="submit" value="1"><i class="fas fa-dice"></i>{{localize "LMRTFY.RequestRolls"}}</button>
+        <button type="button" class="lmrtfy-save-roll" name="submit" value="1"><i class="fas fa-download"></i>{{localize "LMRTFY.SaveRequest"}}</button>
+    </div>
+</form>
