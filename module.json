@@ -114,7 +114,7 @@
                 "type": "system",
                 "manifest": "https://github.com/foundryvtt/pf2e/releases/download/3.13.6/system.json",
                 "compatibility": {
-                    "verified": "3.13.6"
+                    "verified": "5.13.6"
                 }
             },
             {

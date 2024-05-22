@@ -284,11 +284,12 @@ class LMRTFYRoller extends Application {
 
                         case this.pf2eRollFor.SKILL:
                             // system specific roll handling
-                            const skill = actor.system.skills[args[0]];
+                            const skillSlug = actor.system.skills[args[0]].slug;
+                            const skill = actor.skills[skillSlug];
                             // roll lore skills only for actors who have them ...
                             if (!skill) continue;
 
-                            const skillOptions = actor.getRollOptions(['all', `${skill.ability ?? 'int'}-based`, 'skill-check', skill.name]);
+                            const skillOptions = actor.getRollOptions(['all', `${skill.ability ?? 'int'}-based`, 'skill-check', skillSlug]);
                             skill.roll({ event, skillOptions, dc: this.dc });
                             break;
 
@@ -361,27 +362,9 @@ class LMRTFYRoller extends Application {
     }
 
     _makePF2EInitiativeRoll(event) {
-        // save the current roll mode to reset it after this roll
-        const rollMode = game.settings.get("core", "rollMode");
-        game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
-
-        for (let actor of this.actors) {
-            const initiative = actor.data.data.attributes.initiative;
-            const rollNames = ['all', 'initiative'];
-            if (initiative.ability === 'perception') {
-                rollNames.push('wis-based');
-                rollNames.push('perception');
-            } else {
-                const skill = actor.data.data.skills[initiative.ability];
-                rollNames.push(`${skill.ability}-based`);
-                rollNames.push(skill.name);
-            }
-            const options = actor.getRollOptions(rollNames);
-            initiative.roll({ event, options });
+        for (const actor of this.actors) {
+            actor.initiative.roll();
         }
-
-        game.settings.set("core", "rollMode", rollMode);
-
         event.currentTarget.disabled = true;
         this._checkClose();
     }
@@ -651,7 +634,17 @@ class LMRTFYRoller extends Application {
             this._checkClose();
         } else if (game.system.id == "pf2e") {
             for (let actor of this.actors) {
-                actor.rollRecovery();
+                actor.rollRecovery().then(rollResult => {
+                    if (!rollResult) return;
+                    const adjustDyingCounterFn = rollResult.degreeOfSuccess >= 2 ? () => actor.decreaseCondition('dying') : () => actor.increaseCondition('dying', { max: actor.system.attributes.dying.max ?? 4 });
+                    const dosToNumberOfCalls = { 0: 2, 1: 1, 2: 1, 3: 2 };
+                    const adjustDyingCounterCalls = Array.from({ length: dosToNumberOfCalls[rollResult.degreeOfSuccess] }, () => adjustDyingCounterFn());
+                    Promise.all(adjustDyingCounterCalls).then(() => {
+                        if (actor.system.attributes.dying.value === 0) {
+                            actor.increaseCondition('wounded', { max: actor.system.attributes.wounded.max ?? 3 });
+                        }
+                    });
+                });
             }
             event.currentTarget.disabled = true;
             this._checkClose();
@@ -662,7 +655,17 @@ class LMRTFYRoller extends Application {
 
     _onPerception(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
+
+        if (game.system.id !== 'pf2e') {
+            return this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
+        }
+
+        const ability = event.currentTarget.dataset.ability;
+        this.pf2Roll = this.pf2eRollFor.PERCEPTION;
+        if (!this.hasMidi || this.midiUseNewRoller) {
+            return this._makeRoll(event, LMRTFY.abilityRollMethod, false, ability);
+        }
+        this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
     }
 
     _onRollTable(event) {

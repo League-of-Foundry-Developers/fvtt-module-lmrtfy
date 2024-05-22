@@ -388,15 +388,16 @@ class LMRTFY {
 
     static buildAbilityModifier(actor, ability) {
         const modifiers = [];
-
-        const mod = game.pf2e.AbilityModifier.fromScore(ability, actor.data.data.abilities[ability].value);
+        const attribute = actor.system.abilities[ability];
+        const attributeLabel = game.i18n.localize(attribute.label);
+        const mod = new game.pf2e.Modifier(attributeLabel, attribute.mod, 'ability', true);
         modifiers.push(mod);
-
         [`${ability}-based`, 'ability-check', 'all'].forEach((key) => {
-            (actor.synthetics.statisticsModifier[key] || []).forEach((m) => modifiers.push(m.clone()));
+            (actor.synthetics.modifierAdjustments[key] || []).forEach((m) => modifiers.push(m.clone()));
         });
-        
-        return new game.pf2e.StatisticModifier(`${game.i18n.localize('LMRTFY.AbilityCheck')} ${game.i18n.localize(mod.label)}`, modifiers);
+        const slug = `${game.i18n.localize('LMRTFY.AbilityCheck')}${attributeLabel}`;
+        const statisticModifier = new game.pf2e.StatisticModifier(slug, modifiers);
+        return statisticModifier;
     }
 
     static async hideBlind(app, html, msg) {
