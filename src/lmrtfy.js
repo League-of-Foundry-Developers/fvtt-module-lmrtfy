@@ -254,6 +254,30 @@ class LMRTFY {
                 LMRTFY.canFailChecks = game.settings.get('lmrtfy', 'showFailButtons'); // defaulted to false due to system
                 break;
 
+            case 'dcc':
+                // which method on the Actor class can roll the appropriate check?
+                LMRTFY.saveRollMethod = 'rollSavingThrow';
+                LMRTFY.abilityRollMethod = 'rollAbilityCheck';
+                LMRTFY.skillRollMethod = 'rollSkillCheck';
+
+                // where are the abilities, skills, and saves defined?
+                LMRTFY.abilities = CONFIG.DCC.abilities;
+                LMRTFY.skills = {};
+                LMRTFY.saves = CONFIG.DCC.saves;
+
+                // is there any special keybinding the system might expect for these kinds of rolls
+                LMRTFY.normalRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
+                LMRTFY.advantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
+
+                // does your system support initiative rolls or deathsaves (as dnd5e understands them)?
+                LMRTFY.specialRolls = { 'initiative': true, 'deathsave': false, 'perception': false };
+
+                // does you system use ability modifiers. this is for the dice and modifier buttons under custom formula
+                LMRTFY.abilityAbbreviations = CONFIG.DCC.abilities;
+                LMRTFY.modIdentifier = 'mod';
+                LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
+                break;
+
             default:
                 console.error('LMRFTY | Unsupported system detected');
 
