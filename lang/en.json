@@ -74,6 +74,7 @@
     "LMRTFY.DemonLordBoonsNote": "These rolls will be made with {boonsBanes} boon(s).",
     "LMRTFY.DemonLordBanesNote": "These rolls will be made with {boonsBanes} bane(s).",
     "LMRTFY.DemonLordAdditionalModifier": "Additional modifier:",
+    "LMRTFY.DemonLordFateRoll": "Fate Roll",    
     "LMRTFY.DemonLordNoCombat": "You are not in combat!",
     "LMRTFY.DemonLordNoBoonsBanes": "No Boons/Banes"
 }

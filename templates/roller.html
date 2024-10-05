@@ -57,12 +57,12 @@
     {{/if}}
     {{#if deathsave}}
     <div>
-        <button type="button" class="lmrtfy-death-save">{{localize "LMRTFY.DeathSave"}}</button>
+        {{#if (lmrtfy-isdemonlord this)}}<button type="button" class="lmrtfy-death-save">{{localize "LMRTFY.DemonLordFateRoll"}}</button>{{else}}<button type="button" class="lmrtfy-death-save">{{localize "LMRTFY.DeathSave"}}</button>{{/if}}
     </div>
     {{/if}}
     {{#if perception}}
     <div>
-        <button type="button" class="lmrtfy-perception">{{localize "LMRTFY.Perception"}}</button>
+        {{#if (lmrtfy-isdemonlord this)}}<button type="button" class="lmrtfy-perception">{{localize "DL.CharRolCorruption"}}{{else}}<button type="button" class="lmrtfy-perception">{{localize "LMRTFY.Perception"}}</button>{{/if}}
     </div>
     {{/if}}
     {{#if tables}}

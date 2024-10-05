@@ -420,6 +420,21 @@ class LMRTFYRoller extends Application {
         this._checkClose();
     }
 
+    _makeDemonLordCorruptionRoll() {
+        const rollMode = game.settings.get("core", "rollMode");
+        game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
+
+        for (let actor of this.actors) {
+            Hooks.once("preCreateChatMessage", this._tagMessage.bind(this));
+			actor.rollCorruption();
+            }
+
+        game.settings.set("core", "rollMode", rollMode);
+
+        this._disableButtons(event);
+        this._checkClose();
+    }    
+
     async _makeDiceRoll(event, formula, defaultMessage = null) {
         if (formula.startsWith("1d20")) {
             if (this.advantage === 1)
@@ -643,26 +658,35 @@ class LMRTFYRoller extends Application {
 
     _onDeathSave(event) {
         event.preventDefault();
-        if (game.system.id == "dnd5e") {
-            for (let actor of this.actors) {
-                actor.rollDeathSave(event);
-            }
-            event.currentTarget.disabled = true;
-            this._checkClose();
-        } else if (game.system.id == "pf2e") {
-            for (let actor of this.actors) {
-                actor.rollRecovery();
-            }
-            event.currentTarget.disabled = true;
-            this._checkClose();
-        } else {
-            this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
+        switch (game.system.id) {
+            case "dnd5e":
+                for (let actor of this.actors) {
+                    actor.rollDeathSave(event);
+                }
+                break
+            case "pf2e":
+                for (let actor of this.actors) {
+                    actor.rollRecovery();
+                }
+                break;
+            case "demonlord":
+                for (let actor of this.actors) {
+                    this._makeDiceRoll(event, "1d6", game.i18n.localize("LMRTFY.DemonLordFateRoll"));
+                }
+                break;
+            default:
+                this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
         }
+        event.currentTarget.disabled = true;
+        this._checkClose();
     }
 
     _onPerception(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
+        if (game.system.id === 'demonlord')
+            this._makeDemonLordCorruptionRoll() 
+        else
+            this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
     }
 
     _onRollTable(event) {
