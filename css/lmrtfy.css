@@ -75,7 +75,7 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-skill-checks > div ,
 .lmrtfy-extras > div {
 	flex: 3;
-	padding: 4px;
+	padding: 2px;
 	display: flex;
 }
 
