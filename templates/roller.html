@@ -26,7 +26,7 @@
 
     {{#each abilities as |name ability|}}
     <div>
-        {{#if (lmrtfy-isdemonlord this)}}<button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>{{localize "LMRTFY.DemonLordChallengeRoll"}} {{localize name}}</button> />{{else}} <button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>{{localize "LMRTFY.AbilityCheck"}} {{localize name}}</button>/>{{/if}}        
+        {{#if (lmrtfy-isdemonlord this)}}<button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>{{localize "LMRTFY.DemonLordChallengeRoll"}} {{localize name}}</button>{{else}} <button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>{{localize "LMRTFY.AbilityCheck"}} {{localize name}}</button>{{/if}}
     </div>
         {{#canFailAbilityChecks name ability}}
         {{/canFailAbilityChecks}}

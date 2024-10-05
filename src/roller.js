@@ -19,8 +19,8 @@ class LMRTFYRoller extends Application {
         }
 
         if (game.system.id === 'demonlord') {
-            this.BBDice = data.BBDice;
-            this.AddMod = data.AddMod;
+            this.boonsBanes = data.boonsBanes;
+            this.additionalModifier = data.additionalModifier;
         }
 
         if (data.title) {
@@ -128,9 +128,9 @@ class LMRTFYRoller extends Application {
     async getData() {
         let note = ""
         if (this.advantage == 1)
-            note = (game.system.id === 'demonlord') ? game.i18n.localize("LMRTFY.DemonLordBoonsNote") : game.i18n.localize("LMRTFY.AdvantageNote");
+            note = (game.system.id === 'demonlord') ? game.i18n.format("LMRTFY.DemonLordBoonsNote", { boonsBanes :this.boonsBanes}) : game.i18n.localize("LMRTFY.AdvantageNote");
         else if (this.advantage == -1)
-            note = (game.system.id === 'demonlord') ? game.i18n.localize("LMRTFY.DemonLordBanesNote") : game.i18n.localize("LMRTFY.DisadvantageNote");
+            note = (game.system.id === 'demonlord') ? game.i18n.format("LMRTFY.DemonLordBanesNote", { boonsBanes :this.boonsBanes}) : game.i18n.localize("LMRTFY.DisadvantageNote");
 
         let abilities = {}
         let saves = {}
@@ -336,10 +336,10 @@ class LMRTFYRoller extends Application {
                         await actor.rollAttribute(actor.getAttribute(key), 0, 0)
                         break;
                       case 1:
-                        await actor.rollAttribute(actor.getAttribute(key), this.BBDice, this.AddMod)
+                        await actor.rollAttribute(actor.getAttribute(key), this.boonsBanes, this.additionalModifier)
                         break;
                       case -1:
-                        await actor.rollAttribute(actor.getAttribute(key), (this.BBDice)*-1, this.AddMod)
+                        await actor.rollAttribute(actor.getAttribute(key), (this.boonsBanes)*-1, this.additionalModifier)
                         break;
                       case 2:
                         await actor[rollMethod].call(actor, ...args, options);
