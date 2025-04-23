@@ -333,13 +333,13 @@ class LMRTFYRoller extends Application {
                     const key = args[0];
                     switch(this.advantage) {
                       case 0:
-                        await actor.rollAttribute(actor.getAttribute(key), 0, 0)
+                        await actor.rollAttributeChallenge(actor.getAttribute(key), 0, 0)
                         break;
                       case 1:
-                        await actor.rollAttribute(actor.getAttribute(key), this.boonsBanes, this.additionalModifier)
+                        await actor.rollAttributeChallenge(actor.getAttribute(key), this.boonsBanes, this.additionalModifier)
                         break;
                       case -1:
-                        await actor.rollAttribute(actor.getAttribute(key), (this.boonsBanes)*-1, this.additionalModifier)
+                        await actor.rollAttributeChallenge(actor.getAttribute(key), (this.boonsBanes)*-1, this.additionalModifier)
                         break;
                       case 2:
                         await actor[rollMethod].call(actor, ...args, options);
