@@ -129,6 +129,10 @@ form .form-group .lmrtfy-skill-checks {
 	align-items: center;
 }
 
+.lmrtfy-note {
+	text-align: center;
+}
+
 .lmrtfy-ability-check,
 .lmrtfy-ability-check-fail,
 .lmrtfy-ability-save,

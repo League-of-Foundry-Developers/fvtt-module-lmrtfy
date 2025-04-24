@@ -127,10 +127,26 @@ class LMRTFYRoller extends Application {
 
     async getData() {
         let note = ""
-        if (this.advantage == 1)
-            note = (game.system.id === 'demonlord') ? game.i18n.format("LMRTFY.DemonLordBoonsNote", { boonsBanes :this.boonsBanes}) : game.i18n.localize("LMRTFY.AdvantageNote");
-        else if (this.advantage == -1)
-            note = (game.system.id === 'demonlord') ? game.i18n.format("LMRTFY.DemonLordBanesNote", { boonsBanes :this.boonsBanes}) : game.i18n.localize("LMRTFY.DisadvantageNote");
+        switch (game.system.id) {
+            case 'demonlord':
+                if (this.boonsBanes > 0 && this.advantage == 1)  note += game.i18n.localize("LMRTFY.DemonLordNote") + game.i18n.format("LMRTFY.DemonLordBoonsNote", { boonsBanes :this.boonsBanes});
+                if (this.boonsBanes > 0 && this.advantage == -1) note += game.i18n.localize("LMRTFY.DemonLordNote") + game.i18n.format("LMRTFY.DemonLordBanesNote", { boonsBanes :this.boonsBanes});
+                if (this.additionalModifier !== 0  && this.additionalModifier !==undefined)
+                {
+                    if (note.length)
+                        note +=  game.i18n.localize("LMRTFY.DemonLordAnd") + this.additionalModifier;
+                    else
+                        note = game.i18n.localize("LMRTFY.DemonLordNote") + this.additionalModifier;
+                }
+                if (note.length)  note += '.'
+                break;
+            default:
+                if (this.advantage == 1)
+                    note = game.i18n.localize("LMRTFY.AdvantageNote");
+                else if (this.advantage == -1)
+                    note = game.i18n.localize("LMRTFY.DisadvantageNote");
+                break;
+        }
 
         let abilities = {}
         let saves = {}
