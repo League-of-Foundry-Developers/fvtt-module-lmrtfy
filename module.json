@@ -184,6 +184,14 @@
                 "compatibility": {
                     "verified": "10.1.7"
                 }
+            },
+            {
+                "id": "dcc",
+                "type": "system",
+                "manifest": "https://raw.githubusercontent.com/foundryvtt-dcc/dcc/main/system.json",
+                "compatibility": {
+                    "verified": "0.43.0"
+                }
             }
         ]
     },
