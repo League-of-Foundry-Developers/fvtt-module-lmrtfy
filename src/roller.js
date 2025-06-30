@@ -19,8 +19,8 @@ class LMRTFYRoller extends Application {
         }
 
         if (game.system.id === 'demonlord') {
-            this.BBDice = data.BBDice;
-            this.AddMod = data.AddMod;
+            this.boonsBanes = data.boonsBanes;
+            this.additionalModifier = data.additionalModifier;
         }
 
         if (data.title) {
@@ -127,10 +127,26 @@ class LMRTFYRoller extends Application {
 
     async getData() {
         let note = ""
-        if (this.advantage == 1)
-            note = (game.system.id === 'demonlord') ? game.i18n.localize("LMRTFY.DemonLordBoonsNote") : game.i18n.localize("LMRTFY.AdvantageNote");
-        else if (this.advantage == -1)
-            note = (game.system.id === 'demonlord') ? game.i18n.localize("LMRTFY.DemonLordBanesNote") : game.i18n.localize("LMRTFY.DisadvantageNote");
+        switch (game.system.id) {
+            case 'demonlord':
+                if (this.boonsBanes > 0 && this.advantage == 1)  note += game.i18n.localize("LMRTFY.DemonLordNote") + game.i18n.format("LMRTFY.DemonLordBoonsNote", { boonsBanes :this.boonsBanes});
+                if (this.boonsBanes > 0 && this.advantage == -1) note += game.i18n.localize("LMRTFY.DemonLordNote") + game.i18n.format("LMRTFY.DemonLordBanesNote", { boonsBanes :this.boonsBanes});
+                if (this.additionalModifier !== 0  && this.additionalModifier !==undefined)
+                {
+                    if (note.length)
+                        note +=  game.i18n.localize("LMRTFY.DemonLordAnd") + this.additionalModifier;
+                    else
+                        note = game.i18n.localize("LMRTFY.DemonLordNote") + this.additionalModifier;
+                }
+                if (note.length)  note += '.'
+                break;
+            default:
+                if (this.advantage == 1)
+                    note = game.i18n.localize("LMRTFY.AdvantageNote");
+                else if (this.advantage == -1)
+                    note = game.i18n.localize("LMRTFY.DisadvantageNote");
+                break;
+        }
 
         let abilities = {}
         let saves = {}
@@ -333,13 +349,13 @@ class LMRTFYRoller extends Application {
                     const key = args[0];
                     switch(this.advantage) {
                       case 0:
-                        await actor.rollAttribute(actor.getAttribute(key), 0, 0)
+                        await actor.rollAttributeChallenge(actor.getAttribute(key), 0, 0)
                         break;
                       case 1:
-                        await actor.rollAttribute(actor.getAttribute(key), this.BBDice, this.AddMod)
+                        await actor.rollAttributeChallenge(actor.getAttribute(key), this.boonsBanes, this.additionalModifier)
                         break;
                       case -1:
-                        await actor.rollAttribute(actor.getAttribute(key), (this.BBDice)*-1, this.AddMod)
+                        await actor.rollAttributeChallenge(actor.getAttribute(key), (this.boonsBanes)*-1, this.additionalModifier)
                         break;
                       case 2:
                         await actor[rollMethod].call(actor, ...args, options);
@@ -419,6 +435,21 @@ class LMRTFYRoller extends Application {
         event.currentTarget.disabled = true;
         this._checkClose();
     }
+
+    _makeDemonLordCorruptionRoll() {
+        const rollMode = game.settings.get("core", "rollMode");
+        game.settings.set("core", "rollMode", this.mode || CONST.DICE_ROLL_MODES);
+
+        for (let actor of this.actors) {
+            Hooks.once("preCreateChatMessage", this._tagMessage.bind(this));
+			actor.rollCorruption();
+            }
+
+        game.settings.set("core", "rollMode", rollMode);
+
+        this._disableButtons(event);
+        this._checkClose();
+    }    
 
     async _makeDiceRoll(event, formula, defaultMessage = null) {
         if (formula.startsWith("1d20")) {
@@ -643,26 +674,35 @@ class LMRTFYRoller extends Application {
 
     _onDeathSave(event) {
         event.preventDefault();
-        if (game.system.id == "dnd5e") {
-            for (let actor of this.actors) {
-                actor.rollDeathSave(event);
-            }
-            event.currentTarget.disabled = true;
-            this._checkClose();
-        } else if (game.system.id == "pf2e") {
-            for (let actor of this.actors) {
-                actor.rollRecovery();
-            }
-            event.currentTarget.disabled = true;
-            this._checkClose();
-        } else {
-            this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
+        switch (game.system.id) {
+            case "dnd5e":
+                for (let actor of this.actors) {
+                    actor.rollDeathSave(event);
+                }
+                break
+            case "pf2e":
+                for (let actor of this.actors) {
+                    actor.rollRecovery();
+                }
+                break;
+            case "demonlord":
+                for (let actor of this.actors) {
+                    this._makeDiceRoll(event, "1d6", game.i18n.localize("LMRTFY.DemonLordFateRoll"));
+                }
+                break;
+            default:
+                this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
         }
+        event.currentTarget.disabled = true;
+        this._checkClose();
     }
 
     _onPerception(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
+        if (game.system.id === 'demonlord')
+            this._makeDemonLordCorruptionRoll() 
+        else
+            this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
     }
 
     _onRollTable(event) {

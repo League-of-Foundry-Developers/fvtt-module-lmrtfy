@@ -75,7 +75,7 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-skill-checks > div ,
 .lmrtfy-extras > div {
 	flex: 3;
-	padding: 4px;
+	padding: 2px;
 	display: flex;
 }
 
@@ -127,6 +127,10 @@ form .form-group .lmrtfy-skill-checks {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+.lmrtfy-note {
+	text-align: center;
 }
 
 .lmrtfy-ability-check,

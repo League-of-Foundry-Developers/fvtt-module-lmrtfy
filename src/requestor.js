@@ -299,13 +299,13 @@ class LMRTFYRequestor extends FormApplication {
 
     clearDemonLordSettings() {
         if (($("#advantage").val() === "-1") || ($("#advantage").val() === "1")) {
-            $("#BBDice").prop('disabled', false);
-            $("#AddMod").prop('disabled', false);
+            $("#boonsBanes").prop('disabled', false);
+            $("#additionalModifier").prop('disabled', false);
         } else {
-            $("#AddMod").val("0");
-            $("#BBDice").val("0");
-            $("#BBDice").prop('disabled', true);
-            $("#AddMod").prop('disabled', true);
+            $("#additionalModifier").val("0");
+            $("#boonsBanes").val("0");
+            $("#boonsBanes").prop('disabled', true);
+            $("#additionalModifier").prop('disabled', true);
         }
     }
 
@@ -366,11 +366,11 @@ class LMRTFYRequestor extends FormApplication {
             }
         }
 
-        let BBDice = undefined;
-        let AddMod = undefined;
+        let boonsBanes = undefined;
+        let additionalModifier = undefined;
         if (game.system.id === 'demonlord') {
-            BBDice = formData.BBDice;
-            AddMod = formData.AddMod;
+            boonsBanes = formData.boonsBanes;
+            additionalModifier = formData.additionalModifier;
         }
     
         const socketData = {
@@ -395,8 +395,8 @@ class LMRTFYRequestor extends FormApplication {
             socketData['dc'] = dc;
         }
         if (game.system.id === 'demonlord') {
-            socketData['BBDice'] = BBDice;
-            socketData['AddMod'] = AddMod;            
+            socketData['boonsBanes'] = boonsBanes;
+            socketData['additionalModifier'] = additionalModifier;            
         }
         
         if (saveAsMacro) {
